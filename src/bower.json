@@ -1,0 +1,14 @@
+{
+    "name": "wikussite",
+    "version": "0.0.0-0",
+    "dependencies": {
+        "angular": "latest",
+        "d3": "latest",
+        "topojson": "latest",
+        "d3-geo-projection":  "latest",
+        "bootstrap": "latest",
+        "jquery": "latest",
+        "cryptojslib": "latest",
+        "underscore": "latest"
+    }
+}
