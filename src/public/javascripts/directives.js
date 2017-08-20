@@ -504,7 +504,7 @@ client.directive('wbCountdown', function ($window, $timeout) {
 
         var endDate = new Date(2018, 2, 12);
         var startDate = new Date(2013, 2, 12);
-        var startDate = new Date(2017, 2, 12);
+        // var startDate = new Date(2017, 2, 12);
         var totalDiff = endDate - startDate;
 
         function pad(value) {
@@ -532,8 +532,7 @@ client.directive('wbCountdown', function ($window, $timeout) {
 
             var done = (new Date()) - startDate;
             var percentage = Math.round(done / totalDiff * 1000000000) / 10000000;
-
-
+            
             return {
                 percentage: percentage,
                 // months: months,

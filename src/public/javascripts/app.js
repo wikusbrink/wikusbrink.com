@@ -65,48 +65,5 @@ client.controller('WeatherController', function($scope, $location, $window, $htt
 });
 
 client.controller('CountdownController', function($scope, $timeout) {
-    var endDate = new Date(2018, 2, 12);
-    var startDate = new Date(2013, 2, 12);
-    var totalDiff = endDate - startDate;
 
-    function pad(value) {
-        return value < 10 ? '0' + value : value;
-    }
-    
-    function getTime() {
-        
-        var date = new Date();
-        var diff = endDate - date;
-        var days = Math.floor(diff / 1000 / 60 / 60 / 24);
-        diff = diff - days * 1000 * 60 * 60 * 24;
-        var hours = Math.floor(diff / 1000 / 60 / 60);
-        diff = diff - hours * 1000 * 60 * 60;
-        var minutes = Math.floor(diff / 1000 / 60);
-        diff = diff - minutes * 1000 * 60;
-        var seconds = Math.floor(diff / 1000);
-
-        var done = (new Date()) - startDate;
-        var percentage = Math.round(done / totalDiff * 1000000000) / 10000000;
-
-
-        return {
-            percentage: percentage,
-            months: months,
-            days: days,
-            hours: hours,
-            minutes: pad(minutes),
-            seconds: pad(seconds)
-        };
-    }
-    $scope.time = getTime();
-
-    function setTime() {
-        $timeout(function () {
-            $scope.time = getTime();
-            setTime()
-        }, 1000)
-    }
-    setTime();
 });
-
-
