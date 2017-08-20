@@ -1,17 +1,13 @@
-import web
+from flask import Flask, request
+import json
 
-urls = ('/.*', 'hooks')
+app = Flask(__name__)
 
-app = web.application(urls, globals())
-
-class hooks:
-    def POST(self):
-        data = web.data()
-        print
-        print 'DATA RECEIVED:'
-        print data
-        print
-        return 'OK'
+@app.route('/hook',methods=['POST'])
+def foo():
+   data = json.loads(request.data)
+   print data
+   return "OK"
 
 if __name__ == '__main__':
-    app.run()
+   app.run('0.0.0.0', 8080)
