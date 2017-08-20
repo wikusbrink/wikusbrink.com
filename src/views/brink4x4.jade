@@ -1,0 +1,31 @@
+//
+   Created by wikusbrink on 2016/08/21.
+extends layoutb4x4
+
+block content
+
+
+    div(style='height:100vh; width:100%; min-height: 100px;')
+        img(src='images/brink4x4.png' style='width:100%; padding:20px')
+
+        .container(style='margin-top: 80px; max-width: 800px')
+            .row.row-centered
+                .col-xs-12.col-centered
+                    .home-block-link(style='width: 100%; bottom: 30px')
+
+        .footer-box
+            img(src='images/mail.png' style='width: 40px;' ng-click='setMailTo()')
+
+    .message-box(ng-if='mailTo && messageStatus.sent === undefined')
+        h4 Mail me
+        input.form-control(type='text' placeholder='Name' ng-model='message.name' ng-class='{incomplete: incomplete.name}' ng-click='removeIncomplete("name")')
+        input.form-control(type='text' placeholder='Email' ng-model='message.email' ng-class='{incomplete: incomplete.email}' ng-click='removeIncomplete("email")')
+        textarea.form-control(type='text' placeholder='Message' ng-model='message.message' ng-class='{incomplete: incomplete.message}' ng-click='removeIncomplete("message")')
+        button.btn.btn-success(ng-click='sendMail()') Send
+        button.btn.btn-danger(ng-click='cancelMailTo()') Cancel
+    .message-box.message-sent(ng-if='mailTo && messageStatus.sent')
+        h4 Message received!
+        button.btn.btn-success(ng-click='cancelMailTo()') Cool
+    .message-box.message-sent(ng-if='mailTo && messageStatus.sent === false')
+        h4 Ai, something broke. Try again later?
+        button.btn.btn-danger(ng-click='cancelMailTo()') ¯\_(ツ)_/¯

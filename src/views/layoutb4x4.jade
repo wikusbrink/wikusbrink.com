@@ -1,0 +1,24 @@
+doctype html
+html(ng-app='clientApp')
+    head
+        title= title
+        meta(name='viewport' content='height=device-height, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+        link(rel='icon', href='images/favicon.ico')
+        link(href='https://fonts.googleapis.com/css?family=Contrail+One' rel='stylesheet' type='text/css')
+        link(rel='stylesheet', href='/stylesheets/style4x4.css')
+    body.background(ng-controller='AppController' ng-cloak)
+        block content
+
+
+
+        script(src='lib/angular/angular.min.js')
+        script(src='lib/angular-route/angular-route.min.js')
+        script(src='lib/angular-resource/angular-resource.min.js')
+        script(src='lib/underscore/underscore-min.js')
+        script(src='lib/d3/d3.min.js')
+        script(src='lib/nvd3/build/nv.d3.min.js')
+        script(src='lib/topojson/topojson.js')
+        script(src='lib/d3-geo-projection/d3.geo.projection.min.js')
+        script(src='javascripts/app4x4.js')
+        script(src='javascripts/directives.js')
+        script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBc1tFP0eA2Hh8H03WbCGgQO2I_9ItG7qU')

@@ -11,6 +11,10 @@
     url('../lib/bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
 body {
     font-family: 'Contrail One', cursive;
     background: #FFF url(../images/background1.JPG) no-repeat bottom center;
@@ -19,68 +23,21 @@ body {
     background-attachment: fixed;
     z-index: -10;
 }
-.body-background {
+
+.background {
+    background: #FFF url(../images/brink4x4.jpg) no-repeat bottom center;
     background-color: white;
     background-size: cover;
     background-attachment: fixed;
     z-index: -10;
-}
-.body-image-0 {
-    background: #FFF url(../images/background0.JPG) no-repeat bottom center;
-    .quote-row {color: white;}
-    .body-background
-}
-.body-image-1 {
-    background: #FFF url(../images/background1.JPG) no-repeat bottom center;
-    .quote-row {color: white;}
-    .body-background
-}
-.body-image-2 {
-    background: #FFF url(../images/background2.JPG) no-repeat bottom center;
-    .quote-row {color: @gray-darker;}
-    .body-background
-}
-.background4x4 {
-    background: #FFF url(../images/brink4x4.jpg) no-repeat bottom center;
-    .quote-row {color: @gray-darker;}
-    .body-background
-}
-
-.navbar {
-    height: 30px;
-}
-
-.quote-row {
-    h1 {
-        font-size: 56px;
-    }
-    margin-top: 10px;
-    margin-bottom: 40px;
 }
 
 h1 {
     font-size: 56px;
 }
 
-.insta-icon {
-    opacity: 0.5;
-    margin-top: -2px;
-}
-.insta-icon:hover {
-    opacity: 1;
-}
-.remove-icon{
-    position: absolute;
-    right: 20px;
-    top: 20px;
-    color: @gray-dark;
-    z-index: 10;
-}
-
-
 .about-section,
 .content-section {
-    border-radius: 5px;
     background: rgba(255, 255, 255, 0.9);
     height: 100%;
     width: 100%;
@@ -123,13 +80,6 @@ h1 {
     }
 }
 
-.about-section {
-    width: 80%;
-    margin-left: 10%;
-    p {
-        margin-top: 20px;
-    }
-}
 
 .home-block-link {
     height: 100%;
@@ -171,77 +121,6 @@ h1 {
     }
 }
 
-.map-box {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-wb-map {
-    .country {
-        fill: #fff;
-        stroke: black;
-        stroke-width: .5px;
-        stroke-opacity: 0.3;
-        stroke-linejoin: round;
-    }
-    .graticule {
-        fill: none;
-        stroke: black;
-        stroke-opacity: 0.3;
-        stroke-width: 0.5px;
-    }
-    .graticule.outline {
-        stroke: black;
-        stroke-opacity: 0.3;
-        stroke-width: 0.5px;
-    }
-
-    .route-line {
-        fill: none;
-        stroke-width: 2px;
-        stroke: steelblue;
-        stroke-opacity: 0.5;
-    }
-
-    .feature {
-        fill: black;
-    }
-
-    .feature-name {
-        font-weight: bold;
-        font-size: 9px;
-    }
-    .traveller {
-        fill: @gray;
-    }
-    div {
-        border: 1px solid black;
-        width: calc(~'100% - 30px');
-        height: calc(~'100% - 20px');
-    }
-}
-
-wb-google-map {
-    .map-box {
-        border: 1px solid black;
-        width: calc(~'100% - 30px');
-        height: calc(~'100% - 20px');
-    }
-    .marker text {
-        font-weight: bold;
-    }
-    circle {
-        fill: red;
-        stroke-width: 1px;
-        stroke: black;
-    }
-    .route-line {
-        fill: none;
-        stroke-width: 3px;
-        stroke: red;
-        stroke-opacity: 0.4;
-    }
-}
 .mobile {
     visibility: hidden;
     height: 0px;
@@ -274,5 +153,60 @@ wb-google-map {
             border: none;
             margin-bottom: 20px;
         }
+    }
+}
+
+.footer-box {
+    cursor: pointer;
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+.footer-box:hover {
+    -webkit-filter: invert(100%);
+}
+
+.message-box {
+    .form-group;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 100;
+    position: fixed;
+    width: 300px;
+    border-radius: 5px;
+    height: 380px;
+    left: calc(~'50% - 150px');
+    top: calc(~'50% - 150px');
+    h4 {
+        text-align: center;
+    }
+    textarea,
+    input {
+        width: calc(~'100% - 20px');
+        margin: 10px
+    }
+    textarea {
+        height: 200px;
+        resize: none;
+    }
+    button {
+        width: 70px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .btn-success {
+        margin-left: 70px;
+    }
+    .incomplete {
+        background: rgb(255, 186, 186);
+    }
+}
+.message-sent {
+    height: 130px;
+    .btn-success,
+    .btn-danger {
+        width: 80px;
+        margin-top: 20px;
+        margin-left: 110px;
     }
 }
