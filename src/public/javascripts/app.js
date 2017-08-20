@@ -36,10 +36,6 @@ client.config(function($routeProvider) {
             templateUrl: '/partials/hikes.jade',
             reloadOnSearch: false
         })
-        .when('/books', {
-            templateUrl: '/partials/books.jade',
-            reloadOnSearch: false
-        })
         .otherwise({ redirectTo: '/home' });
 });
 
@@ -48,16 +44,7 @@ client.run(['$rootScope', '$window', function($rootScope, $window) {
 }]);
 
 client.controller('AppController', function($scope, $location, $window, $http) {
-    
     $scope.background = 'body-image-' + Math.floor(Math.random()*3);
-
-    $scope.locationSearch = ($location.search());
-    $scope.searchApplied = _.keys(($location.search())).length > 0;
-
-    $scope.$on('$locationChangeStart', function() {
-        $scope.locationSearch = ($location.search());
-        $scope.searchApplied = _.keys(($location.search())).length > 0;
-    });
 });
 
 client.controller('WeatherController', function($scope, $location, $window, $http) {
@@ -77,26 +64,9 @@ client.controller('WeatherController', function($scope, $location, $window, $htt
     getData();
 });
 
-client.controller('TrackerController', function($scope, $location, $window, $http) {
-    $scope.input = {
-        weight: undefined
-    };
-    $scope.submitInput = function() {
-        $http.put('/api/weight', {weight: $scope.input.weight}).then(function(res) {
-            $http.get('/api/weight').then(function(res) {
-                $scope.weights = res.data;
-            });
-        });
-        $scope.input.weight = undefined
-    };
-    $http.get('/api/weight').then(function(res) {
-        $scope.weights = res.data;
-    });
-});
-
 client.controller('CountdownController', function($scope, $timeout) {
     var endDate = new Date(2018, 2, 12);
-    var startDate = new Date(2017, 2, 12);
+    var startDate = new Date(2013, 2, 12);
     var totalDiff = endDate - startDate;
 
     function pad(value) {
@@ -106,13 +76,6 @@ client.controller('CountdownController', function($scope, $timeout) {
     function getTime() {
         
         var date = new Date();
-        // var months = -1;
-        // while (date < endDate) {
-        //     date.setMonth(date.getMonth()+1);
-        //     months = months + 1
-        // }
-        // date.setMonth(date.getMonth() - 1);
-
         var diff = endDate - date;
         var days = Math.floor(diff / 1000 / 60 / 60 / 24);
         diff = diff - days * 1000 * 60 * 60 * 24;
@@ -128,7 +91,7 @@ client.controller('CountdownController', function($scope, $timeout) {
 
         return {
             percentage: percentage,
-            // months: months,
+            months: months,
             days: days,
             hours: hours,
             minutes: pad(minutes),
