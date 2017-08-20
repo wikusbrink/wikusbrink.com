@@ -1,4 +1,5 @@
 var express = require('express');
+var process = require('process');
 var underscore = require('underscore');
 var router = express.Router();
 var request = require('request');
@@ -37,8 +38,9 @@ var sunTimes = [];
 var swell = [];
 
 function getSwell() {
-    request.get('http://api.worldweatheronline.com/premium/v1/marine.ashx?key=8bd4e6ada5464ad7a8c72511170906&q=-34.1089267, 18.8107929&format=json&tp=1', function (error, res, body) {
-        if (error || !isJsonString(body) || JSON.parse(body).data === undefined) {
+    var key = process.env.WORLD_WEATHER_KEY;
+    request.get('http://api.worldweatheronline.com/premium/v1/marine.ashx?key=' + key + '&q=-34.1089267, 18.8107929&format=json&tp=1', function (error, res, body) {
+        if (error || !isJsonString(body) || JSON.parse(body).data === undefined || JSON.parse(body).data.weather === undefined) {
             console.log('ERROR: worldweatheronline')
         } else {
             swell = [];
