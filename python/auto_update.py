@@ -17,7 +17,7 @@ def update():
         os.system('cd /home/ubuntu/wikusbrink.com/src && bower install')
         os.system('service wikusbrink.com start')
 
-    return "OK"
+    return 'OK'
 
 if __name__ == '__main__':
     app.run('0.0.0.0', 8080)
