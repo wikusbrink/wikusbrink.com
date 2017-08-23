@@ -39,7 +39,7 @@ var swell = [];
 
 function getSwell() {
     var key = process.env.WORLD_WEATHER_KEY;
-    request.get('http://api.worldweatheronline.com/premium/v1/marine.ashx?key=' + key + '&q=-34.1089267, 18.8107929&format=json&tp=1', function (error, res, body) {
+    request.get('http://api.worldweatheronline.com/premium/v1/marine.ashx?key=' + key + '&q=-34.1089267,18.8107929&format=json&tp=1', function (error, res, body) {
         if (error || !isJsonString(body) || JSON.parse(body).data === undefined || JSON.parse(body).data.weather === undefined) {
             console.log('ERROR: worldweatheronline')
         } else {
