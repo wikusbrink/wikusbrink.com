@@ -37,11 +37,14 @@ var temps = [];
 var sunTimes = [];
 var swell = [];
 
-function getSwell() {
+function getSwell(retries) {
     var key = process.env.WORLD_WEATHER_KEY;
     request.get('http://api.worldweatheronline.com/premium/v1/marine.ashx?key=' + key + '&q=-34.1089267,18.8107929&format=json&tp=1', function (error, res, body) {
         if (error || !isJsonString(body) || JSON.parse(body).data === undefined || JSON.parse(body).data.weather === undefined) {
-            console.log('ERROR: worldweatheronline')
+            console.log('ERROR: worldweatheronline');
+            if (retries < 10) {
+                getSwell(retries + 1);
+            }
         } else {
             swell = [];
             JSON.parse(body).data.weather.forEach(function(day) {
@@ -124,7 +127,7 @@ function updateHourly() {
 
 }
 function update2Hourly() {
-    getSwell();
+    getSwell(0);
     getWindsAndTemps();
 }
 function update6Hourly() {
