@@ -2,6 +2,7 @@
 node_modules/
 src/public/lib
 src/node_modules
+src/public/notebooks
 
 workspace.xml
 .idea/
