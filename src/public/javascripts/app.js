@@ -69,14 +69,14 @@ client.controller('CountdownController', function($scope, $timeout) {
 });
 
 client.controller('AudController', function($scope, $location, $window, $http) {
-    var days = 125;
+    var days = 65;
 
     var listDate = [];
     var dateMove = new Date();
 
     for (var i = 0; i < days; i++) {
         listDate.push(dateMove.toISOString().slice(0,10));
-        dateMove.setDate(dateMove.getDate()-1);
+        dateMove.setDate(dateMove.getDate()-2);
     }
     var dataSet = [];
     function getData() {
