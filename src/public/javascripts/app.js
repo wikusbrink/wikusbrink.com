@@ -67,3 +67,35 @@ client.controller('WeatherController', function($scope, $location, $window, $htt
 client.controller('CountdownController', function($scope, $timeout) {
 
 });
+
+client.controller('AudController', function($scope, $location, $window, $http) {
+    var days = 125;
+
+    var listDate = [];
+    var dateMove = new Date();
+
+    for (var i = 0; i < days; i++) {
+        listDate.push(dateMove.toISOString().slice(0,10));
+        dateMove.setDate(dateMove.getDate()-1);
+    }
+    var dataSet = [];
+    function getData() {
+        var date = listDate.splice(0,1)[0];
+        $http.get('https://api.fixer.io/' + date + '?base=AUD&symbols=ZAR').then(function(res) {
+            dataSet.unshift({date: date, rate: res.data.rates.ZAR});
+            if(listDate.length > 0){
+                getData();
+            } else {
+                $http.get('https://api.fixer.io/latest?base=AUD&symbols=ZAR').then(function(res) {
+                    $scope.rates = {
+                        history: dataSet,
+                        latest: res.data.rates.ZAR
+                    };
+                    $scope.ready = true;
+                    console.log($scope.rates)
+                })
+            }
+        });
+    }
+    getData();
+});

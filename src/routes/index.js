@@ -9,6 +9,10 @@ router.get('/weather', function(req, res, next) {
     res.render('weather', {title: 'Weather'});
 });
 
+router.get('/aud', function(req, res, next) {
+    res.render('aud', {title: 'ZAR to AUD'});
+});
+
 router.get('/countdown', function(req, res, next) {
     res.render('countdown', {title: 'Countdown'});
 });

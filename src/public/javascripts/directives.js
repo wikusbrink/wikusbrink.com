@@ -302,15 +302,15 @@ client.directive('wbLoader', function ($window) {
             .style('stroke-width', 0.3)
             .style('stroke', '#888');
 
-        svg.append('text')
-            .text('Strand weather')
-            .attr('x', 20)
-            .attr('y', 75)
-            .style('font-size', 26)
-            .style('font-weight', 'bolder')
-            .style('fill', '#fff')
-            .style('stroke-width', 0.3)
-            .style('stroke', '#888');
+        // svg.append('text')
+        //     .text('Strand weather')
+        //     .attr('x', 20)
+        //     .attr('y', 75)
+        //     .style('font-size', 26)
+        //     .style('font-weight', 'bolder')
+        //     .style('fill', '#fff')
+        //     .style('stroke-width', 0.3)
+        //     .style('stroke', '#888');
 
         svg.append('text')
             .text('Loading...')
@@ -627,5 +627,132 @@ client.directive('wbCountdown', function ($window, $timeout) {
         link: link,
         restrict: 'E',
         scope: {}
+    };
+});
+
+client.directive('wbAud', function ($window, $timeout) {
+    'use strict';
+
+    function link(scope, element, attr) {
+        var size = d3.select(element[0]).append('div')
+            .style('width', '100%')
+            .style('height', '100%')
+            .node()
+            .getBoundingClientRect();
+        var width = size.width;
+        var height = size.height;
+        d3.select(element[0]).selectAll('div').remove();
+
+        var svg = d3.select(element[0]).append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+        svg.append('text')
+            .text('R' + scope.rates.latest)
+            .attr('text-anchor', 'middle')
+            .attr('x', width * 0.5)
+            .attr('y', 90)
+            .style('font-size', 70)
+            .style('font-weight', 'bolder')
+            .style('fill', '#fff')
+            .style('stroke-width', 1)
+            .style('stroke', 'black');
+
+        svg.append('text')
+            .text('= 1 AUD')
+            .attr('text-anchor', 'middle')
+            .attr('x', width * 0.5)
+            .attr('y', 150)
+            .style('font-size', 40)
+            .style('font-weight', 'bolder')
+            .style('fill', '#fff')
+            .style('stroke-width', 1)
+            .style('stroke', 'black');
+
+        var max = Math.ceil(_.max(scope.rates.history, function(d){return d.rate}).rate);
+        var min = Math.floor(_.min(scope.rates.history, function(d){return d.rate}).rate);
+
+        function getY(d){
+            return height - 20 - (height-220)/(max-min) * (d.rate-min);
+        }
+        function getX(d,i) {
+            return width/(scope.rates.history.length-1) * i;
+        }
+        function getXGrid(d,i) {
+            return width * i;
+        }
+        function getYGrid(d,i) {
+            return (height - 160) * i + 200;
+        }
+
+        var line = d3.svg.line()
+            .x(getX)
+            .y(getY);
+
+        var lineYGrid = d3.svg.line()
+            .x(getXGrid)
+            .y(getY);
+
+        var lineXGrid = d3.svg.line()
+            .x(function(d){ return getX(0, d)})
+            .y(getYGrid);
+
+        var gridGroup = svg.append('g');
+        var rateHistoryGroup = svg.append('g');
+        rateHistoryGroup.append('path')
+            .datum(scope.rates.history)
+            .attr("class", "line")
+            .attr("d", line)
+            .style('stroke-width', 6)
+            .style('stroke', 'darkred')
+            .style('fill', 'None');
+
+
+        var yLines = [];
+        var c = min;
+        while(c<=max){
+            yLines.push({rate:c});
+            gridGroup.append('path')
+                .datum([{rate: c}, {rate:c}])
+                .attr("class", "line")
+                .attr("d", lineYGrid)
+                .style('stroke-width', 1)
+                .style('stroke', '#555')
+                .style('fill', 'None');
+            gridGroup.append('text')
+                .text('R' + c)
+                .attr('x', 4)
+                .attr('y', getY({rate:c})-6)
+                .style('font-size', 12)
+                .style('fill', 'black');
+            c=c+0.5;
+        }
+        c=0;
+        while(c<scope.rates.history.length){
+            var dataPoint = scope.rates.history[c];
+            c++;
+            if(dataPoint.date.substring(8,10) === '01'){
+                gridGroup.append('path')
+                    .datum([c , c])
+                    .attr("class", "line")
+                    .attr("d", lineXGrid)
+                    .style('stroke-width', 1)
+                    .style('stroke', '#555')
+                    .style('fill', 'None');
+                gridGroup.append('text')
+                    .text(dataPoint.date.substring(0,7))
+                    .attr('x', getX(0, c)+2)
+                    .attr('y', height - 6)
+                    .style('font-size', 12)
+                    .style('fill', 'black');
+            }
+        }
+
+
+    }
+    return {
+        link: link,
+        restrict: 'E',
+        scope: {rates: '='}
     };
 });
