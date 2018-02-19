@@ -727,11 +727,12 @@ client.directive('wbAud', function ($window, $timeout) {
                 .style('fill', 'black');
             c=c+0.5;
         }
-        c=0;
+        c=1;
         while(c<scope.rates.history.length){
             var dataPoint = scope.rates.history[c];
+            var previousDay = scope.rates.history[c - 1].date.substring(8,10);
             c++;
-            if(dataPoint.date.substring(8,10) === '01'){
+            if(dataPoint.date.substring(8,10) < previousDay){
                 gridGroup.append('path')
                     .datum([c , c])
                     .attr("class", "line")
