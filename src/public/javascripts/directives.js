@@ -651,7 +651,7 @@ client.directive('wbAud', function ($window, $timeout) {
             .text('R' + scope.rates.latest.rate)
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.5)
-            .attr('y', 70)
+            .attr('y', 65)
             .style('font-size', 70)
             .style('font-weight', 'bolder')
             .style('fill', '#fff')
@@ -662,7 +662,7 @@ client.directive('wbAud', function ($window, $timeout) {
             .text('= 1 AUD')
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.5)
-            .attr('y', 130)
+            .attr('y', 120)
             .style('font-size', 40)
             .style('font-weight', 'bolder')
             .style('fill', '#fff')
@@ -788,8 +788,8 @@ client.directive('wbAud', function ($window, $timeout) {
                 }
             }
         }
-        draw(scope.rates.weeks, height / 3, 160, 'weekly', 'Weeks');
-        draw(scope.rates.months, height / 3, height / 3 + 200, 'monthly', 'Months');
+        draw(scope.rates.weeks, height / 3.2, 150, 'weekly', 'Weeks');
+        draw(scope.rates.months, height / 3.2, height / 3 + 180, 'monthly', 'Months');
     }
     return {
         link: link,
