@@ -723,7 +723,7 @@ client.directive('wbAud', function ($window, $timeout) {
                 .attr("class", "line")
                 .attr("d", line)
                 .style('stroke-width', 6)
-                .style('stroke', 'limegreen')
+                .style('stroke', 'darkred')
                 .style('stroke-linecap', 'round')
                 .style('fill', 'None');
 
