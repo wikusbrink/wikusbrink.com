@@ -723,9 +723,9 @@ client.directive('wbAud', function ($window, $timeout) {
                 .attr("class", "line")
                 .attr("d", line)
                 .style('stroke-width', 6)
-                .style('stroke', 'darkred')
+                .style('stroke', 'limegreen')
+                .style('stroke-linecap', 'round')
                 .style('fill', 'None');
-
 
             var yLines = [];
             var c = min;
