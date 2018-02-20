@@ -68,34 +68,55 @@ client.controller('CountdownController', function($scope, $timeout) {
 
 });
 
+
+
+
 client.controller('AudController', function($scope, $location, $window, $http) {
-    var days = 65;
 
-    var listDate = [];
-    var dateMove = new Date();
-
-    for (var i = 0; i < days; i++) {
-        listDate.push(dateMove.toISOString().slice(0,10));
-        dateMove.setDate(dateMove.getDate()-2);
-    }
-    var dataSet = [];
-    function getData() {
-        var date = listDate.splice(0,1)[0];
+    function getAudRate(date, callback) {
         $http.get('https://api.fixer.io/' + date + '?base=AUD&symbols=ZAR').then(function(res) {
-            dataSet.unshift({date: date, rate: res.data.rates.ZAR});
-            if(listDate.length > 0){
-                getData();
-            } else {
-                $http.get('https://api.fixer.io/latest?base=AUD&symbols=ZAR').then(function(res) {
-                    $scope.rates = {
-                        history: dataSet,
-                        latest: res.data.rates.ZAR
-                    };
-                    $scope.ready = true;
-                    console.log($scope.rates)
-                })
-            }
-        });
+            callback({date: date, rate: res.data.rates.ZAR})
+        })
     }
-    getData();
+    function getAudRates(dates, callback) {
+        var rateList = [];
+
+        var complete = _.after(dates.length, function(){
+            rateList = _.sortBy(rateList, function(d){return d.date});
+            callback(rateList)
+        });
+
+        dates.forEach(function(date){
+            getAudRate(date, function(rate){
+                rateList.push(rate);
+                complete();
+            })
+        })
+    }
+
+    var thisDate = new Date();
+    var weeksRates = [];
+    for (var i = 0; i < 21; i++) {
+        weeksRates.unshift(thisDate.toISOString().slice(0,10));
+        thisDate.setDate(thisDate.getDate()-1);
+    }
+    thisDate = new Date();
+    var monthDateList = [];
+    for (var i = 0; i < 40; i++) {
+        monthDateList.unshift(thisDate.toISOString().slice(0,10));
+        thisDate.setDate(thisDate.getDate()-5);
+    }
+    getAudRates(monthDateList, function(monthsRates) {
+        getAudRates(weeksRates, function(weeksRates) {
+            getAudRate('latest', function(latestRate){
+                $scope.rates = {
+                    weeks: weeksRates,
+                    months: monthsRates,
+                    latest: latestRate
+                };
+                $scope.ready = true;
+                console.log($scope.rates)
+            })
+        })
+    });
 });

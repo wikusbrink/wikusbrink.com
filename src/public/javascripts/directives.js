@@ -640,7 +640,7 @@ client.directive('wbAud', function ($window, $timeout) {
             .node()
             .getBoundingClientRect();
         var width = size.width;
-        var height = size.height;
+        var height = size.height-50;
         d3.select(element[0]).selectAll('div').remove();
 
         var svg = d3.select(element[0]).append('svg')
@@ -648,7 +648,7 @@ client.directive('wbAud', function ($window, $timeout) {
             .attr('height', height);
 
         svg.append('text')
-            .text('R' + scope.rates.latest)
+            .text('R' + scope.rates.latest.rate)
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.5)
             .attr('y', 90)
@@ -669,87 +669,127 @@ client.directive('wbAud', function ($window, $timeout) {
             .style('stroke-width', 1)
             .style('stroke', 'black');
 
-        var max = Math.ceil(_.max(scope.rates.history, function(d){return d.rate}).rate);
-        var min = Math.floor(_.min(scope.rates.history, function(d){return d.rate}).rate);
-
-        function getY(d){
-            return height - 20 - (height-220)/(max-min) * (d.rate-min);
-        }
-        function getX(d,i) {
-            return width/(scope.rates.history.length-1) * i;
-        }
-        function getXGrid(d,i) {
-            return width * i;
-        }
-        function getYGrid(d,i) {
-            return (height - 160) * i + 200;
-        }
-
-        var line = d3.svg.line()
-            .x(getX)
-            .y(getY);
-
-        var lineYGrid = d3.svg.line()
-            .x(getXGrid)
-            .y(getY);
-
-        var lineXGrid = d3.svg.line()
-            .x(function(d){ return getX(0, d)})
-            .y(getYGrid);
-
-        var gridGroup = svg.append('g');
-        var rateHistoryGroup = svg.append('g');
-        rateHistoryGroup.append('path')
-            .datum(scope.rates.history)
-            .attr("class", "line")
-            .attr("d", line)
-            .style('stroke-width', 6)
-            .style('stroke', 'darkred')
-            .style('fill', 'None');
-
-
-        var yLines = [];
-        var c = min;
-        while(c<=max){
-            yLines.push({rate:c});
-            gridGroup.append('path')
-                .datum([{rate: c}, {rate:c}])
-                .attr("class", "line")
-                .attr("d", lineYGrid)
-                .style('stroke-width', 1)
-                .style('stroke', '#555')
-                .style('fill', 'None');
-            gridGroup.append('text')
-                .text('R' + c)
-                .attr('x', 4)
-                .attr('y', getY({rate:c})-6)
-                .style('font-size', 12)
+        function draw(data, height, height_offset, xGrid, name) {
+            svg.append('text')
+                .attr('text-anchor', 'end')
+                .text(name)
+                .attr('x', width-4)
+                .attr('y', height_offset - 3)
+                .style('font-size', 16)
+                .style('font-weight', 'bolder')
                 .style('fill', 'black');
-            c=c+0.5;
-        }
-        c=1;
-        while(c<scope.rates.history.length){
-            var dataPoint = scope.rates.history[c];
-            var previousDay = scope.rates.history[c - 1].date.substring(8,10);
-            c++;
-            if(dataPoint.date.substring(8,10) < previousDay){
+
+            var max = Math.ceil(_.max(data, function (d) {
+                return d.rate
+            }).rate);
+            var min = Math.floor(_.min(data, function (d) {
+                return d.rate
+            }).rate);
+
+            function getY(d) {
+                return height + height_offset  - (height) / (max - min) * (d.rate - min);
+            }
+
+            function getX(d, i) {
+                return width / (data.length - 1) * i;
+            }
+
+            function getXGrid(d, i) {
+                return width * i;
+            }
+
+            function getYGrid(d, i) {
+                return height * i + height_offset;
+            }
+
+            var line = d3.svg.line()
+                .x(getX)
+                .y(getY);
+
+            var lineYGrid = d3.svg.line()
+                .x(getXGrid)
+                .y(getY);
+
+            var lineXGrid = d3.svg.line()
+                .x(function (d) {
+                    return getX(0, d)
+                })
+                .y(getYGrid);
+
+            var gridGroup = svg.append('g');
+            var rateHistoryGroup = svg.append('g');
+            rateHistoryGroup.append('path')
+                .datum(data)
+                .attr("class", "line")
+                .attr("d", line)
+                .style('stroke-width', 6)
+                .style('stroke', 'darkred')
+                .style('fill', 'None');
+
+
+            var yLines = [];
+            var c = min;
+            while (c <= max) {
+                yLines.push({rate: c});
                 gridGroup.append('path')
-                    .datum([c , c])
+                    .datum([{rate: c}, {rate: c}])
                     .attr("class", "line")
-                    .attr("d", lineXGrid)
+                    .attr("d", lineYGrid)
                     .style('stroke-width', 1)
                     .style('stroke', '#555')
                     .style('fill', 'None');
                 gridGroup.append('text')
-                    .text(dataPoint.date.substring(0,7))
-                    .attr('x', getX(0, c)+2)
-                    .attr('y', height - 6)
+                    .text('R' + c)
+                    .attr('x', 4)
+                    .attr('y', getY({rate: c}) - 6)
                     .style('font-size', 12)
                     .style('fill', 'black');
+                c = c + 0.5;
+            }
+            c = 1;
+            while (c < data.length && xGrid == 'monthly') {
+                var dataPoint = data[c];
+                var previousDay = data[c - 1].date.substring(8, 10);
+                c++;
+                if (dataPoint.date.substring(8, 10) < previousDay) {
+                    gridGroup.append('path')
+                        .datum([c, c])
+                        .attr("class", "line")
+                        .attr("d", lineXGrid)
+                        .style('stroke-width', 1)
+                        .style('stroke', '#555')
+                        .style('fill', 'None');
+                    gridGroup.append('text')
+                        .text(dataPoint.date.substring(0, 7))
+                        .attr('x', getX(0, c) + 2)
+                        .attr('y', height - 6 + height_offset)
+                        .style('font-size', 12)
+                        .style('fill', 'black');
+                }
+            }
+            while (c < data.length && xGrid == 'weekly') {
+                var date = new Date(data[c].date);
+                var day = date.getDay();
+                c++;
+                if (day === 1) {
+                    gridGroup.append('path')
+                        .datum([c, c])
+                        .attr("class", "line")
+                        .attr("d", lineXGrid)
+                        .style('stroke-width', 1)
+                        .style('stroke', '#555')
+                        .style('fill', 'None');
+                    gridGroup.append('text')
+                        .text(data[c].date.substring(5, 10))
+                        .attr('x', getX(0, c) + 2)
+                        .attr('y', height - 6 + height_offset)
+                        .style('font-size', 12)
+                        .style('fill', 'black');
+                }
             }
         }
-
-
+        draw(scope.rates.weeks, height / 3, 200, 'weekly', 'Weeks');
+        draw(scope.rates.months, height / 3, height / 3 + 250, 'monthly', 'Months');
     }
     return {
         link: link,
