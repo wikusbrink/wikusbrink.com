@@ -8,9 +8,9 @@ html(ng-app='clientApp')
         link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap.min.css')
         link(rel='stylesheet', href='/lib/nvd3/build/nv.d3.min.css')
     body(ng-controller='AudController')
-        div(ng-if = 'ready === undefined' style='width:100%; height:2000px; background-color: #aaa; max-width: 800px;')
+        div(ng-if = 'ready === undefined' style='width:100%; height:2000px; background-color: #666; max-width: 800px;')
             wb-loader
-        div(ng-if = 'ready', style='width:100%; height:100vh; background-color: #aaa;')
+        div(ng-if = 'ready', style='width:100%; height:100vh; background-color: #666;')
             wb-aud(x-rates='rates')
 
         script(src='lib/angular/angular.min.js')

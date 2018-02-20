@@ -315,7 +315,7 @@ client.directive('wbLoader', function ($window) {
         svg.append('text')
             .text('Loading...')
             .attr('x', 20)
-            .attr('y', 110)
+            .attr('y', 75)
             .style('font-size', 26)
             .style('font-weight', 'bolder')
             .style('fill', '#fff')
