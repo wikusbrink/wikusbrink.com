@@ -53,7 +53,7 @@ client.directive('wbWeather', function ($window) {
             .append('text')
             .text(function(d){
                 var time = new Date(d.time);
-                if (time.getHours() == 14 || time.getHours() == 2) {
+                if (time.getHours() == 14 || time.getHours() == 6) {
                     return d.temp + '°C';
                 }
             })
@@ -68,7 +68,7 @@ client.directive('wbWeather', function ($window) {
             .append('circle')
             .attr('r', function(d){
                 var time = new Date(d.time);
-                if (time.getHours() == 14 || time.getHours() == 2) {
+                if (time.getHours() == 14 || time.getHours() == 6) {
                     return 2;
                 } else {
                     return 0;
