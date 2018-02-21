@@ -73,9 +73,19 @@ client.controller('CountdownController', function($scope, $timeout) {
 
 client.controller('AudController', function($scope, $location, $window, $http) {
 
+    var errorDelayCounter = 0;
+
     function getAudRate(date, callback) {
         $http.get('https://api.fixer.io/' + date + '?base=AUD&symbols=ZAR').then(function(res) {
+            errorDelayCounter = 0;
             callback({date: date, rate: res.data.rates.ZAR})
+        }, function(error) {
+            errorDelayCounter = errorDelayCounter + 1;
+            console.log(error);
+            setTimeout(function(){
+                getAudRate(date, callback);
+            }, errorDelayCounter * 20);
+
         })
     }
     function getAudRates(dates, callback) {
