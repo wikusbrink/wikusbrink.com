@@ -18,23 +18,22 @@ html(ng-app='clientApp')
 
         div(style='margin-top:-50px; position:absolute; width: 100%;')
             .row
-                .col-xs-3
-                .col-xs-2
-                    .dropdown(style='width:80px; margin-right:2px;')
+                .col-xs-4
+                    .dropdown(style='width:80px; margin-left:10px;')
                         button.btn.btn-primary.dropdown-toggle(style='width:100%; margin-bottom:2px;' type=button, data-toggle="dropdown") {{currencies.from}}&nbsp
                             .span.caret
                         ul.dropdown-menu
                             li(ng-repeat='currency in currencyList')
                                 a(ng-click='currencies.from = currency') {{currency}}
-                .col-xs-2
-                    .dropdown(style='width:80px; margin-right:2px;')
+                .col-xs-4
+                    .dropdown(style='width:80px; margin-left:10px;')
                         button.btn.btn-primary.dropdown-toggle(style='width:100%; margin-bottom:2px;' type=button, data-toggle="dropdown") {{currencies.to}}&nbsp
                             .span.caret
                         ul.dropdown-menu
                             li(ng-repeat='currency in currencyList')
                                 a(ng-click='currencies.to = currency') {{currency}}
-                .col-xs-2
-                    button.btn.btn-primary(style='width:80px; margin-right:2px; margin-bottom:2px;' type=button ng-click='update()') Update
+                .col-xs-4
+                    button.btn.btn-primary(style='width:80px; margin-left:10px; margin-bottom:2px;' type=button ng-click='update()') Update
 
 
         script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
