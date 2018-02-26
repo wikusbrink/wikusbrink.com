@@ -83,7 +83,7 @@ client.controller('AudController', function($scope, $location, $window, $http) {
     function getAudRate(date, callback) {
         $http.get('https://api.fixer.io/' + date + '?base=' + $scope.currencies.to + '&symbols=' + $scope.currencies.from).then(function(res) {
             errorDelayCounter = 0;
-            callback({date: date, rate: res.data.rates.ZAR})
+            callback({date: date, rate: res.data.rates[$scope.currencies.from]})
         }, function(error) {
             errorDelayCounter = errorDelayCounter + 1;
             console.log(error);
