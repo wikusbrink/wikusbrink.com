@@ -8,11 +8,36 @@ html(ng-app='clientApp')
         link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap.min.css')
         link(rel='stylesheet', href='/lib/nvd3/build/nv.d3.min.css')
     body(ng-controller='AudController')
-        div(ng-if = 'ready === undefined' style='width:100%; height:2000px; background-color: #ddd; max-width: 800px;')
+
+        div(style='height=30px; position:absolute; width: 100%;')
+            .row
+                .col-lg-1.pull-right
+                    .dropdown(style='width:80px; margin-right:2px;')
+                        button.btn.btn-primary.dropdown-toggle(style='width:100%; margin-bottom:2px;' type=button, data-toggle="dropdown") {{currencies.from}}&nbsp
+                            .span.caret
+                        ul.dropdown-menu
+                            li(ng-repeat='currency in currencyList')
+                                a(ng-click='currencies.from = currency') {{currency}}
+            .row
+                .col-lg-1.pull-right
+                    .dropdown(style='width:80px; margin-right:2px;')
+                        button.btn.btn-primary.dropdown-toggle(style='width:100%; margin-bottom:2px;' type=button, data-toggle="dropdown") {{currencies.to}}&nbsp
+                            .span.caret
+                        ul.dropdown-menu
+                            li(ng-repeat='currency in currencyList')
+                                a(ng-click='currencies.to = currency') {{currency}}
+            .row
+                .col-lg-1.pull-right
+                    button.btn.btn-primary(style='width:80px; margin-right:2px; margin-bottom:2px;' type=button ng-click='update()') Update
+
+
+        div(ng-if = '!ready' style='width:100%; height:2000px; background-color: #ddd; max-width: 800px;')
             wb-loader
         div(ng-if = 'ready', style='width:100%; height:100vh; background-color: #ddd;')
             wb-aud(x-rates='rates')
 
+        script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+        script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
         script(src='lib/angular/angular.min.js')
         script(src='lib/angular-route/angular-route.min.js')
         script(src='lib/angular-resource/angular-resource.min.js')

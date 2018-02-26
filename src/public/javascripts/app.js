@@ -74,9 +74,14 @@ client.controller('CountdownController', function($scope, $timeout) {
 client.controller('AudController', function($scope, $location, $window, $http) {
 
     var errorDelayCounter = 0;
+    $scope.currencies = {
+        from: 'ZAR',
+        to: 'AUD'
+    };
+    $scope.currencyList = ['AUD', 'CNY', 'EUR', 'GBP', 'USD', 'ZAR'];
 
     function getAudRate(date, callback) {
-        $http.get('https://api.fixer.io/' + date + '?base=AUD&symbols=ZAR').then(function(res) {
+        $http.get('https://api.fixer.io/' + date + '?base=' + $scope.currencies.to + '&symbols=' + $scope.currencies.from).then(function(res) {
             errorDelayCounter = 0;
             callback({date: date, rate: res.data.rates.ZAR})
         }, function(error) {
@@ -103,30 +108,42 @@ client.controller('AudController', function($scope, $location, $window, $http) {
             })
         })
     }
-
-    var thisDate = new Date();
-    var weeksRates = [];
-    for (var i = 0; i < 21; i++) {
-        weeksRates.unshift(thisDate.toISOString().slice(0,10));
-        thisDate.setDate(thisDate.getDate()-1);
-    }
-    thisDate = new Date();
-    var monthDateList = [];
-    for (var i = 0; i < 40; i++) {
-        monthDateList.unshift(thisDate.toISOString().slice(0,10));
-        thisDate.setDate(thisDate.getDate()-5);
-    }
-    getAudRates(monthDateList, function(monthsRates) {
-        getAudRates(weeksRates, function(weeksRates) {
-            getAudRate('latest', function(latestRate){
-                $scope.rates = {
-                    weeks: weeksRates,
-                    months: monthsRates,
-                    latest: latestRate
-                };
-                $scope.ready = true;
-                console.log($scope.rates)
-            })
+    function getLatest(callback) {
+        $http.get('https://free.currencyconverterapi.com/api/v5/convert?q=' + $scope.currencies.to + '_' + $scope.currencies.from + '&compact=y').then(function(res) {
+            var today = new Date();
+            callback({date: today.toISOString().slice(0,10), rate: res.data[$scope.currencies.to + '_' + $scope.currencies.from].val.toFixed(2)})
         })
-    });
+    }
+
+    $scope.update = function() {
+        $scope.ready = false;
+        var thisDate = new Date();
+        var weeksRates = [];
+        for (var i = 0; i < 21; i++) {
+            weeksRates.unshift(thisDate.toISOString().slice(0, 10));
+            thisDate.setDate(thisDate.getDate() - 1);
+        }
+        thisDate = new Date();
+        var monthDateList = [];
+        for (var i = 0; i < 40; i++) {
+            monthDateList.unshift(thisDate.toISOString().slice(0, 10));
+            thisDate.setDate(thisDate.getDate() - 5);
+        }
+        getAudRates(monthDateList, function (monthsRates) {
+            getAudRates(weeksRates, function (weeksRates) {
+                getLatest(function (latestRate) {
+                    $scope.rates = {
+                        from: $scope.currencies.from,
+                        to: $scope.currencies.to,
+                        weeks: weeksRates,
+                        months: monthsRates,
+                        latest: latestRate
+                    };
+                    $scope.ready = true;
+                    console.log($scope.rates)
+                })
+            })
+        });
+    };
+    $scope.update()
 });

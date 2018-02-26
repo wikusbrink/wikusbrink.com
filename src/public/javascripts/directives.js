@@ -504,7 +504,7 @@ client.directive('wbCountdown', function ($window, $timeout) {
 
         var endDate = new Date(2018, 2, 12);
         var startDate = new Date(2013, 2, 12);
-        // var startDate = new Date(2017, 2, 12);
+        //var startDate = new Date(2018, 1, 26);
         var totalDiff = endDate - startDate;
 
         function pad(value) {
@@ -648,7 +648,7 @@ client.directive('wbAud', function ($window, $timeout) {
             .attr('height', height);
 
         svg.append('text')
-            .text('R' + scope.rates.latest.rate)
+            .text(scope.rates.from + ' ' + scope.rates.latest.rate)
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.5)
             .attr('y', 65)
@@ -659,7 +659,7 @@ client.directive('wbAud', function ($window, $timeout) {
             .style('stroke', 'black');
 
         svg.append('text')
-            .text('= 1 AUD')
+            .text('= ' + scope.rates.to + ' 1')
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.5)
             .attr('y', 120)
@@ -681,10 +681,10 @@ client.directive('wbAud', function ($window, $timeout) {
 
             var max = Math.ceil(_.max(data, function (d) {
                 return d.rate
-            }).rate);
+            }).rate * 2) / 2;
             var min = Math.floor(_.min(data, function (d) {
                 return d.rate
-            }).rate);
+            }).rate * 2) / 2;
 
             function getY(d) {
                 return height + height_offset  - (height) / (max - min) * (d.rate - min);
@@ -750,7 +750,6 @@ client.directive('wbAud', function ($window, $timeout) {
             while (c < data.length && xGrid == 'monthly') {
                 var dataPoint = data[c];
                 var previousDay = data[c - 1].date.substring(8, 10);
-                c++;
                 if (dataPoint.date.substring(8, 10) < previousDay) {
                     gridGroup.append('path')
                         .datum([c, c])
@@ -766,11 +765,11 @@ client.directive('wbAud', function ($window, $timeout) {
                         .style('font-size', 12)
                         .style('fill', 'black');
                 }
+                c++;
             }
             while (c < data.length && xGrid == 'weekly') {
                 var date = new Date(data[c].date);
                 var day = date.getDay();
-                c++;
                 if (day === 1) {
                     gridGroup.append('path')
                         .datum([c, c])
@@ -786,6 +785,7 @@ client.directive('wbAud', function ($window, $timeout) {
                         .style('font-size', 12)
                         .style('fill', 'black');
                 }
+                c++;
             }
         }
         draw(scope.rates.weeks, height / 3.2, 150, 'weekly', 'Weeks');
