@@ -820,7 +820,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('Today')
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.15)
-            .attr('y', 25)
+            .attr('y', 20)
             .style('font-size', 15)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
@@ -829,7 +829,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text(Math.round(scope.data.distribution.cdf.values[0]) + '%')
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.15)
-            .attr('y', 85)
+            .attr('y', 55)
             .style('font-size', 35)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
@@ -839,7 +839,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('Expected grant date')
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.65)
-            .attr('y', 25)
+            .attr('y', 20)
             .style('font-size', 15)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
@@ -848,13 +848,13 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text(scope.data.expected_date)
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.65)
-            .attr('y', 85)
+            .attr('y', 55)
             .style('font-size', 35)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
-        var y1 = 100;
-        var y2 = 300;
+        var y1 = 80;
+        var y2 = 220;
         function getY(d) {
             return y2 - (y2 - y1)*d/100;
         }
@@ -921,7 +921,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('Latest grant:')
             .attr('text-anchor', 'start')
             .attr('x', 10)
-            .attr('y', 340)
+            .attr('y', 245)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
@@ -929,7 +929,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text(scope.data.last_grant_date)
             .attr('text-anchor', 'end')
             .attr('x', width*0.5)
-            .attr('y', 340)
+            .attr('y', 245)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
@@ -938,7 +938,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('Latest lodge date granted:')
             .attr('text-anchor', 'start')
             .attr('x', 10)
-            .attr('y', 360)
+            .attr('y', 260)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
@@ -946,7 +946,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text(scope.data.last_lodge_date_granted)
             .attr('text-anchor', 'end')
             .attr('x', width*0.5)
-            .attr('y', 360)
+            .attr('y', 260)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
@@ -955,13 +955,13 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('LADG: ' + scope.data.cases[scope.data.cases.length-1].rolling_mean_50)
             .attr('text-anchor', 'end')
             .attr('x', width-10)
-            .attr('y', 360)
-            .style('font-size', 30)
+            .attr('y', 260)
+            .style('font-size', 35)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
-        y1 = 380;
-        y2 = 600;
+        y1 = 280;
+        y2 = 500;
         function getYDiff(d) {
             return y2 - (y2 - y1)*d.days_to_grant/300;
         }
