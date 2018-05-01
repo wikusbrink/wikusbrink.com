@@ -1007,11 +1007,18 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('cx', getXCases)
             .attr('cy', getYDiff)
             .attr('r', 2)
-            .style('opacity', 0.6)
+            .style('opacity', 0.5)
             .style('fill', 'darkgreen');
 
+        var lineData = [];
+        scope.data.cases.forEach(function(d,i) {
+            if(i % 5 === 0) {
+                lineData.push(d);
+            }
+        });
+
         svg.append('path')
-            .datum(scope.data.cases)
+            .datum(lineData)
             .attr("class", "line")
             .attr("d", lineCases)
             .style('stroke-width', 6)
