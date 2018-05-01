@@ -854,7 +854,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', 'black');
 
         var y1 = 80;
-        var y2 = 220;
+        var y2 = 210;
         function getY(d) {
             return y2 - (y2 - y1)*d/100;
         }
@@ -967,7 +967,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
-        y1 = 275;
+        y1 = 274;
         y2 = 500;
         function getYDiff(d) {
             return y2 - (y2 - y1)*d.days_to_grant/300;
