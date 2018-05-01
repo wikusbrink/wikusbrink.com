@@ -918,7 +918,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('stroke-opacity', 0.9);
 
         svg.append('text')
-            .text('Latest grant:')
+            .text('Latest grant date:')
             .attr('text-anchor', 'start')
             .attr('x', 10)
             .attr('y', 245)
@@ -935,7 +935,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', 'black');
 
         svg.append('text')
-            .text('Latest lodge date granted:')
+            .text('Latest LD granted:')
             .attr('text-anchor', 'start')
             .attr('x', 10)
             .attr('y', 260)
