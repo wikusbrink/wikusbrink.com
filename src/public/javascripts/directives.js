@@ -821,7 +821,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.15)
             .attr('y', 25)
-            .style('font-size', 20)
+            .style('font-size', 15)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
@@ -830,7 +830,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.15)
             .attr('y', 85)
-            .style('font-size', 60)
+            .style('font-size', 35)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
@@ -840,7 +840,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.65)
             .attr('y', 25)
-            .style('font-size', 20)
+            .style('font-size', 15)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
@@ -849,7 +849,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.65)
             .attr('y', 85)
-            .style('font-size', 60)
+            .style('font-size', 35)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
@@ -922,7 +922,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('text-anchor', 'start')
             .attr('x', 10)
             .attr('y', 340)
-            .style('font-size', 15)
+            .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
         svg.append('text')
@@ -930,7 +930,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('text-anchor', 'end')
             .attr('x', width*0.5)
             .attr('y', 340)
-            .style('font-size', 15)
+            .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
@@ -939,7 +939,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('text-anchor', 'start')
             .attr('x', 10)
             .attr('y', 360)
-            .style('font-size', 15)
+            .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
         svg.append('text')
@@ -947,7 +947,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('text-anchor', 'end')
             .attr('x', width*0.5)
             .attr('y', 360)
-            .style('font-size', 15)
+            .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
@@ -956,7 +956,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('text-anchor', 'end')
             .attr('x', width-10)
             .attr('y', 360)
-            .style('font-size', 45)
+            .style('font-size', 30)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
