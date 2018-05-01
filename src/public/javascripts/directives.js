@@ -853,8 +853,8 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
-        var y1 = 80;
-        var y2 = 210;
+        var y1 = 70;
+        var y2 = 220;
         function getY(d) {
             return y2 - (y2 - y1)*d/100;
         }
