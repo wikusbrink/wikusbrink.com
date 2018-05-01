@@ -51,6 +51,12 @@ def query_data():
     df = df.sort_values('grant_date')
     return df
 
+def format_case_dict(case):
+    case['negative_index'] =  (datetime.datetime.now() - case['grant_date']).days
+    case['grant_date'] = str(case['grant_date'])[:10]
+    case['start_date'] = str(case['start_date'])[:10]
+    return case
+
 
 @app.route("/visa", methods=['GET'])
 def get_data():
@@ -80,13 +86,16 @@ def get_data():
             'end_date': str(df.sort_values('grant_date')['grant_date'].values[-1])[:10],
         },
         'cdf': {
-            'values': [int(round(p*100)) for p in probabilities],
+            'values': [p*100 for p in probabilities],
             'dates': [str(date)[:10] for date in dates]
         }
     }
 
+    cases = df.to_dict(orient='records')
+    cases = [format_case_dict(case) for case in cases]
+
     data = {
-        'data': df.to_dict(orient='records'),
+        'cases': cases,
         'distribution': distribution,
         'expected_date': str(LODGE_DATE + datetime.timedelta(days=int(df['rolling_mean_50'].values[-1])))[:10],
         'last_grant_date': str(df['grant_date'].values[-1])[:10],

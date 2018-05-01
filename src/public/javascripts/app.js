@@ -68,7 +68,17 @@ client.controller('CountdownController', function($scope, $timeout) {
 
 });
 
-
+client.controller('TrackerController', function($scope, $location, $window, $http) {
+    function getData() {
+        $http.get('api/visa/').then(function(res) {
+            $scope.data = res.data;
+            $scope.ready = true;
+        }, function() {
+            getData();
+        });
+    }
+    getData();
+});
 
 
 client.controller('AudController', function($scope, $location, $window, $http) {

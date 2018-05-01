@@ -797,3 +797,247 @@ client.directive('wbAud', function ($window, $timeout) {
         scope: {rates: '='}
     };
 });
+
+client.directive('wbTracker', function ($window, $timeout) {
+    'use strict';
+
+    function link(scope, element, attr) {
+        var size = d3.select(element[0]).append('div')
+            .style('width', '100%')
+            .style('height', '100%')
+            .node()
+            .getBoundingClientRect();
+        var width = size.width;
+        var height = size.height-50;
+        d3.select(element[0]).selectAll('div').remove();
+
+        var svg = d3.select(element[0]).append('svg')
+            .attr('width', width)
+            .attr('height', height);
+
+
+        svg.append('text')
+            .text('Today')
+            .attr('text-anchor', 'middle')
+            .attr('x', width * 0.15)
+            .attr('y', 25)
+            .style('font-size', 20)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
+        svg.append('text')
+            .text(Math.round(scope.data.distribution.cdf.values[0]) + '%')
+            .attr('text-anchor', 'middle')
+            .attr('x', width * 0.15)
+            .attr('y', 85)
+            .style('font-size', 60)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
+
+        svg.append('text')
+            .text('Expected grant date')
+            .attr('text-anchor', 'middle')
+            .attr('x', width * 0.65)
+            .attr('y', 25)
+            .style('font-size', 20)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
+        svg.append('text')
+            .text(scope.data.expected_date)
+            .attr('text-anchor', 'middle')
+            .attr('x', width * 0.65)
+            .attr('y', 85)
+            .style('font-size', 60)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
+        var y1 = 100;
+        var y2 = 300;
+        function getY(d) {
+            return y2 - (y2 - y1)*d/100;
+        }
+
+        function getX(d, i) {
+            return width * (i / scope.data.distribution.cdf.values.length)
+        }
+
+        [0, 0.25, 0.5, 0.75, 1].forEach(function(d,i) {
+            svg.append('rect')
+                .attr('x', 0)
+                .attr('y', y2 - (y2 - y1) * d)
+                .attr('width', width)
+                .attr('height', 1)
+                .attr('fill', '#888');
+        });
+        [0.25, 0.5, 0.75, 1].forEach(function(d,i) {
+            svg.append('text')
+                .text(d*100 + '%')
+                .attr('text-anchor', 'start')
+                .attr('x', 2)
+                .attr('y', y2 - (y2 - y1) * d + 12)
+                .style('font-size', 10)
+                .style('font-weight', 'bolder')
+                .style('fill', '#222');
+        });
+
+        var month = 0;
+        scope.data.distribution.cdf.dates.forEach(function(d, i){
+            if(d.substring(8, 10) === '01') {
+                month += 1;
+                svg.append('rect')
+                    .attr('x', getX(d, i))
+                    .attr('y', y1)
+                    .attr('width', 1)
+                    .attr('height', y2 - y1)
+                    .attr('fill', '#888');
+                svg.append('text')
+                    .text(d.substring(5, 10))
+                    .attr('text-anchor', 'start')
+                    .attr('x', getX(d, i) + 3)
+                    .attr('y', y2 - 3)
+                    .style('font-size', 10)
+                    .style('font-weight', 'bolder')
+                    .style('fill', '#222');
+            }
+        });
+
+        var lineCdf = d3.svg.line()
+            .x(getX)
+            .y(getY);
+
+        svg.append('path')
+            .datum(scope.data.distribution.cdf.values)
+            .attr("class", "line")
+            .attr("d", lineCdf)
+            .style('stroke-width', 6)
+            .style('stroke', 'steelblue')
+            .style('stroke-linecap', 'round')
+            .style('fill', 'None')
+            .style('stroke-opacity', 0.9);
+
+        svg.append('text')
+            .text('Latest grant:')
+            .attr('text-anchor', 'start')
+            .attr('x', 10)
+            .attr('y', 340)
+            .style('font-size', 15)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+        svg.append('text')
+            .text(scope.data.last_grant_date)
+            .attr('text-anchor', 'end')
+            .attr('x', width*0.5)
+            .attr('y', 340)
+            .style('font-size', 15)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
+        svg.append('text')
+            .text('Latest lodge date granted:')
+            .attr('text-anchor', 'start')
+            .attr('x', 10)
+            .attr('y', 360)
+            .style('font-size', 15)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+        svg.append('text')
+            .text(scope.data.last_lodge_date_granted)
+            .attr('text-anchor', 'end')
+            .attr('x', width*0.5)
+            .attr('y', 360)
+            .style('font-size', 15)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
+        svg.append('text')
+            .text('LADG: ' + scope.data.cases[scope.data.cases.length-1].rolling_mean_50)
+            .attr('text-anchor', 'end')
+            .attr('x', width-10)
+            .attr('y', 360)
+            .style('font-size', 45)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
+        y1 = 380;
+        y2 = 600;
+        function getYDiff(d) {
+            return y2 - (y2 - y1)*d.days_to_grant/300;
+        }
+        function getYCasesLines(d) {
+            return y2 - (y2 - y1)*d.rolling_mean_50/300;
+        }
+
+        function getXCases(d, i) {
+            return width * (180 - d.negative_index) / 180
+        }
+
+        for(var i=0; i<=300; i+=50) {
+            svg.append('rect')
+                .attr('x', 0)
+                .attr('y', getYCasesLines({rolling_mean_50: i}))
+                .attr('width', width)
+                .attr('height', 1)
+                .attr('fill', '#888');
+        }
+        for(var i=50; i<=300; i+=50) {
+            svg.append('text')
+                .text(i)
+                .attr('text-anchor', 'start')
+                .attr('x', 2)
+                .attr('y', getYCasesLines({rolling_mean_50: i}) + 12)
+                .style('font-size', 10)
+                .style('font-weight', 'bolder')
+                .style('fill', '#222');
+        }
+
+        var lineCases = d3.svg.line()
+            .x(getXCases)
+            .y(getYCasesLines);
+
+        svg.selectAll('circle').data(scope.data.cases).enter().append('circle')
+            .attr('cx', getXCases)
+            .attr('cy', getYDiff)
+            .attr('r', 2)
+            .style('opacity', 0.6)
+            .style('fill', 'darkgreen');
+
+        svg.append('path')
+            .datum(scope.data.cases)
+            .attr("class", "line")
+            .attr("d", lineCases)
+            .style('stroke-width', 6)
+            .style('stroke', 'steelblue')
+            .style('stroke-linecap', 'round')
+            .style('fill', 'None')
+            .style('stroke-opacity', 0.9);
+
+        var month = parseInt(scope.data.cases[0].grant_date.substring(5, 7));
+
+        scope.data.cases.forEach(function(d, i){
+            if(parseInt(d.grant_date.substring(5, 7)) === month) {
+                month = month === 12 ? 1 : month + 1;
+                svg.append('rect')
+                    .attr('x', getXCases(d, i))
+                    .attr('y', y1)
+                    .attr('width', 1)
+                    .attr('height', y2 - y1)
+                    .attr('fill', '#888');
+                svg.append('text')
+                    .text(d.grant_date.substring(0, 7))
+                    .attr('text-anchor', 'start')
+                    .attr('x', getXCases(d, i)+3)
+                    .attr('y', y2 - 3)
+                    .style('font-size', 10)
+                    .style('font-weight', 'bolder')
+                    .style('fill', '#222');
+            }
+        });
+    }
+    return {
+        link: link,
+        restrict: 'E',
+        scope: {data: '='}
+    };
+});

@@ -170,12 +170,20 @@ router.get('/weather', function(req, response) {
     response.send(body);
 });
 
+var visaData = {};
+function getVisaData() {
+    'use strict';
+    request('http://localhost:5000/visa', function (error, response, body) {
+        visaData = JSON.parse(body);
+        console.log('Visa data loaded')
+    });
+}
+getVisaData();
+
 router.get('/visa', function(req, response) {
     'use strict';
-    request('localhost:5000/visa', function (error, response, body) {
-        response.status(200);
-        response.body(JSON.parse(body))
-    });
+    response.status(200);
+    response.send(visaData);
 });
 
 module.exports = router;
