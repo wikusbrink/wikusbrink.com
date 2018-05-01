@@ -919,7 +919,7 @@ client.directive('wbTracker', function ($window, $timeout) {
 
         var grants_latest_date = 0;
         scope.data.cases.forEach(function(d, i){
-            if(d.grant_date === scope.data.cases[scope.data.cases.length - 1]){
+            if(d.grant_date === scope.data.cases[scope.data.cases.length - 1].grant_date){
                 grants_latest_date += 1
             }
         });
@@ -928,7 +928,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('Latest grant date (' + grants_latest_date + '):')
             .attr('text-anchor', 'start')
             .attr('x', 10)
-            .attr('y', 245)
+            .attr('y', 242)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
@@ -936,7 +936,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text(scope.data.last_grant_date)
             .attr('text-anchor', 'end')
             .attr('x', width*0.45)
-            .attr('y', 245)
+            .attr('y', 242)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
@@ -967,7 +967,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
-        y1 = 280;
+        y1 = 275;
         y2 = 500;
         function getYDiff(d) {
             return y2 - (y2 - y1)*d.days_to_grant/300;
