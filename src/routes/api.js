@@ -122,9 +122,17 @@ function getTides() {
     });
 }
 
+var visaData = {};
+function getVisaData() {
+    'use strict';
+    request('http://localhost:5000/visa', function (error, response, body) {
+        visaData = JSON.parse(body);
+        console.log('Visa data loaded')
+    });
+}
 
 function updateHourly() {
-
+    getVisaData();
 }
 function update2Hourly() {
     getSwell(0);
@@ -169,16 +177,6 @@ router.get('/weather', function(req, response) {
     response.status(200);
     response.send(body);
 });
-
-var visaData = {};
-function getVisaData() {
-    'use strict';
-    request('http://localhost:5000/visa', function (error, response, body) {
-        visaData = JSON.parse(body);
-        console.log('Visa data loaded')
-    });
-}
-getVisaData();
 
 router.get('/visa', function(req, response) {
     'use strict';
