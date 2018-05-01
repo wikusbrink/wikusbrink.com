@@ -1007,15 +1007,16 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('cx', getXCases)
             .attr('cy', getYDiff)
             .attr('r', 2)
-            .style('opacity', 0.5)
+            .style('opacity', 0.4)
             .style('fill', 'darkgreen');
 
         var lineData = [];
         scope.data.cases.forEach(function(d,i) {
-            if(i % 5 === 0) {
+            if(i < scope.data.cases.length-1 && d.grant_date !== scope.data.cases[i + 1].grant_date) {
                 lineData.push(d);
             }
         });
+        lineData.push(scope.data.cases[scope.data.cases.length-1]);
 
         svg.append('path')
             .datum(lineData)
@@ -1023,7 +1024,6 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr("d", lineCases)
             .style('stroke-width', 6)
             .style('stroke', 'steelblue')
-            .style('stroke-linecap', 'round')
             .style('fill', 'None')
             .style('stroke-opacity', 0.9);
 
