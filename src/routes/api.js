@@ -170,4 +170,12 @@ router.get('/weather', function(req, response) {
     response.send(body);
 });
 
+router.get('/visa', function(req, response) {
+    'use strict';
+    request('localhost:5000/visa', function (error, response, body) {
+        response.status(200);
+        response.body(JSON.parse(body))
+    });
+});
+
 module.exports = router;

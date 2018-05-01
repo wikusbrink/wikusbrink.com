@@ -17,6 +17,10 @@ router.get('/countdown', function(req, res, next) {
     res.render('countdown', {title: 'Countdown'});
 });
 
+router.get('/tracker', function(req, res, next) {
+    res.render('tracker', {title: 'Tracker'});
+});
+
 router.get('/partials/:name', function(request, response) {
   'use strict';
   var name = request.params.name;
