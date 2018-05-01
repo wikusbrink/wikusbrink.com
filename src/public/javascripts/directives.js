@@ -1008,7 +1008,14 @@ client.directive('wbTracker', function ($window, $timeout) {
             .attr('cy', getYDiff)
             .attr('r', 2)
             .style('opacity', 0.4)
-            .style('fill', 'darkgreen');
+            .style('fill', function(d){
+                if(d.nationality === 'South Africa') {
+                    return 'darkgreen'
+                } else if (d.occupation === '261313') {
+                    return 'darkred'
+                }
+                return 'grey'
+            });
 
         var lineData = [];
         scope.data.cases.forEach(function(d,i) {

@@ -41,9 +41,13 @@ def query_data():
 
     df = pandas.DataFrame(data)
     old_columns = ['xomov-gaver-pusis-lutud-mebon-vidil-boror-lyzat-vexox',
-                   'xohiv-licym-babal-rozor-piser-girec-suzis-zemil-cexex']
+                   'xohiv-licym-babal-rozor-piser-girec-suzis-zemil-cexex',
+                   'xetec-lypog-vohas-hidov-lodyf-cofuz-muhyn-higar-vyxyx',
+                   'xopid-vasud-fegol-fucov-malud-pinec-hisig-pykyn-soxex']
     new_columns = ['start_date',
-                   'grant_date']
+                   'grant_date',
+                   'occupation',
+                   'nationality']
     df = df[old_columns]
     df.columns = new_columns
     df.grant_date = pandas.to_datetime(df.grant_date)
@@ -56,6 +60,24 @@ def format_case_dict(case):
     case['grant_date'] = str(case['grant_date'])[:10]
     case['start_date'] = str(case['start_date'])[:10]
     return case
+
+def fit(samples):
+    center = (max(samples) - min(samples)) / 2 + min(samples)
+    samples_1 = [x for x in samples if x < center]
+    samples_2 = [x for x in samples if x >= center]
+
+    n_1 = len(samples_1)
+    n_2 = len(samples_2)
+
+    mean_1 = sum(samples_1)/n_1
+    sigma_1 = math.sqrt(sum((samples_1-mean_1)**2)/float(n_1))
+    w_1 = float(n_1) / (n_1 + n_2)
+
+    mean_2 = sum(samples_2)/n_2
+    sigma_2 = math.sqrt(sum((samples_2-mean_2)**2)/float(n_2))
+    w_2 = float(n_2) / (n_1 + n_2)
+
+    return w_1, mean_1, sigma_1, w_2, mean_2, sigma_2
 
 
 @app.route("/visa", methods=['GET'])
@@ -70,16 +92,13 @@ def get_data():
 
     n = 200
     samples = df.sort_values('grant_date')['days_to_grant'].values[-n:]
-    mean = sum(samples) / n
-    sigma = math.sqrt(sum((samples - mean) ** 2) / n)
+    w_1, mean_1, sigma_1, w_2, mean_2, sigma_2 = fit(samples)
 
     dates = [(datetime.datetime.now() + datetime.timedelta(days=x)) for x in range(250)]
     days = [(x - LODGE_DATE).days for x in dates]
-    probabilities = [normcdf(day, mean, sigma) for day in days]
+    probabilities = [normcdf(day, mean_1, sigma_1) * w_1 + normcdf(day, mean_2, sigma_2) * w_2 for day in days]
 
     distribution = {
-        'mu': mean,
-        'sigma': sigma,
         'data_range': {
             'samples': n,
             'start_date': str(df.sort_values('grant_date')['grant_date'].values[-n])[:10],
