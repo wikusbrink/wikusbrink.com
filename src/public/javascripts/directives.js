@@ -917,8 +917,15 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', 'None')
             .style('stroke-opacity', 0.9);
 
+        var grants_latest_date = 0;
+        scope.data.cases.forEach(function(d, i){
+            if(d.grant_date === scope.data.cases[scope.data.cases.length - 1]){
+                grants_latest_date += 1
+            }
+        });
+
         svg.append('text')
-            .text('Latest grant date:')
+            .text('Latest grant date (' + grants_latest_date + '):')
             .attr('text-anchor', 'start')
             .attr('x', 10)
             .attr('y', 245)
