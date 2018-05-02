@@ -959,7 +959,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', 'black');
 
         svg.append('text')
-            .text('LADG: ' + scope.data.cases[scope.data.cases.length-1].rolling_mean_50)
+            .text('LADG: ' + Math.round(scope.data.cases[scope.data.cases.length-1].rolling_mean_50))
             .attr('text-anchor', 'end')
             .attr('x', width-10)
             .attr('y', 260)
