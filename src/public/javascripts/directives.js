@@ -893,7 +893,7 @@ client.directive('wbTracker', function ($window, $timeout) {
                     .attr('height', y2 - y1)
                     .attr('fill', '#888');
                 svg.append('text')
-                    .text(d.substring(5, 10))
+                    .text(d.substring(5, 7))
                     .attr('text-anchor', 'start')
                     .attr('x', getX(d, i) + 3)
                     .attr('y', y2 - 3)
@@ -916,6 +916,17 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('stroke-linecap', 'round')
             .style('fill', 'None')
             .style('stroke-opacity', 0.9);
+
+        scope.data.distribution.cdf.dates.forEach(function(d, i){
+            if(d === scope.data.today){
+                svg.append('rect')
+                    .attr('x', getX(d, i) - 2)
+                    .attr('y', y1)
+                    .attr('width', 4)
+                    .attr('height', y2 - y1)
+                    .attr('fill', 'darkred');
+            }
+        });
 
         var grants_latest_date = 0;
         scope.data.cases.forEach(function(d, i){

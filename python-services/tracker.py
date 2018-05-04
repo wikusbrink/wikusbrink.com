@@ -94,7 +94,7 @@ def get_data():
     samples = df.sort_values('grant_date')['days_to_grant'].values[-n:]
     w_1, mean_1, sigma_1, w_2, mean_2, sigma_2 = fit(samples)
 
-    dates = [(datetime.datetime.now() + datetime.timedelta(days=x)) for x in range(250)]
+    dates = [(LODGE_DATE + datetime.timedelta(days=x)) for x in range(300)]
     days = [(x - LODGE_DATE).days for x in dates]
     probabilities = [normcdf(day, mean_1, sigma_1) * w_1 + normcdf(day, mean_2, sigma_2) * w_2 for day in days]
 
@@ -118,7 +118,8 @@ def get_data():
         'distribution': distribution,
         'expected_date': str(LODGE_DATE + datetime.timedelta(days=int(df['rolling_mean_50'].values[-1])))[:10],
         'last_grant_date': str(df['grant_date'].values[-1])[:10],
-        'last_lodge_date_granted': str(df.sort_values('start_date')['start_date'].values[-1])[:10]
+        'last_lodge_date_granted': str(df.sort_values('start_date')['start_date'].values[-1])[:10],
+        'today': str(datetime.datetime.now())[:10]
     }
 
     return jsonify(data)
