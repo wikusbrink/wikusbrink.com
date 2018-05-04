@@ -131,8 +131,12 @@ function getVisaData() {
     });
 }
 
-function updateHourly() {
+function update15Minutely() {
     getVisaData();
+}
+
+function updateHourly() {
+
 }
 function update2Hourly() {
     getSwell(0);
@@ -147,6 +151,10 @@ function checkTime() {
     setTimeout(function() {
         checkTime();
         var now = new Date();
+        if (now.getMinutes() % 15 === 0) {
+            console.log('Hourly quarter hourly');
+            update15Minutely()
+        }
         if (now.getMinutes() === 0) {
             console.log('Hourly update');
             updateHourly()
@@ -162,6 +170,7 @@ function checkTime() {
     }, 1000 * 60);
 }
 checkTime();
+update15Minutely();
 updateHourly();
 update2Hourly();
 update6Hourly();
