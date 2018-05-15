@@ -62,7 +62,8 @@ def format_case_dict(case):
     return case
 
 def fit(samples):
-    center = (max(samples) - min(samples)) / 2 + min(samples)
+    samples = sorted(samples)
+    center = (max(samples[5:-5]) - min(samples[5:-5])) / 2 + min(samples[5:-5])
     samples_1 = [x for x in samples if x < center]
     samples_2 = [x for x in samples if x >= center]
 
