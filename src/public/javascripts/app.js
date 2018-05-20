@@ -72,6 +72,7 @@ client.controller('TrackerController', function($scope, $location, $window, $htt
     function getData() {
         $http.get('api/visa/').then(function(res) {
             $scope.data = res.data;
+            console.log(res.data);
             $http.get('https://free.currencyconverterapi.com/api/v5/convert?q=AUD_ZAR&compact=y').then(function(res) {
                 $scope.data.exchanceRate = res.data['AUD_ZAR'].val.toFixed(2);
                 $scope.ready = true;

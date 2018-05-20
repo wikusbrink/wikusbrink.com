@@ -972,7 +972,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         svg.append('text')
             .text('Average number')
             .attr('text-anchor', 'end')
-            .attr('x', width/2+100)
+            .attr('x', width/2+70)
             .attr('y', 242)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
@@ -980,7 +980,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         svg.append('text')
             .text('of days to grant')
             .attr('text-anchor', 'end')
-            .attr('x', width/2+100)
+            .attr('x', width/2+70)
             .attr('y', 260)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
@@ -1003,6 +1003,21 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
+
+        var today = new Date();
+        var end = new Date(today.getFullYear(), 11, 32);
+        var one_day=1000*60*60*24;
+        var daysLeft = Math.ceil((end.getTime()-today.getTime())/(one_day));
+
+        svg.append('text')
+            .text(daysLeft + ' days')
+            .attr('text-anchor', 'middle')
+            .attr('x', width/4)
+            .attr('y', 520)
+            .style('font-size', 10)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
 
         y1 = 274;
         y2 = 500;
