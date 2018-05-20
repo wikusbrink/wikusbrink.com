@@ -997,8 +997,8 @@ client.directive('wbTracker', function ($window, $timeout) {
 
         svg.append('text')
             .text('1 AUD = ' + scope.data.exchanceRate + ' ZAR')
-            .attr('text-anchor', 'middle')
-            .attr('x', width*3/4)
+            .attr('text-anchor', 'end')
+            .attr('x', width-10)
             .attr('y', 278)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
@@ -1013,16 +1013,16 @@ client.directive('wbTracker', function ($window, $timeout) {
 
         svg.append('text')
             .text(daysSinceLodge + ' days since lodge, ' + daysLeft + ' days left in year')
-            .attr('text-anchor', 'middle')
-            .attr('x', width/4)
+            .attr('text-anchor', 'start')
+            .attr('x', 10)
             .attr('y', 278)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
 
-        y1 = 300;
-        y2 = 500;
+        y1 = 290;
+        y2 = 520;
         function getYDiff(d) {
             return y2 - (y2 - y1)*d.days_to_grant/300;
         }
