@@ -72,7 +72,10 @@ client.controller('TrackerController', function($scope, $location, $window, $htt
     function getData() {
         $http.get('api/visa/').then(function(res) {
             $scope.data = res.data;
-            $scope.ready = true;
+            $http.get('https://free.currencyconverterapi.com/api/v5/convert?q=AUD_ZAR&compact=y').then(function(res) {
+                $scope.data.exchanceRate = res.data['AUD_ZAR'].val.toFixed(2);
+                $scope.ready = true;
+            })
         }, function() {
             getData();
         });
@@ -120,6 +123,7 @@ client.controller('AudController', function($scope, $location, $window, $http) {
     }
     function getLatest(callback) {
         $http.get('https://free.currencyconverterapi.com/api/v5/convert?q=' + $scope.currencies.to + '_' + $scope.currencies.from + '&compact=y').then(function(res) {
+            console.log('https://free.currencyconverterapi.com/api/v5/convert?q=' + $scope.currencies.to + '_' + $scope.currencies.from + '&compact=y')
             var today = new Date();
             callback({date: today.toISOString().slice(0,10), rate: res.data[$scope.currencies.to + '_' + $scope.currencies.from].val.toFixed(2)})
         })

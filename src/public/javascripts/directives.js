@@ -970,11 +970,37 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', 'black');
 
         svg.append('text')
-            .text('LADG: ' + Math.round(scope.data.cases[scope.data.cases.length-1].rolling_mean_50))
+            .text('Average number')
+            .attr('text-anchor', 'end')
+            .attr('x', width/2+100)
+            .attr('y', 242)
+            .style('font-size', 10)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+        svg.append('text')
+            .text('of days to grant')
+            .attr('text-anchor', 'end')
+            .attr('x', width/2+100)
+            .attr('y', 260)
+            .style('font-size', 10)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
+        svg.append('text')
+            .text(': ' + Math.round(scope.data.cases[scope.data.cases.length-1].rolling_mean_50))
             .attr('text-anchor', 'end')
             .attr('x', width-10)
             .attr('y', 260)
             .style('font-size', 35)
+            .style('font-weight', 'bolder')
+            .style('fill', 'black');
+
+        svg.append('text')
+            .text('1 AUD = ' + scope.data.exchanceRate + ' ZAR')
+            .attr('text-anchor', 'middle')
+            .attr('x', width*3/4)
+            .attr('y', 520)
+            .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
