@@ -999,27 +999,29 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('1 AUD = ' + scope.data.exchanceRate + ' ZAR')
             .attr('text-anchor', 'middle')
             .attr('x', width*3/4)
-            .attr('y', 520)
+            .attr('y', 278)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
         var today = new Date();
-        var end = new Date(today.getFullYear(), 11, 32);
-        var one_day=1000*60*60*24;
-        var daysLeft = Math.ceil((end.getTime()-today.getTime())/(one_day));
+        var endOfYear = new Date(today.getFullYear(), 11, 32);
+        var lodgeDate = new Date(today.getFullYear(), 3, 5);
+        var oneDay=1000*60*60*24;
+        var daysLeft = Math.ceil((endOfYear.getTime()-today.getTime())/(oneDay));
+        var daysSinceLodge = Math.ceil((today.getTime()-lodgeDate.getTime())/(oneDay));
 
         svg.append('text')
-            .text(daysLeft + ' days')
+            .text(daysSinceLodge + ' days since lodge, ' + daysLeft + ' days left in year')
             .attr('text-anchor', 'middle')
             .attr('x', width/4)
-            .attr('y', 520)
+            .attr('y', 278)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
 
-        y1 = 274;
+        y1 = 300;
         y2 = 500;
         function getYDiff(d) {
             return y2 - (y2 - y1)*d.days_to_grant/300;
