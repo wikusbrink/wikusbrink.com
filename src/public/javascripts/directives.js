@@ -946,7 +946,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         svg.append('text')
             .text(scope.data.last_grant_date)
             .attr('text-anchor', 'end')
-            .attr('x', width*0.45)
+            .attr('x', width*0.47)
             .attr('y', 242)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
@@ -963,7 +963,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         svg.append('text')
             .text(scope.data.last_lodge_date_granted)
             .attr('text-anchor', 'end')
-            .attr('x', width*0.45)
+            .attr('x', width*0.47)
             .attr('y', 260)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
@@ -1093,7 +1093,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             }
         });
         scope.data.cases.reverse();
-        var spacing = [10, 10+0.18*width, 10+0.35*width, 10+0.42*width, 10+0.6*width];
+        var spacing = [10, 10+0.18*width, 10+0.35*width, 10+0.43*width, 10+0.62*width];
         svg.append('text')
             .text('Lodge Date')
             .attr('y', y2 + 20)
@@ -1164,7 +1164,7 @@ client.directive('wbTracker', function ($window, $timeout) {
                 .style('fill', '#222');
             svg.append('text')
                 .text(function(){
-                    return d.occupation.length > 20 ? d.occupation.substring(0, 17) + '...' : d.occupation
+                    return d.occupation.length > 23 ? d.occupation.substring(0, 20) + '...' : d.occupation
                 })
                 .attr('y', y2 + 35 + 15 * i)
                 .attr('x', spacing[4])
