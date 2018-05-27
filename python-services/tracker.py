@@ -40,25 +40,30 @@ def query_data():
         c = c + 1
 
     df = pandas.DataFrame(data)
-    old_columns = ['xomov-gaver-pusis-lutud-mebon-vidil-boror-lyzat-vexox',
+    old_columns = ['xebet-tycyf-rebud-vahot-tuvag-vivyl-zisab-byvac-nyxox',
+                   'xomov-gaver-pusis-lutud-mebon-vidil-boror-lyzat-vexox',
                    'xohiv-licym-babal-rozor-piser-girec-suzis-zemil-cexex',
                    'xetec-lypog-vohas-hidov-lodyf-cofuz-muhyn-higar-vyxyx',
-                   'xopid-vasud-fegol-fucov-malud-pinec-hisig-pykyn-soxex']
-    new_columns = ['start_date',
+                   'xopid-vasud-fegol-fucov-malud-pinec-hisig-pykyn-soxex',
+                   'xigol-nelov-sohet-ralup-hesyh-mecul-syvat-bolam-boxix']
+    new_columns = ['status',
+                   'lodge_date',
                    'grant_date',
-                   'occupation',
-                   'nationality']
+                   'occupation_code',
+                   'nationality',
+                   'occupation']
+
     df = df[old_columns]
     df.columns = new_columns
     df.grant_date = pandas.to_datetime(df.grant_date)
-    df.start_date = pandas.to_datetime(df.start_date)
+    df.lodge_date = pandas.to_datetime(df.lodge_date)
     df = df.sort_values('grant_date')
     return df
 
 def format_case_dict(case):
     case['negative_index'] =  (datetime.datetime.now() - case['grant_date']).days
     case['grant_date'] = str(case['grant_date'])[:10]
-    case['start_date'] = str(case['start_date'])[:10]
+    case['lodge_date'] = str(case['lodge_date'])[:10]
     return case
 
 def fit(samples):
@@ -85,7 +90,7 @@ def fit(samples):
 def get_data():
     df = query_data()
     df = df.dropna()
-    df['days_to_grant'] = df['grant_date'] - df['start_date']
+    df['days_to_grant'] = df['grant_date'] - df['lodge_date']
     df['days_to_grant'] = df['days_to_grant'].apply(lambda x: x.days)
     df['rolling_mean_10'] = df['days_to_grant'].rolling(window=10).mean()
     df['rolling_mean_50'] = df['days_to_grant'].rolling(window=50).mean()
@@ -102,7 +107,7 @@ def get_data():
     distribution = {
         'data_range': {
             'samples': n,
-            'start_date': str(df.sort_values('grant_date')['grant_date'].values[-n])[:10],
+            'lodge_date': str(df.sort_values('grant_date')['grant_date'].values[-n])[:10],
             'end_date': str(df.sort_values('grant_date')['grant_date'].values[-1])[:10],
         },
         'cdf': {
@@ -119,7 +124,7 @@ def get_data():
         'distribution': distribution,
         'expected_date': str(LODGE_DATE + datetime.timedelta(days=int(df['rolling_mean_50'].values[-1])))[:10],
         'last_grant_date': str(df['grant_date'].values[-1])[:10],
-        'last_lodge_date_granted': str(df.sort_values('start_date')['start_date'].values[-1])[:10],
+        'last_lodge_date_granted': str(df.sort_values('lodge_date')['lodge_date'].values[-1])[:10],
         'today': str(datetime.datetime.now())[:10]
     }
 

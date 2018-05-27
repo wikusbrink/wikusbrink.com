@@ -946,7 +946,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         svg.append('text')
             .text(scope.data.last_grant_date)
             .attr('text-anchor', 'end')
-            .attr('x', width*0.45)
+            .attr('x', width*0.5)
             .attr('y', 242)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
@@ -963,31 +963,14 @@ client.directive('wbTracker', function ($window, $timeout) {
         svg.append('text')
             .text(scope.data.last_lodge_date_granted)
             .attr('text-anchor', 'end')
-            .attr('x', width*0.45)
+            .attr('x', width*0.5)
             .attr('y', 260)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', 'black');
 
         svg.append('text')
-            .text('Average number')
-            .attr('text-anchor', 'end')
-            .attr('x', width/2+80)
-            .attr('y', 242)
-            .style('font-size', 10)
-            .style('font-weight', 'bolder')
-            .style('fill', 'black');
-        svg.append('text')
-            .text('of days to grant')
-            .attr('text-anchor', 'end')
-            .attr('x', width/2+80)
-            .attr('y', 260)
-            .style('font-size', 10)
-            .style('font-weight', 'bolder')
-            .style('fill', 'black');
-
-        svg.append('text')
-            .text(': ' + Math.round(scope.data.cases[scope.data.cases.length-1].rolling_mean_50))
+            .text('ADG: ' + Math.round(scope.data.cases[scope.data.cases.length-1].rolling_mean_50))
             .attr('text-anchor', 'end')
             .attr('x', width-10)
             .attr('y', 260)
@@ -1065,7 +1048,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', function(d){
                 if(d.nationality === 'South Africa') {
                     return 'darkgreen'
-                } else if (d.occupation === '261313') {
+                } else if (d.occupation_code === '261313') {
                     return 'darkred'
                 }
                 return 'grey'
@@ -1090,8 +1073,8 @@ client.directive('wbTracker', function ($window, $timeout) {
 
         var month = parseInt(scope.data.cases[0].grant_date.substring(5, 7));
 
-        scope.data.cases.forEach(function(d, i){
-            if(parseInt(d.grant_date.substring(5, 7)) === month) {
+        scope.data.cases.forEach(function(d, i) {
+            if (parseInt(d.grant_date.substring(5, 7)) === month) {
                 month = month === 12 ? 1 : month + 1;
                 svg.append('rect')
                     .attr('x', getXCases(d, i))
@@ -1102,12 +1085,82 @@ client.directive('wbTracker', function ($window, $timeout) {
                 svg.append('text')
                     .text(d.grant_date.substring(0, 7))
                     .attr('text-anchor', 'start')
-                    .attr('x', getXCases(d, i)+3)
+                    .attr('x', getXCases(d, i) + 3)
                     .attr('y', y2 - 3)
                     .style('font-size', 10)
                     .style('font-weight', 'bolder')
                     .style('fill', '#222');
             }
+        });
+        scope.data.cases.reverse();
+        var spacing = [10, 10+0.15*width, 10+0.3*width, 10+0.4*width, 10+0.6*width];
+        svg.append('text')
+            .text('Lodge Date')
+            .attr('y', y2 + 20)
+            .attr('x', spacing[0])
+            .style('font-size', 10)
+            .style('font-weight', 'bolder')
+            .style('fill', '#222');
+        svg.append('text')
+            .text('Grant Date')
+            .attr('y', y2 + 20)
+            .attr('x', spacing[1])
+            .style('font-size', 10)
+            .style('font-weight', 'bolder')
+            .style('fill', '#222');
+        svg.append('text')
+            .text('Days')
+            .attr('y', y2 + 20)
+            .attr('x', spacing[2])
+            .style('font-size', 10)
+            .style('font-weight', 'bolder')
+            .style('fill', '#222');
+        svg.append('text')
+            .text('Nationality')
+            .attr('y', y2 + 20)
+            .attr('x', spacing[3])
+            .style('font-size', 10)
+            .style('font-weight', 'bolder')
+            .style('fill', '#222');
+        svg.append('text')
+            .text('Occupation')
+            .attr('y', y2 + 20)
+            .attr('x', spacing[4])
+            .style('font-size', 10)
+            .style('font-weight', 'bolder')
+            .style('fill', '#222');
+
+        scope.data.cases.forEach(function(d, i){
+            svg.append('text')
+                .text(d.lodge_date)
+                .attr('y', y2 + 35 + 15 * i)
+                .attr('x', spacing[0])
+                .style('font-size', 10)
+                .style('fill', '#222');
+            svg.append('text')
+                .text(d.grant_date)
+                .attr('y', y2 + 35 + 15 * i)
+                .attr('x', spacing[1])
+                .style('font-size', 10)
+                .style('fill', '#222');
+            svg.append('text')
+                .text(d.days_to_grant)
+                .attr('y', y2 + 35 + 15 * i)
+                .attr('x', spacing[2])
+                .style('font-size', 10)
+                .style('fill', '#222');
+            svg.append('text')
+                .text(d.nationality.replace('United Kingdom of Great Britain and Northern Ireland', 'UK'))
+                .attr('y', y2 + 35 + 15 * i)
+                .attr('x', spacing[3])
+                .style('font-size', 10)
+                .style('fill', '#222');
+            svg.append('text')
+                .text(d.occupation)
+                .attr('y', y2 + 35 + 15 * i)
+                .attr('x', spacing[4])
+                .style('font-size', 10)
+                .style('fill', '#222');
         });
     }
     return {
