@@ -1093,7 +1093,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             }
         });
         scope.data.cases.reverse();
-        var spacing = [10, 10+0.2*width, 10+0.35*width, 10+0.4*width, 10+0.6*width];
+        var spacing = [10, 10+0.18*width, 10+0.35*width, 10+0.42*width, 10+0.6*width];
         svg.append('text')
             .text('Lodge Date')
             .attr('y', y2 + 20)
