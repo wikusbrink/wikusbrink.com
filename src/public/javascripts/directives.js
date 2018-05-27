@@ -946,7 +946,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         svg.append('text')
             .text(scope.data.last_grant_date)
             .attr('text-anchor', 'end')
-            .attr('x', width*0.5)
+            .attr('x', width*0.45)
             .attr('y', 242)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
@@ -963,7 +963,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         svg.append('text')
             .text(scope.data.last_lodge_date_granted)
             .attr('text-anchor', 'end')
-            .attr('x', width*0.5)
+            .attr('x', width*0.45)
             .attr('y', 260)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
@@ -1093,7 +1093,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             }
         });
         scope.data.cases.reverse();
-        var spacing = [10, 10+0.15*width, 10+0.3*width, 10+0.4*width, 10+0.6*width];
+        var spacing = [10, 10+0.2*width, 10+0.35*width, 10+0.4*width, 10+0.6*width];
         svg.append('text')
             .text('Lodge Date')
             .attr('y', y2 + 20)
@@ -1130,6 +1130,13 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('font-weight', 'bolder')
             .style('fill', '#222');
 
+        svg.append('rect')
+            .attr('x', 10)
+            .attr('y', y2+22)
+            .attr('width', width-20)
+            .attr('height', 1)
+            .attr('fill', '#888');
+
         scope.data.cases.forEach(function(d, i){
             svg.append('text')
                 .text(d.lodge_date)
@@ -1156,7 +1163,9 @@ client.directive('wbTracker', function ($window, $timeout) {
                 .style('font-size', 10)
                 .style('fill', '#222');
             svg.append('text')
-                .text(d.occupation)
+                .text(function(){
+                    return d.occupation.length > 20 ? d.occupation.substring(0, 17) + '...' : d.occupation
+                })
                 .attr('y', y2 + 35 + 15 * i)
                 .attr('x', spacing[4])
                 .style('font-size', 10)
