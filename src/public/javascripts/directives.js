@@ -1157,7 +1157,10 @@ client.directive('wbTracker', function ($window, $timeout) {
                 .style('font-size', 10)
                 .style('fill', '#222');
             svg.append('text')
-                .text(d.nationality.replace('United Kingdom of Great Britain and Northern Ireland', 'UK'))
+                .text(function(){
+                    d.nationality.replace('United Kingdom of Great Britain and Northern Ireland', 'UK');
+                    return d.nationality.length > 13 ? d.nationality.substring(0, 10) + '...' : d.nationality
+                })
                 .attr('y', y2 + 35 + 15 * i)
                 .attr('x', spacing[3])
                 .style('font-size', 10)
