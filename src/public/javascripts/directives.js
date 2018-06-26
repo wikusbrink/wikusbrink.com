@@ -826,16 +826,6 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', 'black');
 
         svg.append('text')
-            .text(Math.round(scope.data.distribution.cdf.values[0]) + '%')
-            .attr('text-anchor', 'middle')
-            .attr('x', width * 0.15)
-            .attr('y', 55)
-            .style('font-size', 35)
-            .style('font-weight', 'bolder')
-            .style('fill', 'black');
-
-
-        svg.append('text')
             .text('Expected grant date')
             .attr('text-anchor', 'middle')
             .attr('x', width * 0.65)
@@ -925,6 +915,14 @@ client.directive('wbTracker', function ($window, $timeout) {
                     .attr('width', 4)
                     .attr('height', y2 - y1)
                     .attr('fill', 'darkred');
+                svg.append('text')
+                    .text(Math.round(scope.data.distribution.cdf.values[i]) + '%')
+                    .attr('text-anchor', 'middle')
+                    .attr('x', width * 0.15)
+                    .attr('y', 55)
+                    .style('font-size', 35)
+                    .style('font-weight', 'bolder')
+                    .style('fill', 'black');
             }
         });
 
