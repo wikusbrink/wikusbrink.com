@@ -19,7 +19,7 @@ def normcdf(x, mu, sigma):
 
 
 def query_data():
-    url = 'https://myimmitracker.com/au/trackers/sc189-visa-tracker-2017-2018/cases'
+    url = 'https://myimmitracker.com/au/trackers/consolidated-visa-tracker-sc189/cases'
     headers = {
         'pragma': 'no-cache',
         'accept-encoding': 'gzip, deflate, br',
