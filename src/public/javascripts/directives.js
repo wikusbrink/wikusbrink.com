@@ -1031,7 +1031,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', '#222');
-        
+
         for(var i=50; i<=300; i+=50) {
             svg.append('text')
                 .text(i)

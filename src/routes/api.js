@@ -126,12 +126,8 @@ var visaData = {};
 function getVisaData() {
     'use strict';
     request('http://localhost:5000/visa', function (error, response, body) {
-        if (error || !isJsonString(body)) {
-            console.log('Visa data ERROR')
-        } else {
-            visaData = JSON.parse(body);
-            console.log('Visa data loaded')
-        }
+        visaData = JSON.parse(body);
+        console.log('Visa data loaded');
     });
 }
 

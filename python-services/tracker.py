@@ -123,7 +123,7 @@ def get_data():
     data = {
         'cases': cases,
         'distribution': distribution,
-        'expected_date': str(LODGE_DATE + datetime.timedelta(days=int(df['rolling_mean_50'].values[-1])))[:10],
+        'expected_date': str(LODGE_DATE + datetime.timedelta(days=int(df['rolling_mean_100'].values[-1])))[:10],
         'last_grant_date': str(df['grant_date'].values[-1])[:10],
         'last_lodge_date_granted': str(df.sort_values('lodge_date')['lodge_date'].values[-1])[:10],
         'today': str(datetime.datetime.now())[:10]
