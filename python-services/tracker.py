@@ -95,7 +95,7 @@ def get_data():
     df['rolling_mean_10'] = df['days_to_grant'].rolling(window=10).mean()
     df['rolling_mean_50'] = df['days_to_grant'].rolling(window=50).mean()
     df['rolling_mean_100'] = df['days_to_grant'].rolling(window=100).mean()
-    df = df.iloc[50:, :]
+    df = df.iloc[100:, :]
 
     n = 200
     samples = df.sort_values('grant_date')['days_to_grant'].values[-n:]
