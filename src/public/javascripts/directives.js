@@ -1012,7 +1012,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         }
 
         function getXCases(d, i) {
-            return width * (240 - d.negative_index) / 240;
+            return width * (260 - d.negative_index) / 260;
         }
 
         for(var i=0; i<=300; i+=50) {
@@ -1027,7 +1027,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('300+')
             .attr('text-anchor', 'start')
             .attr('x', 2)
-            .attr('y', y1 - 4)
+            .attr('y', y1 - 2)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', '#222');
