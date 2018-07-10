@@ -1012,7 +1012,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         }
 
         function getXCases(d, i) {
-            return width * (180 - d.negative_index) / 180
+            return width * (240 - d.negative_index) / 240;
         }
 
         for(var i=0; i<=300; i+=50) {
