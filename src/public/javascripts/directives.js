@@ -1027,7 +1027,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('300+')
             .attr('text-anchor', 'start')
             .attr('x', 2)
-            .attr('y', y1 - 12)
+            .attr('y', y1 - 4)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', '#222');
