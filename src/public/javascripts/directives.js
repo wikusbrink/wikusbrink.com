@@ -968,7 +968,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', 'black');
 
         svg.append('text')
-            .text('ADG: ' + Math.round(scope.data.cases[scope.data.cases.length-1].rolling_mean_50))
+            .text('ADG: ' + Math.round(scope.data.cases[scope.data.cases.length-1].rolling_mean_100))
             .attr('text-anchor', 'end')
             .attr('x', width-10)
             .attr('y', 260)
@@ -1002,13 +1002,13 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', 'black');
 
 
-        y1 = 290;
+        y1 = 300;
         y2 = 520;
         function getYDiff(d) {
             return y2 - (y2 - y1)*d.days_to_grant/300;
         }
         function getYCasesLines(d) {
-            return y2 - (y2 - y1)*d.rolling_mean_50/300;
+            return y2 - (y2 - y1)*d.rolling_mean_100/300;
         }
 
         function getXCases(d, i) {
@@ -1018,17 +1018,26 @@ client.directive('wbTracker', function ($window, $timeout) {
         for(var i=0; i<=300; i+=50) {
             svg.append('rect')
                 .attr('x', 0)
-                .attr('y', getYCasesLines({rolling_mean_50: i}))
+                .attr('y', getYCasesLines({rolling_mean_100: i}))
                 .attr('width', width)
                 .attr('height', 1)
                 .attr('fill', '#888');
         }
+        svg.append('text')
+            .text('300+')
+            .attr('text-anchor', 'start')
+            .attr('x', 2)
+            .attr('y', y1 + 12)
+            .style('font-size', 10)
+            .style('font-weight', 'bolder')
+            .style('fill', '#222');
+        
         for(var i=50; i<=300; i+=50) {
             svg.append('text')
                 .text(i)
                 .attr('text-anchor', 'start')
                 .attr('x', 2)
-                .attr('y', getYCasesLines({rolling_mean_50: i}) + 12)
+                .attr('y', getYCasesLines({rolling_mean_100: i}) + 12)
                 .style('font-size', 10)
                 .style('font-weight', 'bolder')
                 .style('fill', '#222');
@@ -1040,7 +1049,12 @@ client.directive('wbTracker', function ($window, $timeout) {
 
         svg.selectAll('circle').data(scope.data.cases).enter().append('circle')
             .attr('cx', getXCases)
-            .attr('cy', getYDiff)
+            .attr('cy', function(d){
+                if(d.days_to_grant > 305) {
+                    return getYDiff({days_to_grant: 300 + Math.random() * 5});
+                }
+                return getYDiff(d);
+            })
             .attr('r', 2)
             .style('opacity', 0.4)
             .style('fill', function(d){

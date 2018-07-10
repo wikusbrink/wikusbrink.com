@@ -94,6 +94,7 @@ def get_data():
     df['days_to_grant'] = df['days_to_grant'].apply(lambda x: x.days)
     df['rolling_mean_10'] = df['days_to_grant'].rolling(window=10).mean()
     df['rolling_mean_50'] = df['days_to_grant'].rolling(window=50).mean()
+    df['rolling_mean_100'] = df['days_to_grant'].rolling(window=100).mean()
     df = df.iloc[50:, :]
 
     n = 200
