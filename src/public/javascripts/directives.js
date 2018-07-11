@@ -513,12 +513,6 @@ client.directive('wbCountdown', function ($window, $timeout) {
         function getTime() {
 
             var date = new Date();
-            // var months = -1;
-            // while (date < endDate) {
-            //     date.setMonth(date.getMonth()+1);
-            //     months = months + 1
-            // }
-            // date.setMonth(date.getMonth() - 1);
             date = new Date();
             var diff = endDate - date;
             var days = Math.floor(diff / 1000 / 60 / 60 / 24);
