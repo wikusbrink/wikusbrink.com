@@ -1012,7 +1012,7 @@ client.directive('wbTracker', function ($window, $timeout) {
         }
 
         function getXCases(d) {
-            return width * (210 - d.negative_index) / 210;
+            return width * (200 - d.negative_index) / 200;
         }
 
         for(var i=0; i<=300; i+=50) {
@@ -1027,7 +1027,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('300+')
             .attr('text-anchor', 'start')
             .attr('x', 2)
-            .attr('y', y1)
+            .attr('y', y1 - 1)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', '#222');
@@ -1037,7 +1037,7 @@ client.directive('wbTracker', function ($window, $timeout) {
                 .text(i)
                 .attr('text-anchor', 'start')
                 .attr('x', 2)
-                .attr('y', getYCasesLines({rolling_mean_100: i}))
+                .attr('y', getYCasesLines({rolling_mean_100: i}) - 1)
                 .style('font-size', 10)
                 .style('font-weight', 'bolder')
                 .style('fill', '#222');
