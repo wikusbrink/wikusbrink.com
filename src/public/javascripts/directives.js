@@ -504,7 +504,6 @@ client.directive('wbCountdown', function ($window, $timeout) {
 
         var endDate = new Date(2018, 2, 12);
         var startDate = new Date(2013, 2, 12);
-        //var startDate = new Date(2018, 1, 26);
         var totalDiff = endDate - startDate;
 
         function pad(value) {
