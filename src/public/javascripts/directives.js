@@ -1170,7 +1170,6 @@ client.directive('wbTracker', function ($window, $timeout) {
                 .style('fill', '#222');
             svg.append('text')
                 .text(function(){
-                    d.nationality.replace('United Kingdom of Great Britain and Northern Ireland', 'UK');
                     return d.nationality.length > 13 ? d.nationality.substring(0, 10) + '...' : d.nationality
                 })
                 .attr('y', y2 + 35 + 15 * i)
