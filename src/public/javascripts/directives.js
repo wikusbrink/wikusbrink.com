@@ -1005,14 +1005,14 @@ client.directive('wbTracker', function ($window, $timeout) {
         y1 = 300;
         y2 = 520;
         function getYDiff(d) {
-            return y2 - (y2 - y1)*d.days_to_grant/300;
+            return y2 - (y2 - y1) * d.days_to_grant / 300;
         }
         function getYCasesLines(d) {
-            return y2 - (y2 - y1)*d.rolling_mean_100/300;
+            return y2 - (y2 - y1) * d.rolling_mean_100 / 300;
         }
 
-        function getXCases(d, i) {
-            return width * (260 - d.negative_index) / 260;
+        function getXCases(d) {
+            return width * (210 - d.negative_index) / 210;
         }
 
         for(var i=0; i<=300; i+=50) {
@@ -1027,17 +1027,17 @@ client.directive('wbTracker', function ($window, $timeout) {
             .text('300+')
             .attr('text-anchor', 'start')
             .attr('x', 2)
-            .attr('y', y1 - 2)
+            .attr('y', y1)
             .style('font-size', 10)
             .style('font-weight', 'bolder')
             .style('fill', '#222');
 
-        for(var i=50; i<=300; i+=50) {
+        for(var i=50; i<=250; i+=50) {
             svg.append('text')
                 .text(i)
                 .attr('text-anchor', 'start')
                 .attr('x', 2)
-                .attr('y', getYCasesLines({rolling_mean_100: i}) + 12)
+                .attr('y', getYCasesLines({rolling_mean_100: i}))
                 .style('font-size', 10)
                 .style('font-weight', 'bolder')
                 .style('fill', '#222');
