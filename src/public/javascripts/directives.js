@@ -907,7 +907,7 @@ client.directive('wbTracker', function ($window, $timeout) {
                     .attr('y', y1)
                     .attr('width', 4)
                     .attr('height', y2 - y1)
-                    .attr('fill', 'darkred');
+                    .attr('fill', 'darkgreen');
                 svg.append('text')
                     .text(Math.round(scope.data.distribution.cdf.values[i]) + '%')
                     .attr('text-anchor', 'middle')
@@ -944,7 +944,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('fill', 'black');
 
         svg.append('text')
-            .text('Latest LD granted:')
+            .text('Current LD granted:')
             .attr('text-anchor', 'start')
             .attr('x', 10)
             .attr('y', 260)
@@ -1075,6 +1075,15 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('stroke', 'steelblue')
             .style('fill', 'None')
             .style('stroke-opacity', 0.9);
+
+        svg.append('path')
+            .datum([{rolling_mean_100: 0, negative_index: 300}, {rolling_mean_100: 0, negative_index: daysSinceLodge}, {rolling_mean_100: daysSinceLodge, negative_index: 0}])
+            .attr("class", "line")
+            .attr("d", lineCases)
+            .style('stroke-width', 5)
+            .style('stroke', 'darkgreen')
+            .style('fill', 'None')
+            .style('stroke-opacity', 0.8);
 
         var month = parseInt(scope.data.cases[0].grant_date.substring(5, 7));
 
