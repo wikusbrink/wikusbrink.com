@@ -1083,7 +1083,7 @@ client.directive('wbTracker', function ($window, $timeout) {
             .style('stroke-width', 5)
             .style('stroke', 'darkgreen')
             .style('fill', 'None')
-            .style('stroke-opacity', 0.8);
+            .style('stroke-opacity', 0.3);
 
         var month = parseInt(scope.data.cases[0].grant_date.substring(5, 7));
 
