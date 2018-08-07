@@ -117,7 +117,7 @@ def get_data():
         }
     }
 
-    cases = df.to_dict(orient='records')
+    cases = df.tail(100).to_dict(orient='records')
     cases = [format_case_dict(case) for case in cases]
 
     data = {
