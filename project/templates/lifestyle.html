@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<link rel='icon', href="{{ url_for('static', filename='icons/sun.png') }}">
+<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
+<style>
+
+    body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin: auto;
+        position: relative;
+        width: 540px;
+
+        -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+        -moz-user-select: none; /* mozilla browsers */
+        -khtml-user-select: none; /* webkit (konqueror) browsers */
+        -ms-user-select: none; /* IE10+ */
+    }
+    text {
+        font-family: 'Oswald', sans-serif;
+    }
+    input {
+        font-family: 'Oswald', sans-serif;
+    }
+    .gridLine {
+        opacity: 0.3;
+    }
+    .annotation {
+        font-weight: bold;
+        font-size: 12px;
+        opacity: 0.8;
+    }
+    .title {
+        font-weight: bolder;
+        font-size: 24px;
+    }
+
+</style>
+<body></body>
+<script src="{{ url_for('static', filename='d3.v5.min.js') }}"></script>
+<script src="{{ url_for('static', filename='underscore-min.js') }}"></script>
+<script src="{{ url_for('static', filename='utils.js') }}"></script>
+<script src="{{ url_for('static', filename='metrics.js') }}"></script>
+<script src="{{ url_for('static', filename='data.js') }}"></script>
+<script>
+
+    function addDatum(y, w, parent, datum, key) {
+        var height = 260;
+        var rect = parent.append('rect')
+                .attr('x', 4)
+                .attr('y', y + 4)
+                .attr('rx', 5)
+                .attr('ry', 5)
+                .attr('width', w - 8)
+                .attr('height', height)
+                .style('fill', 'gray')
+                .style('stroke-width', 1)
+                .style('stroke', 'black')
+                .style('opacity', 0.7);
+
+        var rect = parent.append('rect')
+                .attr('x', 4)
+                .attr('y', y + 4)
+                .attr('rx', 5)
+                .attr('ry', 5)
+                .attr('width', w - 8)
+                .attr('height', 30)
+                .style('fill', key === getToday() ? 'darkgreen':'steelblue')
+                .style('stroke-width', 1)
+                .style('stroke', 'black')
+                .style('opacity', 0.7);
+
+        parent.append('text')
+                .attr('x', 10)
+                .attr('y', y + 24)
+                .text(key + ' (' + getDay(key) + ')')
+                .attr('text-anchor', 'start')
+                .style('font-weight', 'bold')
+                .style('font-size', 14);
+
+        parent.append("image")
+                .attr('x', w - 40)
+                .attr('y', y + 7)
+                .attr('xlink:href', '{{ url_for("static", filename="icons/save.png") }}')
+                .attr('width', 25)
+                .attr('height', 25)
+                .attr('opacity', 0.8)
+                .on('click', function(){});
+
+        parent.append("image")
+                .attr('x', w - 75)
+                .attr('y', y + 9)
+                .attr('xlink:href', '{{ url_for("static", filename="icons/delete.png") }}')
+                .attr('width', 25)
+                .attr('height', 21)
+                .attr('opacity', 0.8)
+                .on('click', function(){});
+
+        inputGroup(0, y + 45, w / 2, parent, datum, 'weight', 'Weight:', 'kg', 0.1, 'number');
+        inputGroup(0, y + 80, w / 2, parent, datum, 'alcohol', 'Drinks:', ' units', 1, 'number');
+        inputGroup(0, y + 115, w / 2, parent, datum, 'feedingWindowStart', 'FW start:', '', 15, 'time');
+        inputGroup(0, y + 150, w / 2, parent, datum, 'feedingWindowEnd', 'FW end:', '', 15, 'time');
+        inputGroup(0, y + 185, w / 2, parent, datum, 'cleanEating', 'Clean eating:', '', '', 'bool');
+        inputExerciseGroup(w/2, y + 45, w / 2, parent, datum['morningExercise'], 'Morning exercise:');
+        inputExerciseGroup(w/2, y + 150, w / 2, parent, datum['afternoonExercise'], 'Afternoon exercise:');
+
+        dataInputs.push(d3.select("body").append('input')
+                .attr('type','text')
+                .attr('placeholder', 'Genaral notes')
+                .attr('value', datum.notes)
+                .style('position', 'absolute')
+                .style('left', 13 + 'px')
+                .style('top', y + 220 + 'px')
+                .style('width', (w - 30)/2 - 11 + 'px')
+                .style('height', '27px')
+                .style('border', '1px solid black')
+                .style('border-radius', '5px')
+                .style('opacity', 0.7)
+                .style('padding-left', '5px')
+                .on('keyup', function() {
+                    datum.notes = this.value;
+                }));
+    }
+
+    var width = 540;
+    var height = (dataKeys.length) * 270 + 90;
+
+    var exercises = [
+        {'icon': '{{ url_for("static", filename="icons/paddle.png") }}', 'name': 'paddle'},
+        {'icon': '{{ url_for("static", filename="icons/hike.png") }}', 'name': 'hike'},
+        {'icon': '{{ url_for("static", filename="icons/run.png") }}', 'name': 'run'},
+        {'icon': '{{ url_for("static", filename="icons/pilates.png") }}', 'name': 'pilates'},
+        {'icon': '{{ url_for("static", filename="icons/strength.png") }}', 'name': 'strength'},
+        {'icon': '{{ url_for("static", filename="icons/other.png") }}', 'name': 'other'}
+    ];
+
+    var svg = d3.select("body").append("svg")
+            .attr('width', width)
+            .attr('height', height);
+
+    var bg = svg.append('rect')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', width)
+            .attr('height', height)
+            .style('fill', 'lightgray');
+
+    var dataGroup;
+    var metricsGroup;
+    var dataInputs = [];
+    var view = 'metrics';
+
+    var dataButton = addButton(0, 0, width / 2, 40, svg, 'Data', function(){
+        if(view === 'metrics') {
+            dataButton.style('fill', 'steelblue');
+            metricsButton.style('fill', 'gray');
+            view = 'data';
+            removeMetricsElements();
+            createDataElements();
+        }
+    });
+    var metricsButton = addButton(width / 2, 0, width / 2, 40, svg, 'Metrics', function(){
+        if(view === 'data') {
+            dataButton.style('fill', 'gray');
+            metricsButton.style('fill', 'steelblue');
+            view = 'metrics';
+            removeDataElements();
+            createMetricsElements();
+        }
+    });
+
+    function createMetricsElements() {
+        svg.attr('height', 960);
+        metricsGroup = svg.append('g');
+        addWeightGraph(width, metricsGroup)
+    }
+    function removeMetricsElements() {
+        metricsGroup.remove();
+    }
+
+    function removeDataElements() {
+        dataGroup.remove();
+        while(dataInputs.length > 0) {
+            dataInputs.pop().remove();
+        }
+    }
+    function createDataElements() {
+        height = (dataKeys.length) * 270 + 90;
+        svg.attr('height', height);
+        bg.attr('height', height);
+        dataGroup = svg.append('g');
+        var dayToAdd = addDays(dataKeys[0], 1);
+        dataInputs.push(d3.select("body").append('input')
+                .attr('type','text')
+                .attr('placeholder', 'Genaral notes')
+                .attr('value', dayToAdd)
+                .style('position', 'absolute')
+                .style('left', 4 + 'px')
+                .style('top', 53 + 'px')
+                .style('text-align', 'center')
+                .style('width', (width)/2 - 16 + 'px')
+                .style('height', '30px')
+                .style('border', '1px solid black')
+                .style('border-radius', '5px')
+                .style('opacity', 0.7)
+                .style('padding-left', '5px')
+                .on('keyup', function() {
+                    dayToAdd = this.value;
+                }));
+        addButton(width / 2, 50, width / 2, 40, dataGroup, 'Add datum', function(){
+            addDataPoint(dayToAdd);
+            removeDataElements();
+            createDataElements();
+        });
+        dataKeys.forEach(function(key, i) {
+            addDatum(i * 270 + 90, width, dataGroup, data[key], key)
+        });
+    }
+    createMetricsElements();
+    dataButton.style('fill', 'gray');
+    metricsButton.style('fill', 'steelblue');
+    console.log(data)
+
+</script>
