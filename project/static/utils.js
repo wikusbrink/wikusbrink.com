@@ -206,7 +206,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field){
 function findLatest(field){
     value = undefined;
     var i = 0;
-    while(value === undefined) {
+    while(value === undefined || value === null) {
         i++;
         value = data[dataKeys[i]][field];
     }
@@ -220,7 +220,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type){
         if(type === 'time'){
             datum[field] = addMinutes(datum[field], increment)
         } else {
-            if(datum[field] === undefined) {
+            if(datum[field] === undefined || datum[field] === null) {
                 datum[field] = findLatest(field)
             }
             datum[field] = Math.round((datum[field] + increment) * 10) / 10;
@@ -231,7 +231,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type){
         if(type === 'time'){
             datum[field] = addMinutes(datum[field], -increment)
         } else {
-            if(datum[field] === undefined) {
+            if(datum[field] === undefined || datum[field] === null) {
                 datum[field] = findLatest(field)
             }
             datum[field] = Math.round((datum[field] - increment) * 10) / 10;
@@ -257,7 +257,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type){
         var text = parent.append('text')
             .attr('x', x + w - 78)
             .attr('y', y + 22)
-            .text((datum[field] !== undefined ? datum[field]:'_') + suffix)
+            .text(((datum[field] !== undefined && datum[field] !== null) ? datum[field]:'_') + suffix)
             .attr('text-anchor', 'end')
             .style('font-weight', 'bold')
             .style('font-size', 21);

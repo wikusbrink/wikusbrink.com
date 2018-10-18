@@ -120,7 +120,6 @@ function addWeightGraph(w, parent){
         var y = layout['weight'].y;
         var h = layout['weight'].h;
         var range = layout['weight'].range;
-
         if(typeof d === 'number') {
             var weight = d;
         } else if (typeof d === 'string') {
@@ -128,7 +127,7 @@ function addWeightGraph(w, parent){
         } else {
             var weight = d.weight;
         }
-        if (weight === undefined) {
+        if (weight === undefined || weight === null) {
             return y + h;
         }
         return y + (h * (range[1] - weight) / (range[1] - range[0]))
@@ -177,17 +176,17 @@ function addWeightGraph(w, parent){
         .attr('height', function(d){return layout['weight'].y + layout['weight'].h - weightToY(d)})
         .attr('width', w / (dataLength + 5))
         .style('fill', function(d,i) {
-            if(i > 0){
+            if(i > 1){
                 var previousWeight = data[metricsKeys[i-1]].weight;
                 var currentWeight = data[metricsKeys[i]].weight;
-                if(previousWeight === undefined) {
+                if(previousWeight === undefined || previousWeight === null) {
                     var j = i;
-                    while(j > 0 && previousWeight === undefined) {
+                    while(j > 0 && previousWeight === undefined || previousWeight === null) {
                         j--;
                         previousWeight = data[metricsKeys[j]].weight
                     }
                 }
-                if(previousWeight === undefined) {
+                if(previousWeight === undefined || previousWeight === null) {
                     return 'gray'
                 }
                 if(previousWeight > currentWeight){

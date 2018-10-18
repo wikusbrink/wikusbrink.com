@@ -44,6 +44,10 @@
 <script src="{{ url_for('static', filename='data.js') }}"></script>
 <script>
 
+
+    var data;
+    var dataKeys;
+
     function addDatum(y, w, parent, datum, key) {
         var height = 260;
         var rect = parent.append('rect')
@@ -123,7 +127,7 @@
     }
 
     var width = 540;
-    var height = (dataKeys.length) * 270 + 90;
+    var height = 100;
 
     var exercises = [
         {'icon': '{{ url_for("static", filename="icons/paddle.png") }}', 'name': 'paddle'},
@@ -143,7 +147,7 @@
             .attr('y', 0)
             .attr('width', width)
             .attr('height', height)
-            .style('fill', 'lightgray');
+            .style('fill', 'rgba(100, 100, 100, 0.1)');
 
     var dataGroup;
     var metricsGroup;
@@ -171,6 +175,7 @@
 
     function createMetricsElements() {
         svg.attr('height', 960);
+        bg.attr('height', 960);
         metricsGroup = svg.append('g');
         addWeightGraph(width, metricsGroup)
     }
@@ -216,9 +221,17 @@
             addDatum(i * 270 + 90, width, dataGroup, data[key], key)
         });
     }
-    createMetricsElements();
-    dataButton.style('fill', 'gray');
-    metricsButton.style('fill', 'steelblue');
-    console.log(data)
+    getData(function(d) {
+        data = {};
+        d.forEach(function(d){
+            data[d.date] = d.data;
+        });
+        dataKeys = _.sortBy(_.keys(data), function(d){return d});
+        dataKeys.reverse();
+        createMetricsElements();
+        dataButton.style('fill', 'gray');
+        metricsButton.style('fill', 'steelblue');
+
+    })
 
 </script>
