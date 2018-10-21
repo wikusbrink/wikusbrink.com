@@ -142,7 +142,7 @@ function addWeightGraph(w, h, parent){
         } else {
             date = d.date;
         }
-        var range = daysDiff(metricsKeys[0], metricsKeys[dataLength - 1]) + 5;
+        var range = daysDiff(metricsKeys[0], metricsKeys[dataLength - 1]) + 2;
         var daysFromStart = daysDiff(metricsKeys[0], date);
         return daysFromStart / range * w;
     }
@@ -172,9 +172,9 @@ function addWeightGraph(w, h, parent){
         .enter()
         .append('rect')
         .attr('y', weightToY)
-        .attr('x', function(d){return dateToX(d) - w / (dataLength + 5) / 2})
+        .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['weight'].y + layout['weight'].h - weightToY(d)})
-        .attr('width', w / (dataLength + 5))
+        .attr('width', w / (dataLength + 1))
         .style('fill', function(d,i) {
             if(i > 1){
                 var previousWeight = data[metricsKeys[i-1]].weight;
@@ -221,7 +221,7 @@ function addWeightGraph(w, h, parent){
     metricsKeys.forEach(function(d){
         layout['cleanEating'].g.append('rect')
             .attr('y', layout['cleanEating'].y)
-            .attr('x', dateToX(d) - w / (dataLength + 5) / 2)
+            .attr('x', dateToX(d) - w / (dataLength + 1) / 2)
             .attr('height', layout['cleanEating'].h)
             .attr('width', w / (dataLength+5))
             .style('fill', function(){return data[d].cleanEating ? 'darkgreen': 'darkred'})
@@ -316,7 +316,7 @@ function addWeightGraph(w, h, parent){
         .enter()
         .append('rect')
         .attr('y', morningExercisePointsToY)
-        .attr('x', function(d){return dateToX(d) - w / (dataLength + 5) / 2})
+        .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['exercise'].y + layout['exercise'].h - morningExercisePointsToY(d)})
         .attr('width', w / (dataLength + 5))
         .style('fill', 'darkblue')
@@ -327,9 +327,9 @@ function addWeightGraph(w, h, parent){
         .enter()
         .append('rect')
         .attr('y', function(d){return morningExercisePointsToY(d) + afternoonExercisePointsToY(d) - (layout['exercise'].y + layout['exercise'].h)})
-        .attr('x', function(d){return dateToX(d) - w / (dataLength + 5) / 2})
+        .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['exercise'].y + layout['exercise'].h - afternoonExercisePointsToY(d)})
-        .attr('width', w / (dataLength + 5))
+        .attr('width', w / (dataLength + 1))
         .style('fill', 'darkgreen')
         .style('opacity', 0.5);
 
@@ -364,7 +364,7 @@ function addWeightGraph(w, h, parent){
         .enter()
         .append('rect')
         .attr('y', alcoholUnitsToY)
-        .attr('x', function(d){return dateToX(d) - w / (dataLength + 5) / 2})
+        .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['alcohol'].y + layout['alcohol'].h - alcoholUnitsToY(d)})
         .attr('width', w / (dataLength + 5))
         .style('fill', 'darkred')
