@@ -2,6 +2,20 @@
  * Created by wikus on 2018/10/14.
  */
 
+function createMetricsElements() {
+    // Resize and set button colors.
+    dataButton.style('fill', 'gray');
+    metricsButton.style('fill', 'steelblue');
+    svg.attr('height', metricsHeight);
+    bg.attr('height', metricsHeight);
+    // Add content.
+    metricsGroup = svg.append('g');
+    addMetrics(size.width, metricsGroup)
+}
+function removeMetricsElements() {
+    metricsGroup.remove();
+}
+
 function getRollingWeight(metricsKeys){
     var dataLength = metricsKeys.length;
     var rollingWeights = [];
@@ -42,9 +56,10 @@ function getFeedingWindows(metricsKeys){
     return feedingWindows
 }
 
-function addWeightGraph(w, h, parent){
+function addMetrics(w, parent){
     var metricsKeys = dataKeys.slice().reverse();
     var dataLength = metricsKeys.length;
+    var barWidth = w / (dataLength + 1);
 
     var layout = {};
     layout['weight']= {
@@ -174,7 +189,7 @@ function addWeightGraph(w, h, parent){
         .attr('y', weightToY)
         .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['weight'].y + layout['weight'].h - weightToY(d)})
-        .attr('width', w / (dataLength + 1))
+        .attr('width', barWidth)
         .style('fill', function(d,i) {
             if(i > 1){
                 var previousWeight = data[metricsKeys[i-1]].weight;
@@ -208,7 +223,7 @@ function addWeightGraph(w, h, parent){
         .style('stroke', 'black')
         .style('stroke-linecap', 'round')
         .style('fill', 'None')
-        .style('stroke-opacity', 0.9);
+        .style('stroke-opacity', 0.7);
 
     [layout['cleanEating'].y, layout['cleanEating'].y + layout['cleanEating'].h].forEach(function(d){
         layout['cleanEating'].g.append('rect')
@@ -223,7 +238,7 @@ function addWeightGraph(w, h, parent){
             .attr('y', layout['cleanEating'].y)
             .attr('x', dateToX(d) - w / (dataLength + 1) / 2)
             .attr('height', layout['cleanEating'].h)
-            .attr('width', w / (dataLength+5))
+            .attr('width', barWidth)
             .style('fill', function(){return data[d].cleanEating ? 'darkgreen': 'darkred'})
             .style('opacity', function(){return data[d].cleanEating ? 0.8: 0.2});
 
@@ -242,7 +257,7 @@ function addWeightGraph(w, h, parent){
         layout['fasting'].g.append('rect')
             .attr('y', function(){ return durationToY({minutes: d})})
             .attr('x', 0)
-            .attr('height', (d === 480 | d === 960) ?  5:1)
+            .attr('height', (d === 480 | d === 960) ?  3:1)
             .attr('width', w)
             .attr('class', 'gridLine');
         layout['fasting'].g.append('text')
@@ -318,7 +333,7 @@ function addWeightGraph(w, h, parent){
         .attr('y', morningExercisePointsToY)
         .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['exercise'].y + layout['exercise'].h - morningExercisePointsToY(d)})
-        .attr('width', w / (dataLength + 5))
+        .attr('width', barWidth)
         .style('fill', 'darkblue')
         .style('opacity', 0.5);
 
@@ -329,7 +344,7 @@ function addWeightGraph(w, h, parent){
         .attr('y', function(d){return morningExercisePointsToY(d) + afternoonExercisePointsToY(d) - (layout['exercise'].y + layout['exercise'].h)})
         .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['exercise'].y + layout['exercise'].h - afternoonExercisePointsToY(d)})
-        .attr('width', w / (dataLength + 1))
+        .attr('width', barWidth)
         .style('fill', 'darkgreen')
         .style('opacity', 0.5);
 
@@ -366,12 +381,7 @@ function addWeightGraph(w, h, parent){
         .attr('y', alcoholUnitsToY)
         .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['alcohol'].y + layout['alcohol'].h - alcoholUnitsToY(d)})
-        .attr('width', w / (dataLength + 5))
+        .attr('width', barWidth)
         .style('fill', 'darkred')
         .style('opacity', 0.5);
 }
-
-
-
-
-

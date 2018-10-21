@@ -45,95 +45,23 @@
 <script src="{{ url_for('static', filename='utils.js') }}"></script>
 <script src="{{ url_for('static', filename='metrics.js') }}"></script>
 <script src="{{ url_for('static', filename='data.js') }}"></script>
+<script src="{{ url_for('static', filename='api.js') }}"></script>
 <script>
 
-
+    // Global variables
     var data;
     var dataKeys;
-    var apiUrlBase = '{{config.apiUrlBase}}'
-    var storeQueue = []
-    var saving = false
-
-    function addDatum(y, w, parent, datum, key) {
-
-        var height = 480;
-        var rect = parent.append('rect')
-                .attr('x', 4)
-                .attr('y', y + 4)
-                .attr('rx', 5)
-                .attr('ry', 5)
-                .attr('width', w - 8)
-                .attr('height', height)
-                .style('fill', 'gray')
-                .style('stroke-width', 1)
-                .style('stroke', 'black')
-                .style('opacity', 0.7);
-
-        var rect = parent.append('rect')
-                .attr('x', 4)
-                .attr('y', y + 4)
-                .attr('rx', 5)
-                .attr('ry', 5)
-                .attr('width', w - 8)
-                .attr('height', 30)
-                .style('fill', key === getToday() ? 'darkgreen':'steelblue')
-                .style('stroke-width', 1)
-                .style('stroke', 'black')
-                .style('opacity', 0.7);
-
-        parent.append('text')
-                .attr('x', 10)
-                .attr('y', y + 24)
-                .text(key + ' (' + getDay(key) + ')')
-                .attr('text-anchor', 'start')
-                .style('font-weight', 'bold')
-                .style('font-size', 14);
-
-        inputGroup(0, y + 45, w, parent, datum, 'weight', 'Weight:', 'kg', 0.1, 'number', key);
-        inputGroup(0, y + 80, w, parent, datum, 'alcohol', 'Drinks:', ' units', 1, 'number', key);
-        inputGroup(0, y + 115, w, parent, datum, 'feedingWindowStart', 'FW start:', '', 15, 'time', key);
-        inputGroup(0, y + 150, w, parent, datum, 'feedingWindowEnd', 'FW end:', '', 15, 'time', key);
-        inputGroup(0, y + 185, w, parent, datum, 'cleanEating', 'Clean eating:', '', '', 'bool', key);
-        inputExerciseGroup(0, y + 220, w, parent, datum['morningExercise'], 'Morning exercise:', key);
-        inputExerciseGroup(0, y + 330, w, parent, datum['afternoonExercise'], 'Afternoon exercise:', key);
-
-        dataInputs.push(d3.select("body").append('input')
-                .attr('type','text')
-                .attr('placeholder', 'Genaral notes')
-                .attr('value', datum.notes)
-                .style('position', 'absolute')
-                .style('left', grid[0].start + 'px')
-                .style('top', y + 443 + 'px')
-                .style('width', (grid[5].end - grid[0].start - 8) + 'px')
-                .style('height', '27px')
-                .style('border', '1px solid black')
-                .style('border-radius', '5px')
-                .style('opacity', 0.7)
-                .style('padding-left', '5px')
-                .on('keyup', function() {
-                    datum.notes = this.value;
-                    addToStoreQueue(key);
-                }));
-    }
-    var div = d3.select('body').append('div')
-        .style('width', '100%')
-        .style('height', '100%');
-
-    var size = div.node().getBoundingClientRect();
-
-    var width = size.width;
-    var height = 550;
-
-    var grid = []
-    d3.range(0,6,1).forEach(function(d){
-        var coordinates = {
-            start: 15 + (width - 30) / 6 * d,
-            width: (width - 30) / 6,
-            end: 15 + (width - 30) /  6 * (d + 1),
-        }
-        coordinates['middle'] = coordinates.start + coordinates.width / 2;
-        grid.push(coordinates);
-    })
+    var view = 'metrics';
+    var apiUrlBase = '{{config.apiUrlBase}}';
+    var storeQueue = [];
+    var saving = false;
+    var div, svg, size;
+    var metricsHeight = 550;
+    var grid;
+    var dataGroup;
+    var metricsGroup;
+    var dataInputElements = [];
+    var dataButton, metricsButton;
 
     var exercises = [
         {'icon': '{{ url_for("static", filename="icons/paddle.png") }}', 'name': 'paddle'},
@@ -144,90 +72,48 @@
         {'icon': '{{ url_for("static", filename="icons/other.png") }}', 'name': 'other'}
     ];
 
-    var svg = div.append("svg")
-            .attr('width', width)
-            .attr('height', height);
 
-    var bg = svg.append('rect')
+    div = d3.select('body').append('div')
+        .style('width', '100%')
+        .style('height', '100%');
+    size = div.node().getBoundingClientRect();
+    svg = div.append('svg')
+            .attr('width', size.width)
+            .attr('height', 100);
+    bg = svg.append('rect')
             .attr('x', 0)
             .attr('y', 0)
-            .attr('width', width)
-            .attr('height', height)
+            .attr('width', size.width)
+            .attr('height', 100)
             .style('fill', 'rgba(100, 100, 100, 0.1)');
 
-    var dataGroup;
-    var metricsGroup;
-    var dataInputs = [];
-    var view = 'metrics';
-
-    var dataButton = addButton(0, 0, width / 2, 40, svg, 'Data', function(){
+    dataButton = addButton(0, 0, size.width / 2, 40, svg, 'Data', function(){
         if(view === 'metrics') {
-            dataButton.style('fill', 'steelblue');
-            metricsButton.style('fill', 'gray');
             view = 'data';
             removeMetricsElements();
             createDataElements();
         }
     });
-    var metricsButton = addButton(width / 2, 0, width / 2, 40, svg, 'Metrics', function(){
+    metricsButton = addButton(size.width / 2, 0, size.width / 2, 40, svg, 'Metrics', function(){
         if(view === 'data') {
-            dataButton.style('fill', 'gray');
-            metricsButton.style('fill', 'steelblue');
             view = 'metrics';
             removeDataElements();
             createMetricsElements();
         }
     });
-
-    function createMetricsElements() {
-        height = 550;
-        svg.attr('height', height);
-        bg.attr('height', height);
-        metricsGroup = svg.append('g');
-        addWeightGraph(width, height, metricsGroup)
-    }
-    function removeMetricsElements() {
-        metricsGroup.remove();
-    }
-
-    function removeDataElements() {
-        dataGroup.remove();
-        while(dataInputs.length > 0) {
-            dataInputs.pop().remove();
+    
+    grid = []
+    d3.range(0,exercises.length,1).forEach(function(d){
+        var coordinates = {
+            start: 15 + (size.width - 30) / exercises.length * d,
+            width: (size.width - 30) / exercises.length,
+            end: 15 + (size.width - 30) /  exercises.length * (d + 1),
         }
-    }
-    function createDataElements() {
-        height = (dataKeys.length) * 490 + 90;
-        svg.attr('height', height);
-        bg.attr('height', height);
-        dataGroup = svg.append('g');
-        var dayToAdd = addDays(dataKeys[0], 1);
-        dataInputs.push(d3.select("body").append('input')
-                .attr('type','text')
-                .attr('placeholder', 'Genaral notes')
-                .attr('value', dayToAdd)
-                .style('position', 'absolute')
-                .style('left', 4 + 'px')
-                .style('top', 53 + 'px')
-                .style('text-align', 'center')
-                .style('width', (width)/2 - 16 + 'px')
-                .style('height', '30px')
-                .style('border', '1px solid black')
-                .style('border-radius', '5px')
-                .style('opacity', 0.7)
-                .style('padding-left', '5px')
-                .on('keyup', function() {
-                    dayToAdd = this.value;
-                }));
-        addButton(width / 2, 50, width / 2, 40, dataGroup, 'Add datum', function(){
-            addDataPoint(dayToAdd);
-            removeDataElements();
-            createDataElements();
-        });
-        dataKeys.forEach(function(key, i) {
-            addDatum(i * 490 + 90, width, dataGroup, data[key], key)
-        });
-    }
+        coordinates['middle'] = coordinates.start + coordinates.width / 2;
+        grid.push(coordinates);
+    })
+
+    // Query data and create elements.
     getData(function(d) {
         data = {};
         d.forEach(function(d){
@@ -235,10 +121,12 @@
         });
         dataKeys = _.sortBy(_.keys(data), function(d){return d});
         dataKeys.reverse();
-        createMetricsElements();
-        dataButton.style('fill', 'gray');
-        metricsButton.style('fill', 'steelblue');
-
-    })
+        
+        if(view === 'metrics'){
+            createMetricsElements();
+        } else {
+            createDataElements()
+        }
+    });
 
 </script>
