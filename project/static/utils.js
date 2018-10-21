@@ -103,13 +103,13 @@ function minutesDiff(dateTime1, dateTime2) {
 }
 
 function inputExerciseGroup(x,y,w,parent, datum, field, date){
+
     parent.append('text')
-        .attr('x', x + 12)
+        .attr('x', grid[0].start)
         .attr('y', y + 22)
         .text(field)
         .attr('text-anchor', 'start')
         .style('font-size', 21);
-
 
     y = y + 35;
 
@@ -138,9 +138,10 @@ function inputExerciseGroup(x,y,w,parent, datum, field, date){
     }
 
     var images = [];
+
     exercises.forEach(function(d, i) {
         parent.append('rect')
-            .attr('x', x + 15 + i * ((w - 10) / 6))
+            .attr('x', grid[i].middle - 15)
             .attr('y', y)
             .attr('rx', 5)
             .attr('ry', 5)
@@ -152,7 +153,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field, date){
             .style('opacity', 0.7)
             .on('click', function(){setExercise(i)});
         var image = parent.append("image")
-            .attr('x', x + 15 + i * ((w - 10) / 6) + 2.5)
+            .attr('x', grid[i].middle - 15 + 2.5)
             .attr('y', y + 2.5)
             .attr("xlink:href", d.icon)
             .attr('width', 25)
@@ -167,9 +168,9 @@ function inputExerciseGroup(x,y,w,parent, datum, field, date){
         .attr('placeholder', 'Notes')
         .attr('value', datum.notes)
         .style('position', 'absolute')
-        .style('left', x + 15 + 'px')
+        .style('left', grid[0].middle - 15 + 'px')
         .style('top', y + 34.5 + 'px')
-        .style('width', (w - 30)/2 - 17 + 'px')
+        .style('width', grid[2].middle - grid[0].middle + 22 + 'px')
         .style('height', '27px')
         .style('border', '1px solid black')
         .style('border-radius', '5px')
@@ -181,7 +182,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field, date){
         }));
 
     var text = parent.append('text')
-        .attr('x', x + 30 + 3 * ((w - 30) / 6))
+        .attr('x', grid[3].middle)
         .attr('y', y + 57)
         .text(datum.points)
         .attr('text-anchor', 'middle')
@@ -189,7 +190,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field, date){
         .style('font-size', 21);
 
     parent.append('rect')
-        .attr('x', x + 15 + 4 * ((w - 30) / 6))
+        .attr('x', grid[4].middle - 15)
         .attr('y', y + 34.5)
         .attr('rx', 5)
         .attr('ry', 5)
@@ -202,7 +203,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field, date){
         .on('click', plus);
 
     parent.append('rect')
-        .attr('x', x + 15 + 4 * ((w - 30) / 6) + 5)
+        .attr('x', grid[4].middle - 15 + 5)
         .attr('y', y + 34.5 + 13)
         .attr('width', 20)
         .attr('height', 4)
@@ -210,7 +211,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field, date){
         .on('click', plus);
 
     parent.append('rect')
-        .attr('x', x + 15 + 4 * ((w - 30) / 6) + 13)
+        .attr('x', grid[4].middle - 15 + 13)
         .attr('y', y + 34.5 + 5)
         .attr('width', 4)
         .attr('height', 20)
@@ -218,7 +219,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field, date){
         .on('click', plus);
 
     parent.append('rect')
-        .attr('x', x + 15 + 5 * ((w - 30) / 6))
+        .attr('x', grid[5].middle - 15)
         .attr('y', y + 34.5)
         .attr('rx', 5)
         .attr('ry', 5)
@@ -231,7 +232,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field, date){
         .on('click', minus);
 
     parent.append('rect')
-        .attr('x', x + 15 + 5 * ((w - 30) / 6) + 5)
+        .attr('x', grid[5].middle - 15 + 5)
         .attr('y', y + 34.5 + 13)
         .attr('width', 20)
         .attr('height', 4)
@@ -285,7 +286,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type, 
     }
 
     parent.append('text')
-        .attr('x', x + 12)
+        .attr('x', grid[0].start)
         .attr('y', y + 22)
         .text(label)
         .attr('text-anchor', 'start')
@@ -294,7 +295,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type, 
     if (type !== 'bool') {
 
         var text = parent.append('text')
-            .attr('x', x + w - 78)
+            .attr('x', grid[3].end)
             .attr('y', y + 22)
             .text(((datum[field] !== undefined && datum[field] !== null) ? datum[field]:'_') + suffix)
             .attr('text-anchor', 'end')
@@ -302,7 +303,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type, 
             .style('font-size', 21);
 
         parent.append('rect')
-            .attr('x', x + w - 70)
+            .attr('x', grid[4].middle - 15)
             .attr('y', y)
             .attr('rx', 5)
             .attr('ry', 5)
@@ -315,7 +316,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type, 
             .on('click', plus);
 
         parent.append('rect')
-            .attr('x', x + w - 70 + 5)
+            .attr('x', grid[4].middle - 15 + 5)
             .attr('y', y + 13)
             .attr('width', 20)
             .attr('height', 4)
@@ -323,7 +324,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type, 
             .on('click', plus);
 
         parent.append('rect')
-            .attr('x', x + w - 70 + 13)
+            .attr('x', grid[4].middle - 15 + 13)
             .attr('y', y + 5)
             .attr('width', 4)
             .attr('height', 20)
@@ -331,7 +332,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type, 
             .on('click', plus);
 
         parent.append('rect')
-            .attr('x', x + w - 35)
+            .attr('x', grid[5].middle - 15)
             .attr('y', y)
             .attr('rx', 5)
             .attr('ry', 5)
@@ -344,20 +345,19 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type, 
             .on('click', minus);
 
         parent.append('rect')
-            .attr('x', x + w - 35 + 5)
+            .attr('x', grid[5].middle - 15 + 5)
             .attr('y', y + 13)
             .attr('width', 20)
             .attr('height', 4)
             .style('fill', 'darkred')
             .on('click', minus);
     } else {
-
         parent.append('rect')
-            .attr('x', x + w - 70)
+            .attr('x', grid[4].middle - 15)
             .attr('y', y)
             .attr('rx', 5)
             .attr('ry', 5)
-            .attr('width', 65)
+            .attr('width', grid[5].width + 30)
             .attr('height', 30)
             .style('fill', 'white')
             .style('stroke-width', 1)
@@ -366,7 +366,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type, 
             .on('click', toggle);
 
         var text = parent.append('text')
-            .attr('x', x + w - 37.5)
+            .attr('x', grid[5].start)
             .attr('y', y + 22)
             .text(String(datum[field]).toUpperCase())
             .attr('text-anchor', 'middle')
