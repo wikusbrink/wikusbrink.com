@@ -99,7 +99,7 @@ function addMetrics(w, parent){
     layout['dates'] = {
         y: layout['alcohol'].y + layout['alcohol'].h + 8,
         g: parent.append('g'),
-        gridLines: _.map(d3.range(0.1,1.1,0.1), function(d){ return metricsKeys[Math.round((dataLength-1) * d)]})
+        gridLines: _.map(d3.range(4, dataLength, 7), function(d){ return metricsKeys[d]})
     };
 
     _.keys(layout).forEach(function(d) {
