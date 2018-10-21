@@ -48,35 +48,35 @@ function addWeightGraph(w, h, parent){
 
     var layout = {};
     layout['weight']= {
-        y: 80,
-        h: h * 0.3,
+        y: 75,
+        h: h * 0.2,
         title: 'Weight',
         range: [80, 90],
         g: parent.append('g')
     };
     layout['fasting'] = {
-        y: layout['weight'].y + layout['weight'].h + 35,
+        y: layout['weight'].y + layout['weight'].h + 30,
         h: h * 0.2,
         title: 'Fasting and feeding',
         g: parent.append('g'),
         range: [0, 1440]
     };
     layout['exercise'] = {
-        y: layout['fasting'].y + layout['fasting'].h + 35,
+        y: layout['fasting'].y + layout['fasting'].h + 30,
         h: h * 0.1,
         title: 'Exercise points',
         g: parent.append('g'),
         range: [0, 10]
     };
     layout['cleanEating'] = {
-        y: layout['exercise'].y + layout['exercise'].h + 35,
-        h: h * 0.05,
+        y: layout['exercise'].y + layout['exercise'].h + 30,
+        h: h * 0.04,
         title: 'Clean eating',
         g: parent.append('g')
     };
     layout['alcohol'] = {
-        y: layout['cleanEating'].y + layout['cleanEating'].h + 35,
-        h: h * 0.1,
+        y: layout['cleanEating'].y + layout['cleanEating'].h + 30,
+        h: h * 0.08,
         title: 'Drinks',
         range: [0, 10],
         g: parent.append('g')
@@ -93,7 +93,7 @@ function addWeightGraph(w, h, parent){
                 .text(layout[d].title)
                 .attr('x', 6)
                 .attr('text-anchor', 'left')
-                .attr('y', layout[d].y - 2)
+                .attr('y', layout[d].y - 1)
                 .attr('class', 'title');
         }
         if(layout[d].y && layout[d].h){
