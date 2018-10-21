@@ -49,34 +49,34 @@ function addWeightGraph(w, h, parent){
     var layout = {};
     layout['weight']= {
         y: 75,
-        h: h * 0.2,
+        h: h * 0.15,
         title: 'Weight',
         range: [80, 90],
         g: parent.append('g')
     };
     layout['fasting'] = {
-        y: layout['weight'].y + layout['weight'].h + 30,
-        h: h * 0.2,
+        y: layout['weight'].y + layout['weight'].h + 25,
+        h: h * 0.18,
         title: 'Fasting and feeding',
         g: parent.append('g'),
         range: [0, 1440]
     };
     layout['exercise'] = {
-        y: layout['fasting'].y + layout['fasting'].h + 30,
-        h: h * 0.1,
+        y: layout['fasting'].y + layout['fasting'].h + 25,
+        h: h * 0.08,
         title: 'Exercise points',
         g: parent.append('g'),
         range: [0, 10]
     };
     layout['cleanEating'] = {
-        y: layout['exercise'].y + layout['exercise'].h + 30,
-        h: h * 0.04,
+        y: layout['exercise'].y + layout['exercise'].h + 25,
+        h: h * 0.03,
         title: 'Clean eating',
         g: parent.append('g')
     };
     layout['alcohol'] = {
-        y: layout['cleanEating'].y + layout['cleanEating'].h + 30,
-        h: h * 0.08,
+        y: layout['cleanEating'].y + layout['cleanEating'].h + 25,
+        h: h * 0.05,
         title: 'Drinks',
         range: [0, 10],
         g: parent.append('g')
