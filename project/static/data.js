@@ -2,7 +2,7 @@
 
 function getData(callback) {
     var xmlHttp = new XMLHttpRequest();
-    var url = "http://localhost:5000/api/lifestyle/";
+    var url = "http://ec2-13-211-175-189.ap-southeast-2.compute.amazonaws.com:5001/api/lifestyle/";
     xmlHttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             var data = JSON.parse(this.responseText);
@@ -15,7 +15,7 @@ function getData(callback) {
 
 function putDatum(datum, callback) {
     var xmlHttp = new XMLHttpRequest();
-    var url = "http://localhost:5000/api/lifestyle/" + datum.date;
+    var url = "http://ec2-13-211-175-189.ap-southeast-2.compute.amazonaws.com:5001/api/lifestyle/" + datum.date;
 
 }
 
