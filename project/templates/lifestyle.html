@@ -34,6 +34,9 @@
         font-weight: bolder;
         font-size: 24px;
     }
+    div {
+        width: 100%;
+    }
 
 </style>
 <body></body>
@@ -125,8 +128,15 @@
                     datum.notes = this.value;
                 }));
     }
+    var size = d3.select('body').append('div')
+        .style('width', '100%')
+        .style('height', '100%')
+        .node()
+        .getBoundingClientRect();
 
-    var width = 540;
+    var element = d3.select('.elementClassName').node().getBoundingClientRect();
+
+    var width = size.width;
     var height = 100;
 
     var exercises = [
