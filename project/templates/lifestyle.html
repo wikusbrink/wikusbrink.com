@@ -128,11 +128,11 @@
                     datum.notes = this.value;
                 }));
     }
-    var size = d3.select('body').append('div')
+    var div = d3.select('body').append('div')
         .style('width', '100%')
-        .style('height', '100%')
-        .node()
-        .getBoundingClientRect();
+        .style('height', '100%');
+
+    var size = div.node().getBoundingClientRect();
 
     var width = size.width;
     var height = size.height;
@@ -146,7 +146,7 @@
         {'icon': '{{ url_for("static", filename="icons/other.png") }}', 'name': 'other'}
     ];
 
-    var svg = d3.select("body").append("svg")
+    var svg = div.append("svg")
             .attr('width', width)
             .attr('height', height);
 
