@@ -1,5 +1,5 @@
 # Run with
-# export FLASK_APP=./server/server.py && flask run
+# export FLASK_APP=./server.py && flask run
 
 from flask import Flask, render_template, jsonify, url_for, Response, request
 import json
@@ -25,7 +25,6 @@ class db():
         query[self._key] = value
         data = self._collection.find_one(query)
         del data['_id']
-        print data
         return data
         
     def list_all(self):

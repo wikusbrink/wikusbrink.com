@@ -7,9 +7,7 @@ RUN apt-get update \
   && ln -s /usr/bin/python3 python \
   && pip3 install --upgrade pip
 
-
-ADD ./project /
-
-EXPOSE 5000
+RUN pip install jupyterlab
+EXPOSE 8888
 
 CMD '/bin/bash'
