@@ -7,10 +7,13 @@ import pymongo
 
 app = Flask(__name__, static_url_path='/static')
 
+with open('config.json') as f:
+    config = json.load(f)
+
 
 class db():   
     def __init__(self, collection, key):
-        client = pymongo.MongoClient('mongodb://mongodb:27017/')
+        client = pymongo.MongoClient('mongodb://{}:27017/'.format(config['mongoHost']))
         db = client['siteContent']
         self._collection = db[collection]
         self._key = key
@@ -75,7 +78,7 @@ def index():
 
 @app.route('/lifestyle')
 def lifestyle():
-    return render_template('lifestyle.html')
+    return render_template('lifestyle.html', config=config)
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')

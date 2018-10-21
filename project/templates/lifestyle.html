@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<meta name='viewport' content='width=device-width, target-densityDpi=device-dpi, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
 <link rel='icon', href="{{ url_for('static', filename='icons/sun.png') }}">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 <style>
@@ -50,9 +50,13 @@
 
     var data;
     var dataKeys;
+    var apiUrlBase = '{{config.apiUrlBase}}'
+    var storeQueue = []
+    var saving = false
 
     function addDatum(y, w, parent, datum, key) {
-        var height = 260;
+
+        var height = 480;
         var rect = parent.append('rect')
                 .attr('x', 4)
                 .attr('y', y + 4)
@@ -85,31 +89,13 @@
                 .style('font-weight', 'bold')
                 .style('font-size', 14);
 
-        parent.append("image")
-                .attr('x', w - 40)
-                .attr('y', y + 7)
-                .attr('xlink:href', '{{ url_for("static", filename="icons/save.png") }}')
-                .attr('width', 25)
-                .attr('height', 25)
-                .attr('opacity', 0.8)
-                .on('click', function(){});
-
-        parent.append("image")
-                .attr('x', w - 75)
-                .attr('y', y + 9)
-                .attr('xlink:href', '{{ url_for("static", filename="icons/delete.png") }}')
-                .attr('width', 25)
-                .attr('height', 21)
-                .attr('opacity', 0.8)
-                .on('click', function(){});
-
-        inputGroup(0, y + 45, w / 2, parent, datum, 'weight', 'Weight:', 'kg', 0.1, 'number');
-        inputGroup(0, y + 80, w / 2, parent, datum, 'alcohol', 'Drinks:', ' units', 1, 'number');
-        inputGroup(0, y + 115, w / 2, parent, datum, 'feedingWindowStart', 'FW start:', '', 15, 'time');
-        inputGroup(0, y + 150, w / 2, parent, datum, 'feedingWindowEnd', 'FW end:', '', 15, 'time');
-        inputGroup(0, y + 185, w / 2, parent, datum, 'cleanEating', 'Clean eating:', '', '', 'bool');
-        inputExerciseGroup(w/2, y + 45, w / 2, parent, datum['morningExercise'], 'Morning exercise:');
-        inputExerciseGroup(w/2, y + 150, w / 2, parent, datum['afternoonExercise'], 'Afternoon exercise:');
+        inputGroup(0, y + 45, w, parent, datum, 'weight', 'Weight:', 'kg', 0.1, 'number', key);
+        inputGroup(0, y + 80, w, parent, datum, 'alcohol', 'Drinks:', ' units', 1, 'number', key);
+        inputGroup(0, y + 115, w, parent, datum, 'feedingWindowStart', 'FW start:', '', 15, 'time', key);
+        inputGroup(0, y + 150, w, parent, datum, 'feedingWindowEnd', 'FW end:', '', 15, 'time', key);
+        inputGroup(0, y + 185, w, parent, datum, 'cleanEating', 'Clean eating:', '', '', 'bool', key);
+        inputExerciseGroup(0, y + 260, w, parent, datum['morningExercise'], 'Morning exercise:', key);
+        inputExerciseGroup(0, y + 370, w, parent, datum['afternoonExercise'], 'Afternoon exercise:', key);
 
         dataInputs.push(d3.select("body").append('input')
                 .attr('type','text')
@@ -118,7 +104,7 @@
                 .style('position', 'absolute')
                 .style('left', 13 + 'px')
                 .style('top', y + 220 + 'px')
-                .style('width', (w - 30)/2 - 11 + 'px')
+                .style('width', (w - 35) + 'px')
                 .style('height', '27px')
                 .style('border', '1px solid black')
                 .style('border-radius', '5px')
@@ -126,6 +112,7 @@
                 .style('padding-left', '5px')
                 .on('keyup', function() {
                     datum.notes = this.value;
+                    addToStoreQueue(key);
                 }));
     }
     var div = d3.select('body').append('div')
@@ -182,6 +169,7 @@
     });
 
     function createMetricsElements() {
+        height = size.height;
         svg.attr('height', height);
         bg.attr('height', height);
         metricsGroup = svg.append('g');
@@ -198,7 +186,7 @@
         }
     }
     function createDataElements() {
-        height = (dataKeys.length) * 270 + 90;
+        height = (dataKeys.length) * 490 + 90;
         svg.attr('height', height);
         bg.attr('height', height);
         dataGroup = svg.append('g');
@@ -226,7 +214,7 @@
             createDataElements();
         });
         dataKeys.forEach(function(key, i) {
-            addDatum(i * 270 + 90, width, dataGroup, data[key], key)
+            addDatum(i * 490 + 90, width, dataGroup, data[key], key)
         });
     }
     getData(function(d) {

@@ -2,6 +2,38 @@
  * Created by wikus on 2018/10/13.
  */
 
+
+function serviceStoreQueue(){
+    if(storeQueue.length > 0 && !saving){
+        setSaving(true);
+        var date = storeQueue.pop()
+        var datum = {
+            date: date,
+            data: data[date]
+        }
+        putDatum(datum, function(){
+            setSaving(false);
+            serviceStoreQueue();
+        })
+    }
+}
+
+function setSaving(state){
+    saving = state;
+    if(state){
+        bg.style('fill', 'rgba(50, 50, 200, 0.1)')
+    } else {
+        bg.style('fill', 'rgba(100, 100, 100, 0.1)')
+    }
+}
+
+function addToStoreQueue(date){
+    storeQueue.push(date)
+    storeQueue = _.uniq(storeQueue)
+    serviceStoreQueue()
+}
+
+
 function addButton(x, y, w, h, parent, text, callback) {
     var rect = parent.append('rect')
         .attr('x', x + 4)
@@ -70,7 +102,7 @@ function minutesDiff(dateTime1, dateTime2) {
     return diff / 60000;
 }
 
-function inputExerciseGroup(x,y,w,parent, datum, field){
+function inputExerciseGroup(x,y,w,parent, datum, field, date){
     parent.append('text')
         .attr('x', x + 12)
         .attr('y', y + 22)
@@ -91,21 +123,24 @@ function inputExerciseGroup(x,y,w,parent, datum, field){
         exercises.forEach(function(d, j) {
             images[j].attr('opacity', datum.type === d.name ? 1 : 0.2)
         });
+        addToStoreQueue(date);
     }
 
     function plus(){
         datum.points = datum.points + 1;
         text.text(datum.points);
+        addToStoreQueue(date);
     }
     function minus(){
         datum.points = datum.points - 1;
         text.text(datum.points);
+        addToStoreQueue(date);
     }
 
     var images = [];
     exercises.forEach(function(d, i) {
         parent.append('rect')
-            .attr('x', x + 15 + i * ((w - 30) / 6))
+            .attr('x', x + 15 + i * ((w - 10) / 6))
             .attr('y', y)
             .attr('rx', 5)
             .attr('ry', 5)
@@ -117,7 +152,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field){
             .style('opacity', 0.7)
             .on('click', function(){setExercise(i)});
         var image = parent.append("image")
-            .attr('x', x + 15 + i * ((w - 30) / 6) + 2.5)
+            .attr('x', x + 15 + i * ((w - 10) / 6) + 2.5)
             .attr('y', y + 2.5)
             .attr("xlink:href", d.icon)
             .attr('width', 25)
@@ -142,6 +177,7 @@ function inputExerciseGroup(x,y,w,parent, datum, field){
         .style('padding-left', '5px')
         .on('keyup', function() {
             datum.notes = this.value;
+            addToStoreQueue(date);
         }));
 
     var text = parent.append('text')
@@ -214,7 +250,7 @@ function findLatest(field){
 }
 
 
-function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type){
+function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type, date){
 
     function plus() {
         if(type === 'time'){
@@ -226,6 +262,7 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type){
             datum[field] = Math.round((datum[field] + increment) * 10) / 10;
         }
         text.text(datum[field]+ suffix);
+        addToStoreQueue(date);
     }
     function minus() {
         if(type === 'time'){
@@ -237,12 +274,14 @@ function inputGroup(x,y,w,parent, datum, field, label, suffix, increment, type){
             datum[field] = Math.round((datum[field] - increment) * 10) / 10;
         }
         text.text(datum[field]+ suffix);
+        addToStoreQueue(date);
     }
     function toggle(){
         datum[field] = !datum[field];
 
         text.text(String(datum[field]).toUpperCase())
             .style('fill', datum[field] ? 'darkgreen': 'darkred');
+        addToStoreQueue(date);
     }
 
     parent.append('text')

@@ -11,4 +11,8 @@ workspace.xml
 *.tgz
 *.css
 *csv
+
+config.json
+.ipynb_checkpoints/*
+*/.DS_Store
  
