@@ -134,7 +134,7 @@
         .getBoundingClientRect();
 
     var width = size.width;
-    var height = 100;
+    var height = size.height;
 
     var exercises = [
         {'icon': '{{ url_for("static", filename="icons/paddle.png") }}', 'name': 'paddle'},
@@ -181,10 +181,10 @@
     });
 
     function createMetricsElements() {
-        svg.attr('height', 960);
-        bg.attr('height', 960);
+        svg.attr('height', height);
+        bg.attr('height', height);
         metricsGroup = svg.append('g');
-        addWeightGraph(width, metricsGroup)
+        addWeightGraph(width, height, metricsGroup)
     }
     function removeMetricsElements() {
         metricsGroup.remove();
