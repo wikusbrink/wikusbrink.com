@@ -13,6 +13,8 @@ workspace.xml
 *csv
 
 config.json
-.ipynb_checkpoints/*
-*/.DS_Store
- 
+*/.ipynb_checkpoints/*
+.DS_Store
+*/__pycache__/*
+
+backups/*
