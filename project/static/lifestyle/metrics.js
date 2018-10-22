@@ -10,7 +10,9 @@ function createMetricsElements() {
     bg.attr('height', metricsHeight);
     // Add content.
     metricsGroup = svg.append('g');
-    addMetrics(size.width, metricsGroup)
+    var h = addMetrics(size.width, metricsGroup)
+    svg.attr('height', h);
+    bg.attr('height', h);
 }
 function removeMetricsElements() {
     metricsGroup.remove();
@@ -64,34 +66,34 @@ function addMetrics(w, parent){
     var layout = {};
     layout['weight']= {
         y: 75,
-        h: 100,
+        h: 200,
         title: 'Weight',
         range: [80, 90],
         g: parent.append('g')
     };
     layout['fasting'] = {
-        y: layout['weight'].y + layout['weight'].h + 25,
-        h: 100,
+        y: layout['weight'].y + layout['weight'].h + 30,
+        h: 200,
         title: 'Fasting and feeding',
         g: parent.append('g'),
         range: [0, 1440]
     };
     layout['exercise'] = {
-        y: layout['fasting'].y + layout['fasting'].h + 25,
-        h: 50,
+        y: layout['fasting'].y + layout['fasting'].h + 30,
+        h: 100,
         title: 'Exercise points',
         g: parent.append('g'),
         range: [0, 10]
     };
     layout['cleanEating'] = {
-        y: layout['exercise'].y + layout['exercise'].h + 25,
-        h: 20,
+        y: layout['exercise'].y + layout['exercise'].h + 30,
+        h: 25,
         title: 'Clean eating',
         g: parent.append('g')
     };
     layout['alcohol'] = {
-        y: layout['cleanEating'].y + layout['cleanEating'].h + 25,
-        h: 40,
+        y: layout['cleanEating'].y + layout['cleanEating'].h + 30,
+        h: 100,
         title: 'Drinks',
         range: [0, 10],
         g: parent.append('g')
@@ -101,6 +103,7 @@ function addMetrics(w, parent){
         g: parent.append('g'),
         gridLines: _.map(d3.range(4, dataLength, 7), function(d){ return metricsKeys[d]})
     };
+    var height = layout.dates.y + 60;
 
     _.keys(layout).forEach(function(d) {
         if(layout[d].title){
@@ -384,4 +387,6 @@ function addMetrics(w, parent){
         .attr('width', barWidth)
         .style('fill', 'darkred')
         .style('opacity', 0.5);
+
+    return height;
 }
