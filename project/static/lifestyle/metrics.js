@@ -403,18 +403,30 @@ function addMetrics(w, parent){
         .style('opacity', 0.5);
 
     var valueGroup = parent.append('g');
+    var valueGroupLines = valueGroup.append('g');
+    var valueGroupRects = valueGroup.append('g');
 
 
     var labels = {};
     _.keys(layout).forEach(function(d) {
         if(layout[d].y && layout[d].h){
-            valueGroup.append('rect')
+            valueGroupLines.append('rect')
                 .attr('y', layout[d].y)
                 .attr('x', 100 - 2.5)
                 .attr('height', layout[d].h)
                 .attr('width', 5)
                 .style('fill', 'black')
                 .style('opacity', 0.5)        
+                .call(d3.drag().on("drag", function(d){
+                    updateLabelsWithDate(d3.event.x, xToDate(d3.event.x))
+            }));
+            valueGroupRects.append('rect')
+                .attr('y', layout[d].y)
+                .attr('x', 100 - 20)
+                .attr('height', layout[d].h)
+                .attr('width', 40)
+                .style('fill', 'black')
+                .style('opacity', 0.0)        
                 .call(d3.drag().on("drag", function(d){
                     updateLabelsWithDate(d3.event.x, xToDate(d3.event.x))
             }));
@@ -432,7 +444,8 @@ function addMetrics(w, parent){
 
 
     function updateLabelsWithDate(x, date){
-        valueGroup.selectAll('rect').attr('x', x - 2.5);
+        valueGroupLines.selectAll('rect').attr('x', x - 2.5);
+        valueGroupRects.selectAll('rect').attr('x', x - 20);
         var weightObject = _.find(rollingWeights, function(d){ return d.date === date})
         if(weightObject !== undefined){
             var weight = Math.round(weightObject.weight * 10) / 10;
