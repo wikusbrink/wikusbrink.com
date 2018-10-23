@@ -164,6 +164,11 @@ function addMetrics(w, parent){
         var daysFromStart = daysDiff(metricsKeys[0], date);
         return daysFromStart / range * w;
     }
+    function xToDate(d) {
+        var range = daysDiff(metricsKeys[0], metricsKeys[dataLength - 1]) + 2;
+        var daysFromStart = Math.round(d / w * range);
+        return addDays(metricsKeys[0], daysFromStart);
+    }
 
     d3.range(layout['weight'].range[0], layout['weight'].range[1] + 1, 2).forEach(function(d) {
         layout['weight'].g.append('rect')
@@ -219,8 +224,9 @@ function addMetrics(w, parent){
         })
         .style('opacity', 0.5);
 
+    var rollingWeights = getRollingWeight(metricsKeys)
     layout['weight'].g.append('path')
-        .datum(getRollingWeight(metricsKeys))
+        .datum(rollingWeights)
         .attr('d', weightLine)
         .style('stroke-width', 6)
         .style('stroke', 'black')
@@ -248,7 +254,13 @@ function addMetrics(w, parent){
     });
 
     function durationToY(duration){
-        return layout['fasting'].y + layout['fasting'].h - layout['fasting'].h/(layout['fasting'].range[1]) * duration.minutes;
+        var minutes;
+        if (typeof duration === 'number') {
+            minutes = duration;
+        } else {
+            minutes = duration.minutes;
+        }
+        return layout['fasting'].y + layout['fasting'].h - layout['fasting'].h/(layout['fasting'].range[1]) * minutes;
     }
 
     var fastingLine = d3.line()
@@ -271,8 +283,9 @@ function addMetrics(w, parent){
             .attr('text-anchor', 'end');
     });
 
+    var fastingWindows = getFastingWindows(metricsKeys);
     layout['fasting'].g.append('path')
-        .datum(getFastingWindows(metricsKeys))
+        .datum(fastingWindows)
         .attr("class", "line")
         .attr('d', fastingLine)
         .style('stroke-width', 6)
@@ -281,8 +294,9 @@ function addMetrics(w, parent){
         .style('fill', 'None')
         .style('stroke-opacity', 0.6);
 
+    var feedingWindows = getFeedingWindows(metricsKeys);
     layout['fasting'].g.append('path')
-        .datum(getFeedingWindows(metricsKeys))
+        .datum(feedingWindows)
         .attr("class", "line")
         .attr('d', fastingLine)
         .style('stroke-width', 6)
@@ -387,6 +401,57 @@ function addMetrics(w, parent){
         .attr('width', barWidth)
         .style('fill', 'darkred')
         .style('opacity', 0.5);
+
+    var valueGroup = parent.append('g');
+
+
+    var labels = {};
+    _.keys(layout).forEach(function(d) {
+        if(layout[d].y && layout[d].h){
+            valueGroup.append('rect')
+                .attr('y', layout[d].y)
+                .attr('x', 100 - 2.5)
+                .attr('height', layout[d].h)
+                .attr('width', 5)
+                .style('fill', 'black')
+                .style('opacity', 0.5)        
+                .call(d3.drag().on("drag", function(d){
+                    updateLabelsWithDate(d3.event.x, xToDate(d3.event.x))
+            }));
+        }
+    });
+    labels['weight'] = valueGroup.append('text')
+        .attr('class', 'annotation')
+        .attr('text-anchor', 'start');
+    labels['fastingWindowLength'] = valueGroup.append('text')
+        .attr('class', 'annotation')
+        .attr('text-anchor', 'start');
+    labels['feedingWindowLength'] = valueGroup.append('text')
+        .attr('class', 'annotation')
+        .attr('text-anchor', 'start');
+
+
+    function updateLabelsWithDate(x, date){
+        valueGroup.selectAll('rect').attr('x', x - 2.5);
+        var weightObject = _.find(rollingWeights, function(d){ return d.date === date})
+        if(weightObject !== undefined){
+            var weight = Math.round(weightObject.weight * 10) / 10;
+            labels['weight'].attr('x', x + 5)
+                .text(weight)
+                .attr('y', weightToY(weight) - 5)
+            } else {
+                labels['weight'].text('')
+            }
+        var fastingWindow = _.find(fastingWindows, function(d){ return d.date === date}).minutes;
+        labels['fastingWindowLength'].attr('x', x + 5)
+            .text(minutesToString(fastingWindow))
+            .attr('y', durationToY(fastingWindow))
+        var feedingWindow = _.find(feedingWindows, function(d){ return d.date === date}).minutes;
+        labels['feedingWindowLength'].attr('x', x + 5)
+            .text(minutesToString(feedingWindow))
+            .attr('y', durationToY(feedingWindow))
+    }
+    updateLabelsWithDate(dateToX(getToday()), getToday())
 
     return height;
 }

@@ -70,5 +70,11 @@ function minutesDiff(dateTime1, dateTime2) {
     return diff / 60000;
 }
 
+function minutesToString(m) {
+    var hours = Math.floor(m / 60);
+    var minutes = m - hours * 60;
+    return hours + ':' + minutes;
+}
+
 
 
