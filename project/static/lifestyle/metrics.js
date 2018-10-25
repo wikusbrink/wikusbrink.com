@@ -540,13 +540,13 @@ function addMetrics(w, parent){
         if(exerciseObject !== undefined){
             var exercise = Math.round(exerciseObject.points * 10) / 10;
             labels['exercise'].attr('x', x + 5)
-                .text(weight)
+                .text(exercise)
                 .attr('y', morningExercisePointsToY(exercise) - 5)
             labels['exerciseShade'].attr('x', x + 5)
-                .text(weight)
+                .text(exercise)
                 .attr('y', morningExercisePointsToY(exercise) - 5)
         } else {
-            labels['weight'].text('')
+            labels['exercise'].text('')
         }
         var fastingWindow = _.find(fastingWindows, function(d){ return d.date === date}).minutes;
         labels['fastingWindowLength'].attr('x', x + 5)
