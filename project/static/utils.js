@@ -73,6 +73,8 @@ function minutesDiff(dateTime1, dateTime2) {
 function minutesToString(m) {
     var hours = Math.floor(m / 60);
     var minutes = m - hours * 60;
+    hours = String(hours).length < 2 ? '0' + hours: hours;
+    minutes = String(minutes).length < 2 ? '0' + minutes: minutes;
     return hours + ':' + minutes;
 }
 

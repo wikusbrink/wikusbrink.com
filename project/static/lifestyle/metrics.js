@@ -510,6 +510,15 @@ function addMetrics(w, parent){
     labels['feedingWindowLength'] = valueGroup.append('text')
         .attr('class', 'annotation')
         .attr('text-anchor', 'start');
+    labels['exerciseShade'] = valueGroup.append('text')
+        .attr('class', 'annotation-shade')
+        .attr('text-anchor', 'start')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 2)
+        .attr('stroke-opacity', 0.6);
+    labels['exercise'] = valueGroup.append('text')
+        .attr('class', 'annotation')
+        .attr('text-anchor', 'start');
 
 
     function updateLabelsWithDate(x, date){
@@ -524,9 +533,21 @@ function addMetrics(w, parent){
             labels['weightShade'].attr('x', x + 5)
                 .text(weight)
                 .attr('y', weightToY(weight) - 5)
-            } else {
-                labels['weight'].text('')
-            }
+        } else {
+            labels['weight'].text('')
+        }
+        var exerciseObject = _.find(rollingExercise, function(d){ return d.date === date})
+        if(exerciseObject !== undefined){
+            var exercise = Math.round(exerciseObject.points * 10) / 10;
+            labels['exercise'].attr('x', x + 5)
+                .text(weight)
+                .attr('y', morningExercisePointsToY(exercise) - 5)
+            labels['exerciseShade'].attr('x', x + 5)
+                .text(weight)
+                .attr('y', morningExercisePointsToY(exercise) - 5)
+        } else {
+            labels['weight'].text('')
+        }
         var fastingWindow = _.find(fastingWindows, function(d){ return d.date === date}).minutes;
         labels['fastingWindowLength'].attr('x', x + 5)
             .text(minutesToString(fastingWindow))
