@@ -36,6 +36,22 @@ function getRollingWeight(metricsKeys){
     return rollingWeights
 }
 
+function getRollingExercise(metricsKeys){
+    var dataLength = metricsKeys.length;
+    var rollingPoints = [];
+    var windowSize = 5;
+    for(var i=windowSize; i<dataLength; i++) {
+        var sum = 0;
+        for(var j=0; j<windowSize; j++){
+            mep = data[metricsKeys[i-j]].morningExercise.points ? data[metricsKeys[i-j]].morningExercise.points: 0;
+            aep = data[metricsKeys[i-j]].afternoonExercise.points ? data[metricsKeys[i-j]].afternoonExercise.points: 0;
+            sum = sum + mep + aep;
+        }
+        rollingPoints.push({date: metricsKeys[i], points: sum/windowSize});
+    }
+    return rollingPoints
+}
+
 function getFastingWindows(metricsKeys) {
     var dataLength = metricsKeys.length;
     var fastingWindows = [];
@@ -351,8 +367,16 @@ function addMetrics(w, parent){
         .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['exercise'].y + layout['exercise'].h - morningExercisePointsToY(d)})
         .attr('width', barWidth)
-        .style('fill', 'darkblue')
-        .style('opacity', 0.5);
+        .style('fill', function(d){
+            var type = data[d].morningExercise.type;
+            if(type){
+                return _.find(exercises, {name: type}).color    
+            }
+            else {
+                return 'black'
+            }
+        })
+        .style('opacity', 0.7);
 
     layout['exercise'].g.append('g').selectAll('rect')
         .data(metricsKeys)
@@ -362,8 +386,34 @@ function addMetrics(w, parent){
         .attr('x', function(d){return dateToX(d) - w / (dataLength + 1) / 2})
         .attr('height', function(d){return layout['exercise'].y + layout['exercise'].h - afternoonExercisePointsToY(d)})
         .attr('width', barWidth)
-        .style('fill', 'darkgreen')
+        .style('fill', function(d){
+            var type = data[d].afternoonExercise.type;
+            if(type){
+                return _.find(exercises, {name: type}).color    
+            }
+            else {
+                return 'black'
+            }
+        })
         .style('opacity', 0.5);
+
+    var rollingExercise = getRollingExercise(metricsKeys);
+    var exerciseLine = d3.line()
+        .defined(function(d) { return d.points; })
+        .x(dateToX)
+        .y(function(d){
+            return morningExercisePointsToY(d.points);
+        });
+
+    layout['exercise'].g.append('path')
+        .datum(rollingExercise)
+        .attr('d', exerciseLine)
+        .style('stroke-width', 6)
+        .style('stroke', 'black')
+        .style('stroke-linecap', 'round')
+        .style('fill', 'None')
+        .style('stroke-opacity', 0.7);
+    console.log(rollingExercise)
 
     function alcoholUnitsToY(d) {
         var units;
@@ -432,12 +482,31 @@ function addMetrics(w, parent){
             }));
         }
     });
+
+    labels['weightShade'] = valueGroup.append('text')
+        .attr('class', 'annotation-shade')
+        .attr('text-anchor', 'start')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 2)
+        .attr('stroke-opacity', 0.6);
     labels['weight'] = valueGroup.append('text')
         .attr('class', 'annotation')
         .attr('text-anchor', 'start');
+    labels['fastingWindowLengthShade'] = valueGroup.append('text')
+        .attr('class', 'annotation-shade')
+        .attr('text-anchor', 'start')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 2)
+        .attr('stroke-opacity', 0.6);
     labels['fastingWindowLength'] = valueGroup.append('text')
         .attr('class', 'annotation')
         .attr('text-anchor', 'start');
+    labels['feedingWindowLengthShade'] = valueGroup.append('text')
+        .attr('class', 'annotation-shade')
+        .attr('text-anchor', 'start')
+        .attr('stroke', 'white')
+        .attr('stroke-width', 2)
+        .attr('stroke-opacity', 0.6);
     labels['feedingWindowLength'] = valueGroup.append('text')
         .attr('class', 'annotation')
         .attr('text-anchor', 'start');
@@ -452,6 +521,9 @@ function addMetrics(w, parent){
             labels['weight'].attr('x', x + 5)
                 .text(weight)
                 .attr('y', weightToY(weight) - 5)
+            labels['weightShade'].attr('x', x + 5)
+                .text(weight)
+                .attr('y', weightToY(weight) - 5)
             } else {
                 labels['weight'].text('')
             }
@@ -459,8 +531,14 @@ function addMetrics(w, parent){
         labels['fastingWindowLength'].attr('x', x + 5)
             .text(minutesToString(fastingWindow))
             .attr('y', durationToY(fastingWindow))
+        labels['fastingWindowLengthShade'].attr('x', x + 5)
+            .text(minutesToString(fastingWindow))
+            .attr('y', durationToY(fastingWindow))
         var feedingWindow = _.find(feedingWindows, function(d){ return d.date === date}).minutes;
         labels['feedingWindowLength'].attr('x', x + 5)
+            .text(minutesToString(feedingWindow))
+            .attr('y', durationToY(feedingWindow))
+        labels['feedingWindowLengthShade'].attr('x', x + 5)
             .text(minutesToString(feedingWindow))
             .attr('y', durationToY(feedingWindow))
     }

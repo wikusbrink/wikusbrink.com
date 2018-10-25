@@ -30,6 +30,11 @@
         font-size: 12px;
         opacity: 0.8;
     }
+    .annotation-shade {
+        font-weight: bold;
+        font-size: 12px;
+        opacity: 0.8;
+    }
     .title {
         font-weight: bolder;
         font-size: 20px;
@@ -64,12 +69,12 @@
     var dataButton, metricsButton;
 
     var exercises = [
-        {'icon': '{{ url_for("static", filename="icons/paddle.png") }}', 'name': 'paddle'},
-        {'icon': '{{ url_for("static", filename="icons/hike.png") }}', 'name': 'hike'},
-        {'icon': '{{ url_for("static", filename="icons/run.png") }}', 'name': 'run'},
-        {'icon': '{{ url_for("static", filename="icons/pilates.png") }}', 'name': 'pilates'},
-        {'icon': '{{ url_for("static", filename="icons/strength.png") }}', 'name': 'strength'},
-        {'icon': '{{ url_for("static", filename="icons/other.png") }}', 'name': 'other'}
+        {'color': 'teal', 'icon': '{{ url_for("static", filename="icons/paddle.png") }}', 'name': 'paddle'},
+        {'color': 'darkgreen', 'icon': '{{ url_for("static", filename="icons/hike.png") }}', 'name': 'hike'},
+        {'color': 'darkred', 'icon': '{{ url_for("static", filename="icons/run.png") }}', 'name': 'run'},
+        {'color': 'gold', 'icon': '{{ url_for("static", filename="icons/pilates.png") }}', 'name': 'pilates'},
+        {'color': 'darkblue', 'icon': '{{ url_for("static", filename="icons/strength.png") }}', 'name': 'strength'},
+        {'color': 'purple', 'icon': '{{ url_for("static", filename="icons/other.png") }}', 'name': 'other'}
     ];
 
 
