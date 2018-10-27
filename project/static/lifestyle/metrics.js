@@ -77,14 +77,16 @@ function getFeedingWindows(metricsKeys){
 function addMetrics(w, parent){
     var metricsKeys = dataKeys.slice().reverse();
     var dataLength = metricsKeys.length;
-    var barWidth = w / (dataLength + 1);
+    var firstDate = metricsKeys[10];
+    var lastDate = addDays(getToday(), 5);
+    var barWidth = w / daysDiff(lastDate, firstDate);
 
     var layout = {};
     layout['weight']= {
         y: 75,
         h: 200,
         title: 'Weight',
-        range: [80, 90],
+        range: [80, 88],
         g: parent.append('g')
     };
     layout['fasting'] = {
@@ -176,14 +178,14 @@ function addMetrics(w, parent){
         } else {
             date = d.date;
         }
-        var range = daysDiff(metricsKeys[0], metricsKeys[dataLength - 1]) + 2;
-        var daysFromStart = daysDiff(metricsKeys[0], date);
+        var range = daysDiff(lastDate, firstDate);
+        var daysFromStart = daysDiff(date, firstDate);
         return daysFromStart / range * w;
     }
     function xToDate(d) {
-        var range = daysDiff(metricsKeys[0], metricsKeys[dataLength - 1]) + 2;
+        var range = daysDiff(lastDate, firstDate);
         var daysFromStart = Math.round(d / w * range);
-        return addDays(metricsKeys[0], daysFromStart);
+        return addDays(metricsKeys[10], daysFromStart);
     }
 
     d3.range(layout['weight'].range[0], layout['weight'].range[1] + 1, 2).forEach(function(d) {
@@ -413,7 +415,6 @@ function addMetrics(w, parent){
         .style('stroke-linecap', 'round')
         .style('fill', 'None')
         .style('stroke-opacity', 0.7);
-    console.log(rollingExercise)
 
     function alcoholUnitsToY(d) {
         var units;

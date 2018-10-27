@@ -60,7 +60,7 @@ function addDays(date, x){
 function daysDiff(date1, date2) {
     var d1 = (new Date(date1)).getTime();
     var d2 = (new Date(date2)).getTime();
-    return Math.abs((d1-d2) / (60000*60*24));
+    return (d1-d2) / (60000*60*24);
 }
 
 function minutesDiff(dateTime1, dateTime2) {

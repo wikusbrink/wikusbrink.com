@@ -51,6 +51,7 @@ function getData(callback) {
         }
     };
     xmlHttp.open("GET", url, true);
+    xmlHttp.setRequestHeader('Cache-Control', 'no-cache, no-store, must-revalidate')
     xmlHttp.send();
 }
 
