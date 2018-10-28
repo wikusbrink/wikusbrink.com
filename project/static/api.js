@@ -27,11 +27,11 @@ function serviceStoreQueue(){
 function setSaving(state){
     saving = state;
     if(saving === undefined){
-        bg.style('fill', 'rgba(255, 50, 50, 0.5)');
+        d3.select('body').style('background-color', 'rgba(255, 50, 50, 0.5)');
     } else if(state){
-        bg.style('fill', 'rgba(50, 50, 200, 0.2)');
+        d3.select('body').style('background-color', 'rgba(50, 50, 200, 0.2)');
     } else {
-        bg.style('fill', 'rgba(100, 100, 100, 0.1)');
+        d3.select('body').style('background-color', 'rgba(100, 100, 100, 0.1)');
     }
 }
 
