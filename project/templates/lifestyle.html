@@ -63,8 +63,8 @@
     var div, svg, size;
     var metricsHeight = 550;
     var grid;
-    var dataGroup;
-    var metricsGroup;
+    var dataDiv;
+    var metricsDiv;
     var dataInputElements = [];
     var dataButton, metricsButton;
 
@@ -78,19 +78,11 @@
     ];
 
 
-    div = d3.select('body').append('div')
-        .style('width', '100%')
-        .style('height', '100%');
+    div = d3.select('body').append('div');
     size = div.node().getBoundingClientRect();
     svg = div.append('svg')
             .attr('width', size.width)
-            .attr('height', 100);
-    bg = svg.append('rect')
-            .attr('x', 0)
-            .attr('y', 0)
-            .attr('width', size.width)
-            .attr('height', 100)
-            .style('fill', 'rgba(100, 100, 100, 0.1)');
+            .attr('height', 40);
 
     dataButton = addButton(0, 0, size.width / 2, 40, svg, 'Data', function(){
         if(view === 'metrics') {

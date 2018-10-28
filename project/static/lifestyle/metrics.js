@@ -6,16 +6,16 @@ function createMetricsElements() {
     // Resize and set button colors.
     dataButton.style('fill', 'gray');
     metricsButton.style('fill', 'steelblue');
-    svg.attr('height', metricsHeight);
-    bg.attr('height', metricsHeight);
+    metricsDiv = d3.select('body').append('div');
+    metricsSvg = metricsDiv.append('svg')
+        .attr('width', size.width)
+        .attr('height', metricsHeight);
     // Add content.
-    metricsGroup = svg.append('g');
-    var h = addMetrics(size.width, metricsGroup)
-    svg.attr('height', h);
-    bg.attr('height', h);
+    var h = addMetrics(size.width, metricsSvg)
+    metricsSvg.attr('height', h);
 }
 function removeMetricsElements() {
-    metricsGroup.remove();
+    metricsDiv.remove();
 }
 
 function getRollingWeight(metricsKeys){
@@ -83,7 +83,7 @@ function addMetrics(w, parent){
 
     var layout = {};
     layout['weight']= {
-        y: 75,
+        y: 20,
         h: 200,
         title: 'Weight',
         range: [80, 88],
@@ -488,8 +488,8 @@ function addMetrics(w, parent){
         .attr('class', 'annotation-shade')
         .attr('text-anchor', 'start')
         .attr('stroke', 'white')
-        .attr('stroke-width', 2)
-        .attr('stroke-opacity', 0.6);
+        .attr('stroke-width', 3)
+        .attr('stroke-opacity', 0.7);
     labels['weight'] = valueGroup.append('text')
         .attr('class', 'annotation')
         .attr('text-anchor', 'start');
@@ -497,8 +497,8 @@ function addMetrics(w, parent){
         .attr('class', 'annotation-shade')
         .attr('text-anchor', 'start')
         .attr('stroke', 'white')
-        .attr('stroke-width', 2)
-        .attr('stroke-opacity', 0.6);
+        .attr('stroke-width', 3)
+        .attr('stroke-opacity', 0.7);
     labels['fastingWindowLength'] = valueGroup.append('text')
         .attr('class', 'annotation')
         .attr('text-anchor', 'start');
@@ -506,8 +506,8 @@ function addMetrics(w, parent){
         .attr('class', 'annotation-shade')
         .attr('text-anchor', 'start')
         .attr('stroke', 'white')
-        .attr('stroke-width', 2)
-        .attr('stroke-opacity', 0.6);
+        .attr('stroke-width', 3)
+        .attr('stroke-opacity', 0.7);
     labels['feedingWindowLength'] = valueGroup.append('text')
         .attr('class', 'annotation')
         .attr('text-anchor', 'start');
@@ -515,8 +515,8 @@ function addMetrics(w, parent){
         .attr('class', 'annotation-shade')
         .attr('text-anchor', 'start')
         .attr('stroke', 'white')
-        .attr('stroke-width', 2)
-        .attr('stroke-opacity', 0.6);
+        .attr('stroke-width', 3)
+        .attr('stroke-opacity', 0.7);
     labels['exercise'] = valueGroup.append('text')
         .attr('class', 'annotation')
         .attr('text-anchor', 'start');
