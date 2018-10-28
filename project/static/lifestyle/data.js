@@ -98,6 +98,17 @@ function addSummaryDatum(w, div, datum, key, toggleFunction) {
             toggleFunction(key, 'input')
         });
 
+    parent.append('rect')
+        .attr('x', size.width - 40)
+        .attr('y', 0)
+        .attr('width', 40)
+        .attr('height', 40)
+        .style('fill', 'black')
+        .style('opacity', 0.0)
+        .on('click', function(){
+            toggleFunction(key, 'input')
+        });
+
     parent.append('text')
             .attr('x', 10)
             .attr('y', 24)
@@ -259,6 +270,16 @@ function addInputDatum(y, w, div, datum, key, toggleFunction) {
         .attr('height', 4)
         .style('fill', 'black')
         .style('opacity', 0.8)
+        .on('click', function(){
+            toggleFunction(key, 'summary')
+        });
+    parent.append('rect')
+        .attr('x', size.width - 40)
+        .attr('y', 0)
+        .attr('width', 40)
+        .attr('height', 35)
+        .style('fill', 'black')
+        .style('opacity', 0.0)
         .on('click', function(){
             toggleFunction(key, 'summary')
         });
