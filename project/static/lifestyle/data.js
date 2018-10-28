@@ -170,7 +170,7 @@ function addSummaryDatum(w, div, datum, key, toggleFunction) {
     parent.append('text')
         .attr('x', grid[2].middle)
         .attr('y', 56)
-        .text(datum.feedingWindowEnd)
+        .text(datum.feedingWindowStart)
         .attr('text-anchor', 'middle')
         .style('font-weight', 'bold')
         .style('font-size', 14);
