@@ -10,8 +10,21 @@ function createMetricsElements() {
     metricsSvg = metricsDiv.append('svg')
         .attr('width', size.width)
         .attr('height', metricsHeight);
+    datesSvg = metricsDiv.append('div')
+        .attr('width', size.width)
+        .style('position', 'fixed')
+        .style('bottom', 0)
+        .style('height', '65px')
+        .append('svg')
+        .attr('width', size.width)
+        .attr('height', 65);
+    datesSvg.append('rect')
+        .attr('width', size.width)
+        .attr('height', 65)
+        .style('fill', 'white')
+        .attr('opacity', 0.8);
     // Add content.
-    var h = addMetrics(size.width, metricsSvg)
+    var h = addMetrics(size.width, metricsSvg, datesSvg)
     metricsSvg.attr('height', h);
 }
 function removeMetricsElements() {
@@ -74,7 +87,7 @@ function getFeedingWindows(metricsKeys){
     return feedingWindows
 }
 
-function addMetrics(w, parent){
+function addMetrics(w, parent, footerParent){
     var metricsKeys = dataKeys.slice().reverse();
     var dataLength = metricsKeys.length;
     var firstDate = metricsKeys[10];
@@ -144,8 +157,8 @@ function addMetrics(w, parent){
         }
     });
     layout['dates'].gridLines.forEach(function(date){
-        layout['dates'].g.append('text')
-            .attr('transform', 'translate(' + (dateToX(date) - 3) + ',' + layout['dates'].y + '), rotate(90)')
+        footerParent.append('text')
+            .attr('transform', 'translate(' + (dateToX(date) - 3) + ',' + 3 + '), rotate(90)')
             .attr('y', 0)
             .attr('x', 0)
             .text(date)
