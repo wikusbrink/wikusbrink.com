@@ -4,14 +4,19 @@ services:
         build: .
         container_name: "wbapp"
         image: wbapp
-        environment:
-            - FOO=bar
         ports:
             - 5001:5000
         links:
             - mongodb
         depends_on:
             - mongodb
+    fileserver:
+        container_name: "fileserver"
+        image: halverneus/static-file-server:latest
+        ports:
+            - 8085:8080
+        volumes:
+            - /home/ubuntu/fileshare:/web
     mongodb:
         image: mongo:latest
         container_name: "mongodb"
