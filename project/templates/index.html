@@ -1,55 +1,464 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel='icon', href="{{ url_for('static', filename='icons/sun.png') }}">
+<link rel='icon', href="{{ url_for('static', filename='icons/wb.png') }}">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <style>
 
-    body {
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        margin: auto;
-        position: relative;
-        height: 100vh;
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Oswald', sans-serif;
+  color: #777;
+}
 
-        -webkit-user-select: none; /* webkit (safari, chrome) browsers */
-        -moz-user-select: none; /* mozilla browsers */
-        -khtml-user-select: none; /* webkit (konqueror) browsers */
-        -ms-user-select: none; /* IE10+ */
+.bg1, .bg2, .bg3, .bg4, .bg5, .bg6, .bg7, .bg8, .bg9 {
+  position: relative;
+  opacity: 0.9;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+.bg1 {
+  background-image: url('{{ url_for('static', filename='images/bg1.jpg') }}');
+  min-height: 100%;
+}
+.bg2 {
+  background-image: url('{{ url_for('static', filename='images/bg2.jpg') }}');
+  min-height: 100%;
+}
+.bg3 {
+  background-image: url('{{ url_for('static', filename='images/bg3.jpg') }}');
+  min-height: 100%;
+}
+.bg4 {
+  background-image: url('{{ url_for('static', filename='images/bg4.jpg') }}');
+  min-height: 300px;
+}
+.bg5 {
+  background-image: url('{{ url_for('static', filename='images/bg5.jpg') }}');
+  min-height: 300px;
+}
+.bg6 {
+  background-image: url('{{ url_for('static', filename='images/bg6.jpg') }}');
+  min-height: 100%;
+}
+.bg7 {
+  background-image: url('{{ url_for('static', filename='images/bg7.jpg') }}');
+  min-height: 300px;
+}
+.bg8 {
+  background-image: url('{{ url_for('static', filename='images/bg8.jpg') }}');
+  min-height: 300px;
+}
+.bg9 {
+  background-image: url('{{ url_for('static', filename='images/bg9.jpg') }}');
+  min-height: 300px;
+}
+@media only screen and (max-device-width: 800px) {
+    .bg1, .bg2, .bg3, .bg4, .bg5, .bg6, .bg7, .bg8, .bg9 {
+        background-attachment: scroll;
     }
-    text {
-        font-family: 'Oswald', sans-serif;
-    }
-    input {
-        font-family: 'Oswald', sans-serif;
-    }
-    .gridLine {
-        opacity: 0.3;
-    }
-    .annotation {
-        font-weight: bold;
-        font-size: 12px;
-        opacity: 0.8;
-    }
-    .title {
-        font-weight: bolder;
-        font-size: 20px;
-    }
-    div {
+}
+
+.caption {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    width: 50%;
+    text-align: left;
+    color: #000;
+    padding: 18px;
+    font-size: 25px;
+    letter-spacing: 10px;
+    font-weight: bold;
+}
+@media only screen and (max-device-width: 800px) {
+    .caption {
+        text-align: center;
+        top: 10%;
         width: 100%;
+        left: 0;
     }
+}
+
+.heading {
+    position: absolute;
+    left: 10%;
+    top: 60%;
+    width: 80%;
+    text-align: left;
+    color: #000;
+    padding: 18px;
+    font-size: 70px;
+    letter-spacing: 10px;
+    font-weight: bold;
+}
+@media only screen and (max-device-width: 800px) {
+    .heading {
+        font-size: 36px;
+    }
+}
+
+.content {
+    color: #555; 
+    background-color:white; 
+    padding:50px 80px; 
+    text-align: justify; 
+    overflow: hidden;
+}
+@media only screen and (max-device-width: 800px) {
+    .content {
+        font-size: 10px;
+        padding: 20px 20px;
+    }
+}
+
+.content-background {
+    pointer-events: none;
+    height: 450px;
+    margin-bottom: -450px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.content ul {
+    margin-bottom: 0;
+}
+
+.education-background {
+    background-image: url('{{ url_for('static', filename='logos/us.png') }}');
+    background-size: 250px 300px;
+    opacity: 0.1;
+}
+.career-background {
+    background-image: url('{{ url_for('static', filename='logos/praelexis.png') }}');
+    background-size: 300px 300px;
+    opacity: 0.1;
+}
+
+.welcome td {
+    text-align: left; 
+}
+
+.footer {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    color: #000;
+    font-size: 25px;
+    letter-spacing: 10px;
+    font-weight: bold;
+}
+.footer span {
+    background-color: #111;
+    color: #fff;
+    padding: 10px 18px 18px 18px;
+    font-size: 25px;
+    letter-spacing: 10px;
+}
+.footer a {
+    color: #ddd;
+}
+@media only screen and (max-device-width: 800px) {
+    .footer span{
+        font-size: 10px;
+    }
+}
+
+.logo {
+    padding: 10px 20px;
+}
+@media only screen and (max-device-width: 800px) {
+    .logo {
+        padding: 5px 4px;
+    }
+}
+
+.image-caption {
+    text-align:center;
+    color: #555;
+    width: 100%;
+}
+@media only screen and (max-device-width: 800px) {
+    .image-caption {
+        font-size: 12px;
+    }
+}
+
 
 </style>
-<body>hallo</body>
+<body>
+
+<div class="bg3">
+    <div class="caption">
+        wikusbrink.com
+    </div>
+</div>
+
+<div class="content welcome">
+    <h3 style="text-align:center;">Welcome</h3>
+     <p>
+        Hi there. This is my website, not too much going on here. Just a bit of information about myself. 
+        I was born and raised in Stellenbosch, and went on to study at the University of Stellenbosch.
+        I completed my masters degree in the field of robotics and computer vision.
+        After completing my studies one of my former lecturers approached and I started working his machine learning startup, Praelexis.
+        Building a company from the ground up has been an interesting journey. 
+        Rapid innovation coupled and creating production ready software has been our competivite advantage.
+    </p>
+    <div style="display: flex;">
+        <div style="flex: 60%;">
+            <p>
+                After five years at Praelexis and 30 years in Stellenbosch I decided it's time to move on, and that where I am now. 
+                I'm currenlty looking for a position in Australia and would welcome any oportunity.
+                I find pleasure in taking on new challenges and ultimately becoming better at whatever it is I do. 
+                With that in mind, my current interest lies with deep learning and the surrounding field. 
+                I would like to spend my time in an environment that values research and surround myself with people from whom I can learn.
+            </p>
+        </div>
+        <div style="flex: 40%;">
+            <table style="width:100%">
+                <colgroup>
+                    <col style="width:160px;">
+                    <col style="">
+                </colgroup> 
+                <tr>
+                    <td><ul><li>Date of birth</li></ul></td>
+                    <td>26 October 1986</td> 
+                </tr>
+                <tr>
+                    <td><ul><li>Nationality</li></ul></td>
+                    <td>South African</td> 
+                </tr>
+                <tr>
+                    <td><ul><li>Current residence</li></ul></td>
+                    <td>Stellenbosch, South Africa</td> 
+                </tr>
+                <tr>
+                    <td><ul><li>Languages</li></ul></td>
+                    <td><a href='http://wikusbrink.com:8085/PTEscoreReport.pdf' target='_blank'>English</a>, Afrikaans</td> 
+                </tr>
+                <tr>
+                    <td valign="top"><ul><li>Visa status</li></ul></td>
+                    <td>Skilled Independent (subclass 189) - Granted 1&nbsp;November&nbsp;2018</td> 
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="bg4">
+    <div class="heading">
+        Career
+    </div>
+</div>
+
+<div>
+    <div class="content-background career-background"></div>
+    <div class="content career">
+        <h4><a href='http://praelexis.com/' target='_blank'>Praelexis</a>, South Africa — Data scientist</h4>
+        <p>March 2013 - December 2018</p>
+        <p>
+            Praelexis is a data science startup based in Stellenbosch, South Africa. 
+            Our goal is to extract practical value from massive datasets. 
+            Consequently, we design and implement machine learning solutions to solve a variety of real-world industry problems.
+            I started at the company as one of the first two employees and have therefore been exposed to nearly all roles and responsibilities that exist in a data science company, such as:
+        </p>
+        <ul>
+            <li>Data scientist, i.e. design and implementation of machine learning solutions</li>
+            <li>Software development, maintenance, and support</li>
+            <li>Software testing including automated unit and integration tests, quality assurance tests and user acceptance testing</li>
+            <li>Design, deployment, and maintenance of continuous integration pipelines</li>
+            <li>Data flow and database design and implementation</li>
+            <li>Interactive UI design</li>
+            <li>Cloud architecture and provisioning</li>
+            <li>Liaising with clients in both technical and business contexts</li>
+            <li>Team lead of a cross-functional team in an agile environment</li>
+            <li>Project management</li>
+            <li>Product owner</li>
+        </ul>
+        <h4 style="margin-top: 20px;">Technical skills</h4>
+        <p>I view myself as an all-rounder with a focus on machine learning, data flows, and visualization.  During the course of my career I have developed the following skills while using the listed tools and frameworks:</p>
+        <table style="width:100%">
+            <tr>
+                <td><ul><li>Machine learning</li></ul></td>
+                <td>Python using libraries such  as Scikit-learn, Keras</td> 
+            </tr>
+            <tr>
+                <td><ul><li>Web</li></ul></td>
+                <td>Javascript tools such as Node, Express, Angular, and D3 as well as Python Flask apps</td> 
+            </tr>
+            <tr>
+                <td><ul><li>Big data</li></ul></td>
+                <td>The Hadoop ecosystem and related services such as HDFS, Spark and Hive</td> 
+            </tr>
+            <tr>
+                <td><ul><li>Cloud architecture</li></ul></td>
+                <td>Microsoft Azure and limited AWS</td> 
+            </tr>
+            <tr>
+                <td><ul><li>Continuous integration and deployment</li></ul></td>
+                <td>Bamboo, TeamCity, Bitbucket, Github, Artifactory, Docker and Rancher</td> 
+            </tr>
+            <tr>
+                <td><ul><li>Database</li></ul></td>
+                <td>MySQL, MongoDB, Elasticsearch and SQL Server</td> 
+            </tr>
+            <tr>
+                <td><ul><li>Project and team management</li></ul></td>
+                <td>Jira, Confluence, Trello, Slack, G-suite</td> 
+            </tr>
+        </table>
+
+        <div style="display: flex; margin-top: 20px;">
+            <div style="flex: 6%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/python.png') }}" alt="python" style="width:100%">
+            </div>
+            <div style="flex: 7%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/docker.png') }}" alt="docker" style="width:100%">
+            </div>
+            <div style="flex: 7%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/hadoop.png') }}" alt="hadoop" style="width:100%">
+            </div>
+            <div style="flex: 10%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/spark.png') }}" alt="spark" style="width:100%">
+            </div>
+            <div style="flex: 5%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/bitbucket.png') }}" alt="bitbucket" style="width:100%">
+            </div>
+            <div style="flex: 10%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/node.png') }}" alt="node" style="width:100%">
+            </div>
+        </div>
+        <div style="display: flex; margin-top: 20px;">
+            <div style="flex: 15%; margin-top:10px" class="logo">
+                <img src="{{ url_for('static', filename='logos/azure.png') }}" alt="azure" style="width:100%">
+            </div>
+            <div style="flex: 6%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/keras.jpg') }}" alt="keras" style="width:100%">
+            </div>
+            <div style="flex: 6%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/d3.png') }}" alt="d3" style="width:100%">
+            </div>
+            <div style="flex: 7%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/hive.png') }}" alt="hive" style="width:100%">
+            </div>
+            <div style="flex: 5%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/github.svg') }}" alt="github" style="width:100%">
+            </div>
+            <div style="flex: 6%;" class="logo">
+                <img src="{{ url_for('static', filename='logos/mongo.png') }}" alt="mongo" style="width:100%">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg9">
+    <div class="heading">
+        Education
+    </div>
+</div>
+
+<div>
+    <div class="content-background education-background"></div>
+    <div class="content education">
+        <h4>Qualifications</h4>
+        <ul>
+            <li>Bachelor of Engineering (BEng), Electrical & Electronic: Stellenbosch University, South Africa, 2010</li>
+        </ul>
+        <ul>
+            <li>
+                <p style="margin-bottom:0;">Master of Science in Engineering (MScEng): Stellenbosch University, South Africa, 2012</p>
+                <ul>
+                    <li>Thesis: <a href='http://wikusbrink.com:8085/WBrink2012.pdf' target='_blank'>Stereo vision for simultaneous localization and mapping</a></li>
+                    <li>Graduated with distinction</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>Publications</h4>
+        <ul>
+            <li>
+                <p>
+                    W. Brink, C. van Daalen, W. Brink, <a href='http://wikusbrink.com:8085/iros2012_brink.pdf' target='_blank'>Probabilistic outlier removal for robust landmark identification in stereo vision based SLAM</a> [<a href='http://wikusbrink.com:8085/iros2012_brink.mp4' target='_blank'>movie</a>] IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS), pp. 2822-2827, 2012
+                </p>
+            </li>
+            <li>
+                <p>
+                    W. Brink, C. van Daalen, W. Brink, <a href='http://wikusbrink.com:8085/prasa2012_brink.pdf' target='_blank'>FastSLAM with stereo vision</a>, 23rd Annual Symposium of the Pattern Recognition Association of South Africa (PRASA), pp. 24-30, 2012
+                </p>
+            </li>
+            <li>
+                <p>
+                    W. Brink, C. van Daalen, W. Brink, <a href='http://wikusbrink.com:8085/prasa2011_brink.pdf' target='_blank'>Stereo vision as a sensor for EKF SLAM</a>, 22nd Annual Symposium of the Pattern Recognition Association of South Africa (PRASA), pp. 19-24, 2011
+                </p>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+<div class="bg5">
+    <div class="heading">
+        Free time
+    </div>
+</div>
+
+<div style="color: #777;background-color:white;text-align:center;padding:50px 20px;text-align: justify;">
+    <div style="display: flex;">
+        <div style="flex: 25%; padding: 5px;">
+            <img src="{{ url_for('static', filename='images/hob1.jpg') }}" alt="kayak" style="width:100%">
+            <p class="image-caption">Surf kayaking</p>
+        </div>
+        <div style="flex: 25%; padding: 5px;">
+            <img src="{{ url_for('static', filename='images/hob2.jpg') }}" alt="grinding" style="width:100%">
+            <p class="image-caption">Making things</p>
+        </div>
+        <div style="flex: 25%; padding: 5px;">
+            <img src="{{ url_for('static', filename='images/hob3.jpg') }}" alt="4x4" style="width:100%">
+            <p class="image-caption">4x4 and traveling</p>
+        </div>
+        <div style="flex: 25%; padding: 5px;">
+            <img src="{{ url_for('static', filename='images/hob4.jpg') }}" alt="abseil" style="width:100%">
+            <p class="image-caption">Abseiling down a waterfall</p>
+        </div>
+    </div>
+    <div style="display: flex;">
+        <div style="flex: 25%; padding: 5px;">
+            <img src="{{ url_for('static', filename='images/hob5.jpg') }}" alt="hike" style="width:100%">
+            <p class="image-caption">Brothers hiking</p>
+        </div>
+        <div style="flex: 25%; padding: 5px;">
+            <img src="{{ url_for('static', filename='images/hob6.jpg') }}" alt="camp" style="width:100%">
+            <p class="image-caption">Camping</p>
+        </div>
+        <div style="flex: 25%; padding: 5px;">
+            <img src="{{ url_for('static', filename='images/hob7.jpg') }}" alt="explore" style="width:100%">
+            <p class="image-caption">Exploring</p>
+        </div>
+        <div style="flex: 25%; padding: 5px;">
+            <img src="{{ url_for('static', filename='images/hob7.jpg') }}" alt="backpack" style="width:100%">
+            <p class="image-caption">Backpack in the mountians</p>
+        </div>
+    </div>
+</div>
+
+
+<div class="bg2">
+    <div class="footer">
+        <span>mail me: <a href="mailto:wikusbrink@gmail.com" target="_top">wikusbrink@gmail.com</a></span>
+    </div>
+</div>
+
+</body>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="{{ url_for('static', filename='d3.v5.min.js') }}"></script>
-<script src="{{ url_for('static', filename='underscore-min.js') }}"></script>
-<script src="{{ url_for('static', filename='utils.js') }}"></script>
-<script src="{{ url_for('static', filename='api.js') }}"></script>
 <script>
-
-
 
 </script>
