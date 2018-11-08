@@ -53,7 +53,7 @@ function addDays(date, x){
     var d = new Date(date);
     d = new Date(d.getTime() + x*60000*60*24);
     var month = String(d.getMonth() + 1).length < 2 ? '0' + (d.getMonth() + 1):(d.getMonth() + 1);
-    var day = String(d.getDate() + 1).length < 2 ? '0' + d.getDate():d.getDate();
+    var day = String(d.getDate()).length < 2 ? '0' + d.getDate():d.getDate();
     return d.getUTCFullYear() + '-' + month + '-' + day;
 }
 

@@ -85,6 +85,11 @@ body, html {
         left: 0;
     }
 }
+@media only screen and (max-device-width: 800px) {
+    .welcome ul {
+        padding-left: 25px;
+    }
+}
 
 .heading {
     position: absolute;
@@ -141,7 +146,7 @@ body, html {
     opacity: 0.1;
 }
 
-.welcome td {
+td {
     text-align: left; 
 }
 
@@ -168,7 +173,9 @@ body, html {
 }
 @media only screen and (max-device-width: 800px) {
     .footer span{
-        font-size: 10px;
+        font-size: 18px;
+        letter-spacing: 0px;
+        padding: 10px 18px 14px 18px;
     }
 }
 
@@ -205,21 +212,22 @@ body, html {
 <div class="content welcome">
     <h3 style="text-align:center;">Welcome</h3>
      <p>
-        Hi there. This is my website, not too much going on here. Just a bit of information about myself. 
-        I was born and raised in Stellenbosch, and went on to study at the University of Stellenbosch.
-        I completed my masters degree in the field of robotics and computer vision.
-        After completing my studies one of my former lecturers approached and I started working his machine learning startup, Praelexis.
-        Building a company from the ground up has been an interesting journey. 
-        Rapid innovation coupled and creating production ready software has been our competivite advantage.
+I’m Wikus, This is my website.
+I was born and raised in Stellenbosch (close to Cape Town in South Africa), and went on to study at Stellenbosch University.
+I completed my Masters degree in the field of robotics and computer vision.
+After completing my studies I started working as one of the first employees at Praelexis, a machine learning startup.
+Building a company from the ground up has been an interesting journey. 
+Rapid innovation coupled and creating production ready software has been our competitive advantage.
     </p>
     <div style="display: flex;">
         <div style="flex: 60%;">
             <p>
-                After five years at Praelexis and 30 years in Stellenbosch I decided it's time to move on, and that where I am now. 
-                I'm currenlty looking for a position in Australia and would welcome any oportunity.
-                I find pleasure in taking on new challenges and ultimately becoming better at whatever it is I do. 
-                With that in mind, my current interest lies with deep learning and the surrounding field. 
-                I would like to spend my time in an environment that values research and surround myself with people from whom I can learn.
+After spending my entire life up to now in Stellenbosch I decided that it's time to move on, and that that move should be to Australia.
+My skilled independent visa was granted early in November 2018, allowing me to live and work anywhere in Australia.
+I'm currently looking for a position in Australia and would welcome any opportunity involving the development of machine learning software and solutions.
+I find pleasure in taking on new challenges and ultimately becoming better at whatever it is I do. 
+With that in mind, my current focus include deep learning and the surrounding fields of machine learning and AI. 
+I would like to grow my skills in an environment that values research and surround myself with people from whom I can learn.
             </p>
         </div>
         <div style="flex: 40%;">
@@ -237,7 +245,7 @@ body, html {
                     <td>South African</td> 
                 </tr>
                 <tr>
-                    <td><ul><li>Current residence</li></ul></td>
+                    <td valign="top"><ul><li>Current residence</li></ul></td>
                     <td>Stellenbosch, South Africa</td> 
                 </tr>
                 <tr>
@@ -245,7 +253,7 @@ body, html {
                     <td><a href='http://wikusbrink.com:8085/PTEscoreReport.pdf' target='_blank'>English</a>, Afrikaans</td> 
                 </tr>
                 <tr>
-                    <td valign="top"><ul><li>Visa status</li></ul></td>
+                    <td valign="top"><ul><li>Australian Visa</li></ul></td>
                     <td>Skilled Independent (subclass 189) - Granted 1&nbsp;November&nbsp;2018</td> 
                 </tr>
             </table>
@@ -265,13 +273,12 @@ body, html {
         <h4><a href='http://praelexis.com/' target='_blank'>Praelexis</a>, South Africa — Data scientist</h4>
         <p>March 2013 - December 2018</p>
         <p>
-            Praelexis is a data science startup based in Stellenbosch, South Africa. 
-            Our goal is to extract practical value from massive datasets. 
-            Consequently, we design and implement machine learning solutions to solve a variety of real-world industry problems.
-            I started at the company as one of the first two employees and have therefore been exposed to nearly all roles and responsibilities that exist in a data science company, such as:
+Praelexis is a data science startup based in Stellenbosch, South Africa. 
+Our goal is to extract practical value from massive datasets. Consequently, we design and implement machine learning solutions to solve a variety of real-world industry problems.
+During my time at the company I have been exposed to nearly all roles and responsibilities that exist in a data science company, such as:
         </p>
         <ul>
-            <li>Data scientist, i.e. design and implementation of machine learning solutions</li>
+            <li>Data science, i.e. design and implementation of machine learning solutions</li>
             <li>Software development, maintenance, and support</li>
             <li>Software testing including automated unit and integration tests, quality assurance tests and user acceptance testing</li>
             <li>Design, deployment, and maintenance of continuous integration pipelines</li>
@@ -433,7 +440,7 @@ body, html {
 
         <div style="flex: 25%; padding: 5px;">
             <img src="{{ url_for('static', filename='images/hob5.jpg') }}" alt="hike" style="width:100%">
-            <p class="image-caption">Brothers hiking</p>
+            <p class="image-caption">Hiking</p>
         </div>
         <div style="flex: 25%; padding: 5px;">
             <img src="{{ url_for('static', filename='images/hob6.jpg') }}" alt="camp" style="width:100%">
