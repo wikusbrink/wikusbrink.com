@@ -5,7 +5,7 @@ services:
         container_name: "wbapp"
         image: wbapp
         ports:
-            - 5000:5000
+            - 80:5000
         links:
             - mongodb
         depends_on:
