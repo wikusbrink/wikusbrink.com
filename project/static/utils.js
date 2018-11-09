@@ -35,7 +35,7 @@ function getDay(date){
 function getToday() {
     var d = new Date();
     var month = String(d.getMonth() + 1).length < 2 ? '0' + (d.getMonth() + 1):(d.getMonth() + 1);
-    var day = String(d.getDate() + 1).length < 2 ? '0' + d.getDate():d.getDate();
+    var day = String(d.getDate()).length < 2 ? '0' + d.getDate():d.getDate();
     return d.getUTCFullYear() + '-' + month + '-' + day;
 }
 
