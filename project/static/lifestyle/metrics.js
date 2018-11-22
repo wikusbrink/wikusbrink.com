@@ -99,7 +99,7 @@ function addMetrics(w, parent, footerParent){
         y: 20,
         h: 200,
         title: 'Weight',
-        range: [80, 88],
+        range: [78, 88],
         g: parent.append('g')
     };
     layout['fasting'] = {
@@ -206,7 +206,7 @@ function addMetrics(w, parent, footerParent){
             .attr('y', weightToY(d))
             .attr('class', 'gridLine')
             .attr('x', 0)
-            .attr('height', 1)
+            .attr('height', d === 80 ?  3:1)
             .attr('width', w);
         layout['weight'].g.append('text')
             .attr('y', weightToY(d)-1)
@@ -243,7 +243,7 @@ function addMetrics(w, parent, footerParent){
                 if(previousWeight === undefined || previousWeight === null) {
                     return 'gray'
                 }
-                if(previousWeight > currentWeight){
+                if(previousWeight > currentWeight || currentWeight <= 80){
                     return 'darkgreen'
                 } else if (previousWeight === currentWeight) {
                     return 'darkblue'
