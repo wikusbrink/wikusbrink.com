@@ -34,7 +34,7 @@ function removeMetricsElements() {
 function getRollingWeight(metricsKeys){
     var dataLength = metricsKeys.length;
     var rollingWeights = [];
-    var windowSize = 5;
+    var windowSize = 7;
     for(var i=windowSize; i<dataLength; i++) {
         var count = 0;
         var sum = 0;
@@ -76,6 +76,13 @@ function getFastingWindows(metricsKeys) {
     return fastingWindows
 }
 
+function getFastingDuration(key) {
+    var dataLength = data[key];
+    var t1 = key + ' ' + data[key].feedingWindowEnd;
+    var t2 = key + ' ' + data[key].feedingWindowStart;
+    return minutesDiff(t1, t2);
+}
+
 function getFeedingWindows(metricsKeys){
     var dataLength = metricsKeys.length;
     var feedingWindows = [];
@@ -91,7 +98,7 @@ function addMetrics(w, parent, footerParent){
     var metricsKeys = dataKeys.slice().reverse();
     var dataLength = metricsKeys.length;
     var firstDate = metricsKeys[10];
-    var lastDate = addDays(getToday(), 5);
+    var lastDate = addDays(getToday(), 10);
     var barWidth = w / daysDiff(lastDate, firstDate);
 
     var layout = {};
@@ -99,7 +106,7 @@ function addMetrics(w, parent, footerParent){
         y: 20,
         h: 200,
         title: 'Weight',
-        range: [78, 88],
+        range: [76, 88],
         g: parent.append('g')
     };
     layout['fasting'] = {
@@ -288,10 +295,24 @@ function addMetrics(w, parent, footerParent){
         var minutes;
         if (typeof duration === 'number') {
             minutes = duration;
+        } else if (typeof duration === 'string') {
+            minutes = parseInt(duration.substring(0,2)) * 60 + parseInt(duration.substring(3,5));
         } else {
             minutes = duration.minutes;
         }
         return layout['fasting'].y + layout['fasting'].h - layout['fasting'].h/(layout['fasting'].range[1]) * minutes;
+    }
+
+    function durationToHeight(duration){
+        var minutes;
+        if (typeof duration === 'number') {
+            minutes = duration;
+        } else if (typeof duration === 'string') {
+            minutes = parseInt(duration.substring(0,2)) * 60 + parseInt(duration.substring(3,5));
+        } else {
+            minutes = duration.minutes;
+        }
+        return layout['fasting'].h/(layout['fasting'].range[1]) * minutes;
     }
 
     var fastingLine = d3.line()
@@ -335,6 +356,17 @@ function addMetrics(w, parent, footerParent){
         .style('stroke-linecap', 'round')
         .style('fill', 'None')
         .style('stroke-opacity', 0.6);
+
+    layout['fasting'].g.append('g').selectAll('rect')
+        .data(metricsKeys)
+        .enter()
+        .append('rect')
+        .attr('y', function(d) {return durationToY(data[d]['feedingWindowEnd'])})
+        .attr('x', dateToX)
+        .attr('height', function(d) {return durationToHeight(getFastingDuration(d))})
+        .attr('width', barWidth)
+        .style('fill', 'black')
+        .style('opacity', 0.1);
 
     function morningExercisePointsToY(d) {
         var points;
